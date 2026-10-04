@@ -212,6 +212,51 @@ td.gkrow b{font-family:var(--f-display);font-size:15px;color:var(--fg);margin-ri
 
 
 [hidden]{display:none!important}
+/* ===== Home ===== */
+#home.scr{display:block;overflow:auto;padding:16px}
+.hwrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:14px;min-height:100%;height:100%}
+#hmain{flex:1}.hhero{min-height:210px!important}
+.hhero{position:relative;border-radius:14px;overflow:hidden;background:linear-gradient(135deg,#1f6b34,#2f8a43 55%,#3d9a4d);color:#fff;padding:30px 34px;min-height:170px;display:flex;align-items:flex-end}
+.hhero::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 60px,transparent 60px 120px)}
+.hpitch{position:absolute;inset:0;width:100%;height:100%}
+.htxt{position:relative}
+.hkick{font-family:var(--f-display);font-weight:600;letter-spacing:.3em;font-size:13px;opacity:.85}
+.hhero h1{font-family:var(--f-display);font-weight:700;font-size:56px;line-height:1;margin:6px 0 8px;letter-spacing:.02em}
+.hhero p{margin:0;opacity:.9;font-size:15px}
+.hmodes{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.hmode{all:unset;box-sizing:border-box;position:relative;cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px 26px 22px;display:flex;flex-direction:column;gap:8px;min-height:260px;height:100%;transition:border-color .15s,transform .15s}
+.hmode:hover,.hmode:focus-visible{border-color:var(--gold);transform:translateY(-2px)}
+.hmode:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.hmode .hic{font-size:34px;line-height:1}
+.hmode b{font-family:var(--f-display);font-size:32px;letter-spacing:.03em;font-weight:700}
+.hmode small{color:var(--muted);font-size:14px;line-height:1.6;max-width:380px}
+.hmode em{font-style:normal;margin-top:auto;color:var(--red);font-weight:600}
+.hcont{position:absolute;right:18px;bottom:18px;border-color:var(--gold)!important;font-size:13px!important}
+.hcfg{padding:16px 20px;display:flex;flex-direction:column;gap:14px}
+.hcfg-hd{display:flex;align-items:center;gap:12px}
+.hcfg-hd h2{margin:0;font-size:18px;color:var(--fg);letter-spacing:.06em}
+.hsec h3{font-family:var(--f-display);font-weight:600;font-size:14px;letter-spacing:.12em;color:var(--muted);margin:0 0 8px}
+.hfmts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.hfmt{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:10px 12px}
+.hfmt b{font-weight:600}.hfmt small{color:var(--muted);font-size:12px}
+.hfmt.on,.hteam.on{border-color:var(--gold);box-shadow:inset 0 0 0 1.5px var(--gold);background:color-mix(in srgb,var(--gold) 9%,var(--panel))}
+.hrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}.hrow h3{margin:0}
+.hcount{font-size:13px;color:var(--muted);margin-right:auto}
+.hrow button{font-size:13px;padding:5px 10px}
+.hteams{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.hteam{display:flex;align-items:center;gap:8px;text-align:left;padding:8px 10px}
+.hteam span{min-width:0;font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hteam small{display:block;font-weight:400;color:var(--muted);font-size:11.5px}
+.hteams.dim .hteam{opacity:.6;cursor:default}
+.hfoot{display:flex;align-items:center;justify-content:flex-end;gap:12px}
+.hfoot .note{margin-right:auto}
+#hgo:disabled{opacity:.45;cursor:not-allowed}
+.plist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.plist li{display:flex;align-items:center;gap:6px;padding:5px 2px;border-bottom:1px solid var(--line);font-size:13.5px}
+.plist li span{flex:1;min-width:0;font-weight:600}.plist li small{display:block;font-weight:400;color:var(--muted);font-size:11.5px}
+.plist li.out{opacity:.5}.plist li em{font-style:normal;font-size:11px;color:var(--muted)}
+.portrait .hmodes{grid-template-columns:1fr}.portrait .hfmts{grid-template-columns:1fr 1fr}.portrait .hteams{grid-template-columns:1fr 1fr}.portrait .hhero h1{font-size:44px}
+
 /* ===== Tournament ===== */
 #tour.scr{grid-template-columns:330px minmax(0,1fr) 262px;grid-template-rows:auto minmax(0,1fr)}
 #tour .t-top{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 14px}
@@ -426,12 +471,30 @@ td.ft{white-space:nowrap;font-size:12px}td.ft .st{color:#E0A526;letter-spacing:-
 </style>
 <style id="kitcss"></style>
 <div class="vp" id="vp"><div class="stage" id="stage">
+<section class="scr" id="home">
+ <div class="hwrap">
+  <div class="hhero"><svg class="hpitch" viewBox="0 0 600 220" aria-hidden="true" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="2"><rect x="10" y="10" width="580" height="200"/><line x1="300" y1="10" x2="300" y2="210"/><circle cx="300" cy="110" r="38"/><rect x="10" y="55" width="70" height="110"/><rect x="520" y="55" width="70" height="110"/></g></svg>
+   <div class="htxt"><span class="hkick">LEGEND DREAM MATCH</span><h1>레전드 드림매치</h1><p>역대 명팀 12팀을 실제 능력치로 맞붙여 보는 축구 시뮬레이터</p></div></div>
+  <div id="hmain" class="hmodes">
+   <button type="button" class="hmode" id="hsingle"><span class="hic">⚽</span><b>단일 경기</b><small>두 팀을 골라 라인업·전술을 짜고 한 판 붙여요. 문자중계와 리플레이까지.</small><em>경기 만들기 ▸</em></button>
+   <div class="hmode" id="htour" role="button" tabindex="0"><span class="hic">🏆</span><b>토너먼트</b><small>조별리그 + 토너먼트, 8강, 4강 중에서 고르고 팀은 무작위 추첨이나 직접 선택.</small><em>대회 설정 ▸</em><button type="button" id="hcont" class="hcont" hidden></button></div>
+  </div>
+  <div id="hcfg" class="card hcfg" hidden>
+   <div class="hcfg-hd"><button type="button" id="hback">◂ 뒤로</button><h2>토너먼트 설정</h2></div>
+   <div class="hsec"><h3>대회 형식</h3><div id="hfmts" class="hfmts"></div></div>
+   <div class="hsec"><div class="hrow"><h3>참가팀</h3><div class="seg" id="hmode" role="group" aria-label="참가팀 정하는 방식"><button type="button" data-m="rand" aria-pressed="true">무작위 추첨</button><button type="button" data-m="pick" aria-pressed="false">직접 선택</button></div>
+     <span id="hcount" class="hcount"></span><button type="button" id="hfill">나머지 무작위로 채우기</button><button type="button" id="hclear">선택 초기화</button></div>
+    <div id="hteams" class="hteams"></div></div>
+   <div class="hfoot"><p id="hwarn" class="note" hidden>진행 중인 대회는 새 대회로 바뀌어요.</p><button type="button" id="hgo" class="btn-primary">대회 시작</button></div>
+  </div>
+ </div>
+</section>
 <section class="scr" id="setup">
   <aside class="card pnl su-panel" id="sup0"></aside>
   <div class="col">
     <div class="su-top"><div class="su-head"><h1 class="su-title">드림매치 라인업</h1><div class="tourtag" id="tourtag" hidden></div>
-      <div class="su-teams"><label>홈<select id="team0" aria-label="홈 팀"></select></label><button type="button" id="teamswap" aria-label="홈과 원정 바꾸기" title="홈·원정 바꾸기">⇄</button><label>원정<select id="team1" aria-label="원정 팀"></select></label></div><div class="su-opts"><label class="etl"><input type="checkbox" id="etopt"> 무승부 시 연장·승부차기</label><button type="button" id="tourbtn" class="tourbtn">🏆 토너먼트 모드</button><p id="derby" class="derby" hidden></p></div></div>
-      <div class="su-btns"><button type="button" id="orient2" class="orient" title="가로·세로 화면 전환">세로</button><button type="button" id="start" class="btn-primary">경기 시작</button></div></div>
+      <div class="su-teams"><label>홈<select id="team0" aria-label="홈 팀"></select></label><button type="button" id="teamswap" aria-label="홈과 원정 바꾸기" title="홈·원정 바꾸기">⇄</button><label>원정<select id="team1" aria-label="원정 팀"></select></label></div><div class="su-opts"><label class="etl"><input type="checkbox" id="etopt"> 무승부 시 연장·승부차기</label><p id="derby" class="derby" hidden></p></div></div>
+      <div class="su-btns"><button type="button" id="tourbtn">◂ 메인</button><button type="button" id="orient2" class="orient" title="가로·세로 화면 전환">세로</button><button type="button" id="start" class="btn-primary">경기 시작</button></div></div>
     <div class="pitch" id="supitch"><svg viewBox="52 84 576 342" id="susvg" role="group" aria-label="라인업 보드, 선수를 끌어서 자리를 옮길 수 있어요">
 <rect x="4" y="36" width="672" height="440" rx="18" class="st-bowl" fill="#4A0B0B"/>
 <rect x="68" y="40" width="544" height="46" rx="4" class="st-stand" fill="#A3201B"/>
@@ -470,7 +533,7 @@ td.ft{white-space:nowrap;font-size:12px}td.ft .st{color:#E0A526;letter-spacing:-
 </section>
 <section class="scr" id="tour" hidden>
   <div class="card t-top"><div class="t-title"><h1>드림 챔피언스 리그</h1><span id="tstage"></span></div>
-   <div class="t-btns"><button type="button" id="tnew">새 토너먼트</button><button type="button" id="tfree">자유 경기로</button></div></div>
+   <div class="t-btns"><button type="button" id="tnew">새 토너먼트</button><button type="button" id="tfree">메인으로</button></div></div>
   <div class="t-col" id="tgroups"></div>
   <div class="t-col t-mid"><div class="card t-card" id="tnext"></div><div class="card t-card" id="tfix"></div></div>
   <div class="t-col t-rt"><div class="card t-card" id="tside"></div></div>
@@ -533,7 +596,7 @@ td.ft{white-space:nowrap;font-size:12px}td.ft .st{color:#E0A526;letter-spacing:-
   </div>
     <div class="ctrl">
       <button id="go" type="button">킥오프</button>
-      <button id="rs" type="button">라인업 화면</button><button id="tourback" type="button" hidden>토너먼트로 ▸</button>
+      <button id="homebtn" type="button">메인</button><button id="rs" type="button">라인업 화면</button><button id="tourback" type="button" hidden>토너먼트로 ▸</button>
       <button id="back" type="button" hidden>라이브로</button>
       <select id="sp" aria-label="배속"><option value="1">1배속</option><option value="2" selected>2배속</option><option value="4">4배속</option></select>
       <label class="tog" for="nm"><input id="nm" type="checkbox" checked> 이름</label>
@@ -2233,13 +2296,18 @@ window.__dbg={get S(){return S},startPSO,step,get TOUR(){return TOUR},get T(){re
 // ===================== Tournament: 12 teams, three groups of four, then quarter-finals, semis and a final =====================
 const TKEY='dreamTour1',STG={QF:'8강',SF:'4강',F:'결승'};let TOUR=null,TBUSY=false,tNewArm=false;
 const tSave=()=>{try{localStorage.setItem(TKEY,JSON.stringify(TOUR));}catch(e){}};
-const tLoad=()=>{try{const v=localStorage.getItem(TKEY);TOUR=v?JSON.parse(v):null;if(TOUR&&TOUR.v!==1)TOUR=null;}catch(e){TOUR=null;}};
+const tLoad=()=>{try{const v=localStorage.getItem(TKEY);TOUR=v?JSON.parse(v):null;if(TOUR&&TOUR.v===1){TOUR.v=2;TOUR.fmt='G12';}if(TOUR&&(TOUR.v!==2||!TOUR.fx||TOUR.fx.some(f=>!LIB[f.a]||!LIB[f.b])))TOUR=null;}catch(e){TOUR=null;}};
 const tShuf=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
 const tName=k=>LIB[k]?LIB[k].short:k,tKit=k=>'<i class="tk" style="background:'+(LIB[k]?LIB[k].kit[0]:'#888')+'"></i>';
 function tMk(st,g,r,a,b){return{id:st+(g||'')+r+'_'+a+'_'+b,st,g,r,a,b,sa:null,sb:null,pso:null,et:false,done:false,sc:[]};}
-function tNew(){const k=tShuf(Object.keys(LIB)).slice(0,12),groups=['A','B','C'].map((g,i)=>({g,t:k.slice(i*4,i*4+4)})),fx=[];
- [[0,1,3,2],[0,2,1,3],[0,3,2,1]].forEach((r,ri)=>groups.forEach(G=>{fx.push(tMk('G',G.g,ri+1,G.t[r[0]],G.t[r[1]]));fx.push(tMk('G',G.g,ri+1,G.t[r[2]],G.t[r[3]]));}));
- TOUR={v:1,groups,fx,champ:null,cur:null};tSave();}
+// formats: G12 = three groups of four then quarter-finals; G8 = two groups then semi-finals; QF = 8-team knockout; SF = 4-team knockout
+const TFMT={G12:{n:12,name:'조별리그 + 토너먼트',sub:'12팀 · 3개 조 → 8강'},G8:{n:8,name:'조별리그 + 토너먼트',sub:'8팀 · 2개 조 → 4강'},QF:{n:8,name:'8강 토너먼트',sub:'8팀 · 단판 녹아웃'},SF:{n:4,name:'4강 토너먼트',sub:'4팀 · 단판 녹아웃'}};
+function tNew(fmt,teams){fmt=TFMT[fmt]?fmt:'G12';const n=TFMT[fmt].n,k=tShuf((teams&&teams.length===n?teams:tShuf(Object.keys(LIB)).slice(0,n)).slice()),fx=[];let groups=[];
+ if(fmt==='G12'||fmt==='G8'){groups=['A','B','C'].slice(0,n/4).map((g,i)=>({g,t:k.slice(i*4,i*4+4)}));
+  [[0,1,3,2],[0,2,1,3],[0,3,2,1]].forEach((r,ri)=>groups.forEach(G=>{fx.push(tMk('G',G.g,ri+1,G.t[r[0]],G.t[r[1]]));fx.push(tMk('G',G.g,ri+1,G.t[r[2]],G.t[r[3]]));}));}
+ else if(fmt==='QF'){for(let i=0;i<4;i++)fx.push(tMk('QF',null,i+1,k[2*i],k[2*i+1]));}
+ else{fx.push(tMk('SF',null,1,k[0],k[1]));fx.push(tMk('SF',null,2,k[2],k[3]));}
+ TOUR={v:2,fmt,teams:k,groups,fx,champ:null,cur:null};tSave();}
 const tWin=f=>f.sa>f.sb?f.a:f.sb>f.sa?f.b:f.pso?(f.pso[0]>f.pso[1]?f.a:f.b):null;
 function tTable(G){const R={};for(const k of G.t)R[k]={k,P:0,W:0,D:0,L:0,F:0,A:0,Pt:0};
  for(const f of TOUR.fx){if(f.st!=='G'||f.g!==G.g||!f.done)continue;const a=R[f.a],b=R[f.b];a.P++;b.P++;a.F+=f.sa;a.A+=f.sb;b.F+=f.sb;b.A+=f.sa;
@@ -2253,7 +2321,9 @@ function tBuildQF(){const tb=TOUR.groups.map(tTable),W=tb.map(t=>t[0]),Rn=tb.map
  for(const p of tShuf(perms(uns))){if(p.every((u,i)=>tGroupOf(u)!==tGroupOf(seeds[i]))){best=p;break;}}best=best||uns;
  seeds.forEach((sd,i)=>TOUR.fx.push(tMk('QF',null,i+1,sd,best[i])));}
 function tAdvance(){const by=st=>TOUR.fx.filter(f=>f.st===st);
- if(!by('QF').length&&by('G').every(f=>f.done))tBuildQF();
+ const gd=by('G').length&&by('G').every(f=>f.done);
+ if(TOUR.fmt==='G12'&&gd&&!by('QF').length)tBuildQF();
+ if(TOUR.fmt==='G8'&&gd&&!by('SF').length){const [A,B]=TOUR.groups.map(tTable);TOUR.fx.push(tMk('SF',null,1,A[0].k,B[1].k));TOUR.fx.push(tMk('SF',null,2,B[0].k,A[1].k));}
  const qf=by('QF');if(qf.length&&qf.every(f=>f.done)&&!by('SF').length){TOUR.fx.push(tMk('SF',null,1,tWin(qf[0]),tWin(qf[1])));TOUR.fx.push(tMk('SF',null,2,tWin(qf[2]),tWin(qf[3])));}
  const sf=by('SF');if(sf.length&&sf.every(f=>f.done)&&!by('F').length)TOUR.fx.push(tMk('F',null,1,tWin(sf[0]),tWin(sf[1])));
  const fn=by('F');if(fn.length&&fn[0].done)TOUR.champ=tWin(fn[0]);}
@@ -2267,8 +2337,8 @@ function tSim(f,done){loadTeams(f.a,f.b);init({et:f.st!=='G',noRec:true,cere:fal
 function tSimMany(list){if(!list.length||TBUSY)return;TBUSY=true;let i=0;const go=()=>{if(i>=list.length){TBUSY=false;renderTour();return;}
  $('tprog').textContent='결과 계산 중 · '+(i+1)+'/'+list.length+' · '+tName(list[i].a)+' vs '+tName(list[i].b);tSim(list[i],()=>{i++;renderTour();$('tprog').textContent='결과 계산 중 · '+Math.min(i+1,list.length)+'/'+list.length;setTimeout(go,0);});};
  renderTour();go();}
-function tLock(on){for(const id of ['team0','team1','teamswap'])$(id).disabled=on;$('etopt').disabled=on;const tg=$('tourtag');tg.hidden=!on;}
-function showTour(){tLoad();if(!TOUR)tNew();if(TOUR.cur){TOUR.cur=null;tSave();}tLock(false);$('setup').hidden=true;$('app').hidden=true;$('tour').hidden=false;running=false;renderTour();}
+function tLock(on){for(const id of ['team0','team1','teamswap'])$(id).disabled=on;$('etopt').disabled=on;const tg=$('tourtag');tg.hidden=!on;$('tourbtn').textContent=on?'◂ 토너먼트':'◂ 메인';}
+function showTour(){tLoad();if(!TOUR){showHome('cfg');return;}$('home').hidden=true;if(TOUR.cur){TOUR.cur=null;tSave();}tLock(false);$('setup').hidden=true;$('app').hidden=true;$('tour').hidden=false;running=false;renderTour();}
 function tWatch(f){TOUR.cur=f.id;tSave();$('tour').hidden=true;applyTeams(f.a,f.b);teamSelects();$('etopt').checked=f.st!=='G';tLock(true);
  $('tourtag').textContent='드림 챔피언스 리그 · '+tLabel(f)+(f.st!=='G'?' · 무승부면 연장·승부차기':'');newMatch();}
 function tourAfter(){if(!TOUR||!TOUR.cur||S._tourRec)return;S._tourRec=true;const f=TOUR.fx.find(x=>x.id===TOUR.cur);
@@ -2276,10 +2346,12 @@ function tourAfter(){if(!TOUR||!TOUR.cur||S._tourRec)return;S._tourRec=true;cons
 function renderTour(){if(!TOUR)return;const nx=tNext();
  $('tstage').textContent=TOUR.champ?'대회 종료':nx?(nx.st==='G'?'조별리그 · ':'토너먼트 · ')+tLabel(nx):'';
  // groups
- const th=TOUR.fx.some(f=>f.st==='QF')?tThirds().slice(0,2).map(r=>r.k):[];
- $('tgroups').innerHTML=TOUR.groups.map(G=>{const tb=tTable(G);return '<div class="card grp"><h3>'+G.g+'조</h3><table><thead><tr><th>#</th><th class="nm">팀</th><th>경기</th><th>승</th><th>무</th><th>패</th><th>득실</th><th>승점</th></tr></thead><tbody>'+
+ const th=TOUR.fmt==='G12'&&TOUR.fx.some(f=>f.st==='QF')?tThirds().slice(0,2).map(r=>r.k):[];
+ const NOTE={G12:'각 조 1·2위와 3위 중 성적이 좋은 두 팀이 8강에 올라가요.',G8:'각 조 1·2위가 4강에 올라가요. A조 1위는 B조 2위와, B조 1위는 A조 2위와 붙어요.',QF:'8팀 단판 녹아웃. 대진은 무작위 추첨이에요.',SF:'4팀 단판 녹아웃. 대진은 무작위 추첨이에요.'}[TOUR.fmt]+' 토너먼트는 단판이고, 비기면 연장전과 승부차기로 가려요.';
+ if(!TOUR.groups.length){$('tgroups').innerHTML='<div class="card grp"><h3>참가팀 · '+esc(TFMT[TOUR.fmt].name)+'</h3><ul class="plist">'+TOUR.teams.map(k=>{const out=TOUR.fx.some(f=>f.done&&(f.a===k||f.b===k)&&tWin(f)!==k);return '<li class="'+(out?'out':'')+(TOUR.champ===k?' ch':'')+'">'+tKit(k)+'<span>'+esc(LIB[k].name)+'<small>'+esc(LIB[k].season)+' · '+esc(LIB[k].coach)+'</small></span>'+(TOUR.champ===k?'<b>🏆</b>':out?'<em>탈락</em>':'')+'</li>';}).join('')+'</ul></div><p class="note" style="padding:0 4px">'+NOTE+'</p>';}
+ else $('tgroups').innerHTML=TOUR.groups.map(G=>{const tb=tTable(G);return '<div class="card grp"><h3>'+G.g+'조</h3><table><thead><tr><th>#</th><th class="nm">팀</th><th>경기</th><th>승</th><th>무</th><th>패</th><th>득실</th><th>승점</th></tr></thead><tbody>'+
   tb.map((r,i)=>'<tr class="'+(i<2?'q':th.includes(r.k)?'q3':'')+'"><td>'+(i+1)+'</td><td class="tn">'+tKit(r.k)+esc(tName(r.k))+'</td><td>'+r.P+'</td><td>'+r.W+'</td><td>'+r.D+'</td><td>'+r.L+'</td><td>'+(r.F-r.A>0?'+':'')+(r.F-r.A)+'</td><td class="pts">'+r.Pt+'</td></tr>').join('')+'</tbody></table></div>';}).join('')+
-  '<p class="note" style="padding:0 4px">각 조 1·2위와 3위 중 성적이 좋은 두 팀이 8강에 올라가요. 8강부터는 단판이고, 비기면 연장전과 승부차기로 가려요.</p>';
+  '<p class="note" style="padding:0 4px">'+NOTE+'</p>';
  // next match card
  let h='';if(TOUR.champ){const fn=TOUR.fx.find(f=>f.st==='F'),L0=LIB[TOUR.champ];h='<div class="champ"><small>드림 챔피언스 리그 우승</small><b>🏆 '+esc(L0.name)+'</b><small>'+esc(L0.season)+' · 감독 '+esc(L0.coach)+' · 결승 '+fn.sa+' - '+fn.sb+(fn.pso?' (승부차기 '+fn.pso[0]+'-'+fn.pso[1]+')':'')+' vs '+esc(tName(tWin(fn)===fn.a?fn.b:fn.a))+'</small></div><div class="t-prog" id="tprog"></div>';}
  else if(nx){const A=LIB[nx.a],B=LIB[nx.b],rest=TOUR.fx.filter(f=>!f.done&&f.st===nx.st&&(nx.st!=='G'||f.r===nx.r));
@@ -2297,17 +2369,48 @@ function renderTour(){if(!TOUR)return;const nx=tNext();
  if(ko.length){const tie=(f,lab)=>{if(!f)return '<div class="tie tbd"><div><span>'+lab+'</span></div><div><span>미정</span></div></div>';const w=f.done?tWin(f):null;
    return '<div class="tie"><div class="'+(w===f.a?'w':'')+'"><span>'+tKit(f.a)+esc(tName(f.a))+'</span><span class="s">'+(f.done?f.sa+(f.pso?' ('+f.pso[0]+')':''):'')+'</span></div><div class="'+(w===f.b?'w':'')+'"><span>'+tKit(f.b)+esc(tName(f.b))+'</span><span class="s">'+(f.done?f.sb+(f.pso?' ('+f.pso[1]+')':''):'')+'</span></div></div>';};
   const q=ko.filter(f=>f.st==='QF'),s2=ko.filter(f=>f.st==='SF'),fn=ko.filter(f=>f.st==='F');
-  fx+='<h3>토너먼트</h3><div class="brk"><div class="rnd"><h4>8강</h4>'+[0,1,2,3].map(i=>tie(q[i],'8강')).join('')+'</div><div class="rnd"><h4>4강</h4>'+[0,1].map(i=>tie(s2[i],'4강')).join('')+'</div><div class="rnd"><h4>결승</h4>'+tie(fn[0],'결승')+'</div></div>';}
- const gs=TOUR.fx.filter(f=>f.st==='G');fx+='<h3 style="margin-top:'+(ko.length?14:0)+'px">조별리그 일정</h3><ul class="fxl">'+[1,2,3].map(r=>'<li><span class="rd">'+r+'라운드</span></li>'+gs.filter(f=>f.r===r).map(row).join('')).join('')+'</ul>';
+  const R=TOUR.fmt==='G12'||TOUR.fmt==='QF'?[['8강',q,4],['4강',s2,2],['결승',fn,1]]:[['4강',s2,2],['결승',fn,1]];
+  fx+='<h3>토너먼트</h3><div class="brk" style="grid-template-columns:repeat('+R.length+',minmax(0,1fr))">'+R.map(([lab,arr,n])=>'<div class="rnd"><h4>'+lab+'</h4>'+[...Array(n).keys()].map(i=>tie(arr[i],lab)).join('')+'</div>').join('')+'</div>';}
+ else if(!TOUR.groups.length)fx+='<h3>토너먼트</h3>';
+ const gs=TOUR.fx.filter(f=>f.st==='G');if(gs.length)fx+='<h3 style="margin-top:'+(ko.length?14:0)+'px">조별리그 일정</h3><ul class="fxl">'+[1,2,3].map(r=>'<li><span class="rd">'+r+'라운드</span></li>'+gs.filter(f=>f.r===r).map(row).join('')).join('')+'</ul>';
  $('tfix').innerHTML=fx;
  // scorers
  const G={};let goals=0,played=0;for(const f of TOUR.fx){if(!f.done)continue;played++;goals+=f.sa+f.sb;for(const x of f.sc){const e=G[x.id]||(G[x.id]={n:x.n,k:x.k,g:0});e.g+=x.g;}}
  const top=Object.values(G).sort((a,b)=>b.g-a.g).slice(0,12);
  $('tside').innerHTML='<h3>득점 순위</h3>'+(top.length?'<ol class="scl">'+top.map((e,i)=>'<li><span class="rk">'+(i+1)+'</span><span>'+esc(e.n)+'<small>'+tKit(e.k)+esc(tName(e.k))+'</small></span><span class="g">'+e.g+'</span></li>').join('')+'</ol>':'<p class="note">아직 골이 없어요</p>')+
   '<h3 style="margin-top:14px">대회 기록</h3><p class="note">'+played+' / '+TOUR.fx.length+(TOUR.champ?'':'+')+' 경기 · '+goals+'골'+(played?' · 경기당 '+(goals/played).toFixed(2)+'골':'')+'</p>';}
-$('tourbtn').addEventListener('click',showTour);$('tourback').addEventListener('click',showTour);
-$('tfree').addEventListener('click',()=>{if(TBUSY)return;if(TOUR){TOUR.cur=null;tSave();}tLock(false);$('tour').hidden=true;applyTeams(pick[0],pick[1]);teamSelects();newMatch();});
-$('tnew').addEventListener('click',()=>{if(TBUSY)return;const b=$('tnew');if(!tNewArm){tNewArm=true;b.textContent='정말 새로 시작할까요?';setTimeout(()=>{tNewArm=false;b.textContent='새 토너먼트';},3000);return;}tNewArm=false;b.textContent='새 토너먼트';tNew();renderTour();});
+$('tourbtn').addEventListener('click',()=>{if(TOUR&&TOUR.cur)showTour();else showHome();});$('tourback').addEventListener('click',showTour);
+$('tfree').addEventListener('click',()=>{if(TBUSY)return;if(TOUR){TOUR.cur=null;tSave();}showHome();});
+$('tnew').addEventListener('click',()=>{if(TBUSY)return;showHome('cfg');});
+
+// ===================== Home: single match or tournament (format + random / hand-picked teams) =====================
+const HC={fmt:'G12',mode:'rand',sel:[]};
+function showHome(view){running=false;if(TOUR&&TOUR.cur){TOUR.cur=null;tSave();}tLock(false);for(const id of ['setup','app','tour'])$(id).hidden=true;$('home').hidden=false;tLoad();
+ $('hmain').hidden=view==='cfg';$('hcfg').hidden=view!=='cfg';renderHome();}
+function renderHome(){const T0=TOUR&&!TOUR.champ?TOUR:null,nx=T0?tNext():null;
+ $('hcont').hidden=!T0;if(T0)$('hcont').textContent='▸ 이어하기 · '+TFMT[T0.fmt].name.replace('조별리그 + 토너먼트','조별리그')+' · '+(nx?tLabel(nx):'');
+ $('hfmts').innerHTML=Object.entries(TFMT).map(([k,v])=>'<button type="button" class="hfmt'+(HC.fmt===k?' on':'')+'" data-f="'+k+'" aria-pressed="'+(HC.fmt===k)+'"><b>'+v.name+'</b><small>'+v.sub+'</small></button>').join('');
+ const n=TFMT[HC.fmt].n;HC.sel=HC.sel.filter(k=>LIB[k]).slice(0,n);
+ for(const b of document.querySelectorAll('#hmode button'))b.setAttribute('aria-pressed',String(b.dataset.m===HC.mode));
+ const pickMode=HC.mode==='pick';$('hteams').classList.toggle('dim',!pickMode);
+ $('hteams').innerHTML=Object.entries(LIB).map(([k,v])=>{const on=pickMode&&HC.sel.includes(k);return '<button type="button" class="hteam'+(on?' on':'')+'" data-k="'+k+'"'+(pickMode?'':' disabled')+' aria-pressed="'+on+'"><i class="tk" style="background:'+v.kit[0]+'"></i><span>'+esc(v.short)+'<small>'+esc(v.coach)+'</small></span></button>';}).join('');
+ const ok=!pickMode||HC.sel.length===n;$('hcount').textContent=pickMode?'선택 '+HC.sel.length+' / '+n+'팀':n===12?'12팀 전부 참가 · 조 편성은 무작위':'무작위로 '+n+'팀 추첨';
+ $('hfill').hidden=!pickMode;$('hclear').hidden=!pickMode;$('hgo').disabled=!ok;
+ $('hwarn').hidden=!T0;}
+$('hsingle').addEventListener('click',()=>{$('home').hidden=true;applyTeams(pick[0],pick[1]);teamSelects();newMatch();});
+$('htour').addEventListener('click',()=>{$('hmain').hidden=true;$('hcfg').hidden=false;renderHome();});
+$('htour').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.id==='htour'){e.preventDefault();$('htour').click();}});
+$('hcont').addEventListener('click',e=>{e.stopPropagation();showTour();});
+$('hback').addEventListener('click',()=>{$('hmain').hidden=false;$('hcfg').hidden=true;renderHome();});
+$('hfmts').addEventListener('click',e=>{const b=e.target.closest('.hfmt');if(!b)return;HC.fmt=b.dataset.f;renderHome();});
+$('hmode').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;HC.mode=b.dataset.m;renderHome();});
+$('hteams').addEventListener('click',e=>{const b=e.target.closest('.hteam');if(!b||HC.mode!=='pick')return;const k=b.dataset.k,n=TFMT[HC.fmt].n;
+ if(HC.sel.includes(k))HC.sel=HC.sel.filter(x=>x!==k);else if(HC.sel.length<n)HC.sel.push(k);renderHome();});
+$('hfill').addEventListener('click',()=>{const n=TFMT[HC.fmt].n;HC.sel=HC.sel.concat(tShuf(Object.keys(LIB).filter(k=>!HC.sel.includes(k)))).slice(0,n);renderHome();});
+$('hclear').addEventListener('click',()=>{HC.sel=[];renderHome();});
+$('hgo').addEventListener('click',()=>{tNew(HC.fmt,HC.mode==='pick'?HC.sel:null);$('home').hidden=true;showTour();});
+$('homebtn').addEventListener('click',()=>showHome());
+showHome();
 })();
 </script>
 
