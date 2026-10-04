@@ -212,6 +212,36 @@ td.gkrow b{font-family:var(--f-display);font-size:15px;color:var(--fg);margin-ri
 
 
 [hidden]{display:none!important}
+
+.fxl li.dn,.tie.dn{cursor:pointer}.fxl li.dn:hover,.tie.dn:hover,.fxl li.dn:focus-visible,.tie.dn:focus-visible{background:var(--track);outline:none}
+.tie.dn:hover{border-color:var(--gold)}
+.tmodal{position:absolute;inset:0;z-index:20;background:rgba(20,17,16,.55);display:grid;place-items:center;padding:24px}
+.tmbox{position:relative;width:min(900px,100%);max-height:100%;overflow:auto;padding:18px 22px}
+.tmclose{position:absolute;right:12px;top:10px;padding:4px 10px}
+.tm-hd>small{color:var(--muted);font-size:12.5px}
+.tm-sc{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:14px;margin:8px 0 14px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.tm-t{display:flex;align-items:center;gap:8px;font-weight:600;font-size:16px;min-width:0}.tm-t.r{justify-content:flex-end;text-align:right}
+.tm-t small{display:block;font-weight:400;color:var(--muted);font-size:12px}.tm-t:not(.w){opacity:.75}
+.tm-num{font-family:var(--f-display);font-weight:700;font-size:44px;line-height:1;text-align:center;font-variant-numeric:tabular-nums}
+.tm-num small{display:block;font-size:13px;color:var(--muted);font-weight:500;letter-spacing:.04em;margin-top:4px}
+.tm-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px}
+.tm-grid h3,.tmbox h3{font-family:var(--f-display);font-weight:600;font-size:14px;letter-spacing:.12em;color:var(--muted);margin:0 0 6px}
+.tm-ev{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-direction:column;gap:3px;font-size:13.5px}
+.tm-ev li{display:flex;gap:6px;align-items:baseline;flex-wrap:wrap}.tm-ev li.r{justify-content:flex-end;text-align:right}
+.tm-ev li b{font-family:var(--f-display);color:var(--muted);min-width:34px}.tm-ev li.r b{order:9;text-align:right}
+.tm-ev small{color:var(--muted);font-size:11.5px}
+.cdy,.cdr{display:inline-block;width:8px;height:11px;border-radius:1.5px;background:#F2C94C;vertical-align:-1px;margin-right:2px}.cdr{background:#E5484D}
+.tm-mom{display:flex;align-items:center;gap:6px;padding:8px 10px;border:1px solid var(--gold);border-radius:8px;margin-bottom:12px;font-size:13.5px;background:color-mix(in srgb,var(--gold) 8%,var(--panel))}
+.tm-mom span{margin-left:auto;font-family:var(--f-display);font-weight:700;font-size:18px}
+.tm-top{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tm-top ul{list-style:none;margin:0;padding:0}.tm-top li{display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid var(--line);font-size:13px}
+.tm-top li span{flex:1;min-width:0}.tm-top small{display:block;color:var(--muted);font-size:11px}
+.rt{font-family:var(--f-display);font-size:16px}.rt.hi{color:var(--hi)}.rt.lo{color:var(--live)}
+.tm-st{display:flex;flex-direction:column;gap:7px}
+.tm-row{display:grid;grid-template-columns:52px 1fr 52px;align-items:center;row-gap:3px;font-size:13px}
+.tm-row .lab{text-align:center;color:var(--muted);font-size:12px}.tm-row .v{font-family:var(--f-display);font-weight:600;font-size:16px;font-variant-numeric:tabular-nums}.tm-row .v.r{text-align:right}
+.tm-bar{grid-column:1/-1;display:flex;gap:3px;height:6px}.tm-bar i{display:block;height:100%;border-radius:3px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+.portrait .tm-grid{grid-template-columns:1fr}
 /* ===== Home ===== */
 #home.scr{display:block;overflow:auto;padding:16px}
 .hwrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:14px;min-height:100%;height:100%}
@@ -537,6 +567,7 @@ td.ft{white-space:nowrap;font-size:12px}td.ft .st{color:#E0A526;letter-spacing:-
   <div class="t-col" id="tgroups"></div>
   <div class="t-col t-mid"><div class="card t-card" id="tnext"></div><div class="card t-card" id="tfix"></div></div>
   <div class="t-col t-rt"><div class="card t-card" id="tside"></div></div>
+  <div class="tmodal" id="tmodal" hidden><div class="card tmbox" role="dialog" aria-modal="true" aria-label="경기 기록"><button type="button" id="tmclose" class="tmclose" aria-label="닫기">✕</button><div id="tmbody"></div></div></div>
 </section>
 <section class="scr" id="app" hidden>
   <aside class="card pnl lp">
@@ -2329,7 +2360,7 @@ function tAdvance(){const by=st=>TOUR.fx.filter(f=>f.st===st);
  const fn=by('F');if(fn.length&&fn[0].done)TOUR.champ=tWin(fn[0]);}
 const tNext=()=>TOUR.fx.find(f=>!f.done);
 const tLabel=f=>f.st==='G'?f.g+'조 '+f.r+'라운드':STG[f.st]+(f.st==='F'?'':' '+f.r+'경기');
-function tRecord(f){f.sa=S.sc[0];f.sb=S.sc[1];f.pso=S.pso?S.pso.sc.slice():null;f.et=!!S.etStage;f.done=true;f.sc=[];
+function tRecord(f){f.sa=S.sc[0];f.sb=S.sc[1];f.pso=S.pso?S.pso.sc.slice():null;f.et=!!S.etStage;f.done=true;f.sc=[];try{f.d=tDetail();}catch(e){f.d=null;}
  for(const ti of [0,1])for(const p of T[ti].all)if(p.st.g)f.sc.push({id:p.id,n:p.n,k:SIDE[ti],g:p.st.g});tAdvance();tSave();}
 // a result without watching: the full engine, unrendered, a slice per frame so the page stays responsive
 function tSim(f,done){loadTeams(f.a,f.b);init({et:f.st!=='G',noRec:true,cere:false,auto:[true,true]});
@@ -2364,10 +2395,10 @@ function renderTour(){if(!TOUR)return;const nx=tNext();
   $('tall').onclick=()=>{const all=()=>{const n=tNext();if(!n){TBUSY=false;renderTour();return;}TBUSY=true;$('tprog').textContent='자동 진행 중 · '+tLabel(n)+' · '+tName(n.a)+' vs '+tName(n.b);tSim(n,()=>{renderTour();setTimeout(all,0);});};TBUSY=true;renderTour();all();};}
  // fixtures / bracket
  const sc=f=>f.done?f.sa+' - '+f.sb+(f.pso?'<small>PK '+f.pso[0]+'-'+f.pso[1]+'</small>':f.et?'<small>연장</small>':''):'vs';
- const row=f=>{const w=f.done?tWin(f):null;return '<li class="'+(nx&&f===nx?'cur':'')+'"><span class="lb">'+(f.st==='G'?f.g+'조':'')+'</span><span class="a'+(w===f.a?' w':'')+'">'+esc(tName(f.a))+' '+tKit(f.a)+'</span><span class="sc">'+sc(f)+'</span><span class="b'+(w===f.b?' w':'')+'">'+tKit(f.b)+esc(tName(f.b))+'</span></li>';};
+ const row=f=>{const w=f.done?tWin(f):null;return '<li class="'+(nx&&f===nx?'cur':'')+(f.done?' dn':'')+'" data-id="'+f.id+'"'+(f.done?' tabindex="0" role="button" aria-label="'+esc(tName(f.a)+' '+f.sa+' 대 '+f.sb+' '+tName(f.b))+' 경기 기록 보기"':'')+'><span class="lb">'+(f.st==='G'?f.g+'조':'')+'</span><span class="a'+(w===f.a?' w':'')+'">'+esc(tName(f.a))+' '+tKit(f.a)+'</span><span class="sc">'+sc(f)+'</span><span class="b'+(w===f.b?' w':'')+'">'+tKit(f.b)+esc(tName(f.b))+'</span></li>';};
  let fx='';const ko=TOUR.fx.filter(f=>f.st!=='G');
  if(ko.length){const tie=(f,lab)=>{if(!f)return '<div class="tie tbd"><div><span>'+lab+'</span></div><div><span>미정</span></div></div>';const w=f.done?tWin(f):null;
-   return '<div class="tie"><div class="'+(w===f.a?'w':'')+'"><span>'+tKit(f.a)+esc(tName(f.a))+'</span><span class="s">'+(f.done?f.sa+(f.pso?' ('+f.pso[0]+')':''):'')+'</span></div><div class="'+(w===f.b?'w':'')+'"><span>'+tKit(f.b)+esc(tName(f.b))+'</span><span class="s">'+(f.done?f.sb+(f.pso?' ('+f.pso[1]+')':''):'')+'</span></div></div>';};
+   return '<div class="tie'+(f.done?' dn':'')+'" data-id="'+f.id+'"'+(f.done?' tabindex="0" role="button"':'')+'><div class="'+(w===f.a?'w':'')+'"><span>'+tKit(f.a)+esc(tName(f.a))+'</span><span class="s">'+(f.done?f.sa+(f.pso?' ('+f.pso[0]+')':''):'')+'</span></div><div class="'+(w===f.b?'w':'')+'"><span>'+tKit(f.b)+esc(tName(f.b))+'</span><span class="s">'+(f.done?f.sb+(f.pso?' ('+f.pso[1]+')':''):'')+'</span></div></div>';};
   const q=ko.filter(f=>f.st==='QF'),s2=ko.filter(f=>f.st==='SF'),fn=ko.filter(f=>f.st==='F');
   const R=TOUR.fmt==='G12'||TOUR.fmt==='QF'?[['8강',q,4],['4강',s2,2],['결승',fn,1]]:[['4강',s2,2],['결승',fn,1]];
   fx+='<h3>토너먼트</h3><div class="brk" style="grid-template-columns:repeat('+R.length+',minmax(0,1fr))">'+R.map(([lab,arr,n])=>'<div class="rnd"><h4>'+lab+'</h4>'+[...Array(n).keys()].map(i=>tie(arr[i],lab)).join('')+'</div>').join('')+'</div>';}
@@ -2411,6 +2442,36 @@ $('hclear').addEventListener('click',()=>{HC.sel=[];renderHome();});
 $('hgo').addEventListener('click',()=>{tNew(HC.fmt,HC.mode==='pick'?HC.sel:null);$('home').hidden=true;showTour();});
 $('homebtn').addEventListener('click',()=>showHome());
 showHome();
+
+// ===================== Match sheet for tournament results =====================
+function tDetail(){const P=T.map(t=>t.poss),pt=P[0]+P[1]||1,xg=[0,0];for(const r of S.shots)xg[r.ti]+=r.xg;
+ const gl=[],cd=[],crn=[0,0];
+ for(const e of S.events){const tx=e.text.replace(/<[^>]+>/g,'');
+  if(e.type==='goal'){const m=tx.match(/^(\S+) 골! (.+?) · /);if(m){const og=/자책골/.test(m[2]),am=m[2].match(/^(.+?) \(도움 (.+)\)$/);gl.push({m:m[1],n:am?am[1]:m[2],a:am?am[2]:null,og,ti:e.team});}}
+  else if(e.type==='yellow'||e.type==='red'){const m=tx.match(/^(\S+) (?:경고|퇴장) · (.+?)(?: \((.+)\))?$/);if(m)cd.push({m:m[1],n:m[2],why:m[3]||'',ti:e.team,r:e.type==='red'});}
+  else if(e.type==='corner'&&/코너킥 \(/.test(tx)&&e.team>=0)crn[e.team]++;}
+ const top=T.map(t=>t.all.map(p=>({n:p.n,pos:p.c||'',r:rating(p),g:p.st.g,a:p.st.ast,gk:p.role==='GK'})).filter(x=>x.r!=null).sort((a,b)=>b.r-a.r).slice(0,4).map(x=>Object.assign(x,{r:+x.r.toFixed(1)})));
+ const mm0=mom();
+ return{poss:[Math.round(P[0]/pt*100),100-Math.round(P[0]/pt*100)],sh:T.map(t=>t.shots),sot:T.map(t=>t.sot),xg:xg.map(v=>+v.toFixed(2)),pa:T.map(t=>t.passes),pacc:T.map(t=>t.passes?Math.round(t.passOk/t.passes*100):0),
+  crn,fo:T.map(t=>t.fouls||0),yc:T.map(t=>t.yel||0),rc:T.map(t=>t.red||0),tk:T.map(t=>t.tk||0),gl,cd,top,mom:mm0?{n:mm0.n,ti:mm0.ti,r:+rating(mm0).toFixed(1)}:null,stad:(STADIUM[LIB[SIDE[0]].stadium]||STADIUM.old).name,derby:S.derby?S.derby.name:null};}
+function tOpen(id){const f=TOUR&&TOUR.fx.find(x=>x.id===id);if(!f||!f.done)return;const d=f.d,A=LIB[f.a],B=LIB[f.b],w=tWin(f);
+ let h='<div class="tm-hd"><small>'+esc(tLabel(f))+(d&&d.stad?' · '+esc(d.stad):'')+(d&&d.derby?' · '+esc(d.derby):'')+'</small>'+
+  '<div class="tm-sc"><div class="tm-t'+(w===f.a?' w':'')+'">'+tKit(f.a)+'<span>'+esc(A.name)+'<small>'+esc(A.season)+' · '+esc(A.coach)+'</small></span></div>'+
+  '<div class="tm-num">'+f.sa+' - '+f.sb+(f.pso?'<small>승부차기 '+f.pso[0]+' - '+f.pso[1]+'</small>':f.et?'<small>연장전</small>':'')+'</div>'+
+  '<div class="tm-t r'+(w===f.b?' w':'')+'"><span>'+esc(B.name)+'<small>'+esc(B.season)+' · '+esc(B.coach)+'</small></span>'+tKit(f.b)+'</div></div></div>';
+ if(!d){h+='<p class="note">이 경기는 세부 기록이 저장되기 전에 치른 경기라 득점자만 있어요.</p><ul class="tm-ev">'+f.sc.map(x=>'<li class="'+(x.k===f.a?'l':'r')+'">⚽ '+esc(x.n)+(x.g>1?' ×'+x.g:'')+'</li>').join('')+'</ul>';}
+ else{const ev=[...d.gl.map(g=>Object.assign({k:'g'},g)),...d.cd.map(c=>Object.assign({k:c.r?'r':'y'},c))].sort((a,b)=>parseFloat(a.m)-parseFloat(b.m)||(a.m.length-b.m.length));
+  h+='<div class="tm-grid"><div><h3>경기 흐름</h3>'+(ev.length?'<ul class="tm-ev">'+ev.map(e=>'<li class="'+(e.ti===0?'l':'r')+'"><b>'+esc(e.m)+'</b> '+(e.k==='g'?'⚽ '+esc(e.n)+(e.og?'':e.a?'<small>도움 '+esc(e.a)+'</small>':''):(e.k==='y'?'<i class="cdy"></i>':'<i class="cdr"></i>')+esc(e.n)+(e.why?'<small>'+esc(e.why)+'</small>':''))+'</li>').join('')+'</ul>':'<p class="note">골이나 카드 없이 끝난 경기예요.</p>')+
+   (d.mom?'<div class="tm-mom">경기 MVP <b>'+esc(d.mom.n)+'</b> '+tKit(d.mom.ti===0?f.a:f.b)+'<span>'+d.mom.r.toFixed(1)+'</span></div>':'')+
+   '<h3>평점 상위</h3><div class="tm-top">'+d.top.map((L,ti)=>'<ul>'+L.map(p=>'<li><span>'+esc(p.n)+'<small>'+esc(p.pos)+(p.g?' · '+p.g+'골':'')+(p.a?' · '+p.a+'도움':'')+'</small></span><b class="rt'+(p.r>=8?' hi':p.r<6?' lo':'')+'">'+p.r.toFixed(1)+'</b></li>').join('')+'</ul>').join('')+'</div></div>';
+  const lt=c=>{const [r,g,b]=hexRGB(c);return 0.299*r+0.587*g+0.114*b>200?'#9AA0A6':c;},cA=lt(A.kit[0]),cB=lt(cdist(A.kit[0],B.kit[0])<140?B.kit[1]:B.kit[0]);const st=[['점유율',d.poss,'%'],['슈팅',d.sh],['유효 슈팅',d.sot],['기대 득점 (xG)',d.xg],['패스',d.pa],['패스 성공률',d.pacc,'%'],['코너킥',d.crn],['태클 성공',d.tk],['파울',d.fo],['경고',d.yc],['퇴장',d.rc]];
+  h+='<div><h3>팀 기록</h3><div class="tm-st">'+st.map(([lab,v,u])=>{const a=+v[0],b=+v[1],t=a+b;return '<div class="tm-row"><span class="v">'+a+(u||'')+'</span><span class="lab">'+lab+'</span><span class="v r">'+b+(u||'')+'</span><div class="tm-bar"><i style="width:'+(t?a/t*100:50)+'%;background:'+(t?cA:'var(--track)')+'"></i><i style="width:'+(t?b/t*100:50)+'%;background:'+(t?cB:'var(--track)')+'"></i></div></div>';}).join('')+'</div></div></div>';}
+ $('tmbody').innerHTML=h;$('tmodal').hidden=false;$('tmclose').focus();}
+const tClose=()=>{$('tmodal').hidden=true;};
+$('tmclose').addEventListener('click',tClose);$('tmodal').addEventListener('click',e=>{if(e.target.id==='tmodal')tClose();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('tmodal').hidden)tClose();});
+$('tfix').addEventListener('click',e=>{const el=e.target.closest('[data-id].dn');if(el)tOpen(el.dataset.id);});
+$('tfix').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[data-id].dn')){e.preventDefault();tOpen(e.target.dataset.id);}});
 })();
 </script>
 
