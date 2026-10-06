@@ -212,6 +212,7 @@ td.gkrow b{font-family:var(--f-display);font-size:15px;color:var(--fg);margin-ri
 
 
 [hidden]{display:none!important}
+.tbn{margin:6px 2px 0;font-size:11.5px;color:var(--muted);line-height:1.5}
 .grp td.tn{max-width:130px}
 
 .fxl li.dn,.tie.dn{cursor:pointer}.fxl li.dn:hover,.tie.dn:hover,.fxl li.dn:focus-visible,.tie.dn:focus-visible{background:var(--track);outline:none}
@@ -2470,12 +2471,29 @@ function tNew(fmt,teams){fmt=TFMT[fmt]?fmt:'G12';const n=TFMT[fmt].n,k=tShuf((te
   [[0,1,3,2],[0,2,1,3],[0,3,2,1]].forEach((r,ri)=>groups.forEach(G=>{fx.push(tMk('G',G.g,ri+1,G.t[r[0]],G.t[r[1]]));fx.push(tMk('G',G.g,ri+1,G.t[r[2]],G.t[r[3]]));}));}
  else if(fmt==='QF'){for(let i=0;i<4;i++)fx.push(tMk('QF',null,i+1,k[2*i],k[2*i+1]));}
  else{fx.push(tMk('SF',null,1,k[0],k[1]));fx.push(tMk('SF',null,2,k[2],k[3]));}
- TOUR={v:2,fmt,teams:k,groups,fx,champ:null,cur:null};tSave();}
+ TOUR={v:2,fmt,teams:k,groups,fx,champ:null,cur:null,tb2:true};tSave();}
 const tWin=f=>f.sa>f.sb?f.a:f.sb>f.sa?f.b:f.pso?(f.pso[0]>f.pso[1]?f.a:f.b):null;
 function tTable(G){const R={};for(const k of G.t)R[k]={k,P:0,W:0,D:0,L:0,F:0,A:0,Pt:0};
  for(const f of TOUR.fx){if(f.st!=='G'||f.g!==G.g||!f.done)continue;const a=R[f.a],b=R[f.b];a.P++;b.P++;a.F+=f.sa;a.A+=f.sb;b.F+=f.sb;b.A+=f.sa;
   if(f.sa>f.sb){a.W++;a.Pt+=3;b.L++;}else if(f.sb>f.sa){b.W++;b.Pt+=3;a.L++;}else{a.D++;b.D++;a.Pt++;b.Pt++;}}
- return Object.values(R).sort((x,y)=>y.Pt-x.Pt||(y.F-y.A)-(x.F-x.A)||y.F-x.F||x.k.localeCompare(y.k));}
+ const rows=Object.values(R);if(TOUR.legacyTB)return rows.sort((x,y)=>y.Pt-x.Pt||(y.F-y.A)-(x.F-x.A)||y.F-x.F||x.k.localeCompare(y.k));
+ // Tie-breaks as in UEFA group stages: points, then head-to-head among the tied teams (points, goal difference, goals),
+ // then overall goal difference, goals scored, fair play (yellow 1, red 3, fewer is better), and finally drawing of lots.
+ for(const r of rows)r.FP=0;
+ for(const f of TOUR.fx){if(f.st!=='G'||f.g!==G.g||!f.done||!f.d)continue;R[f.a].FP+=(f.d.yc?f.d.yc[0]:0)+3*(f.d.rc?f.d.rc[0]:0);R[f.b].FP+=(f.d.yc?f.d.yc[1]:0)+3*(f.d.rc?f.d.rc[1]:0);}
+ const lot=k=>{TOUR.lots=TOUR.lots||{};if(TOUR.lots[k]==null){TOUR.lots[k]=Math.random();TOUR._lotNew=true;}return TOUR.lots[k];};
+ const h2h=set=>{const H={};for(const r of set)H[r.k]={Pt:0,GD:0,F:0};const ks=new Set(set.map(r=>r.k));
+  for(const f of TOUR.fx){if(f.st!=='G'||f.g!==G.g||!f.done||!ks.has(f.a)||!ks.has(f.b))continue;H[f.a].F+=f.sa;H[f.b].F+=f.sb;H[f.a].GD+=f.sa-f.sb;H[f.b].GD+=f.sb-f.sa;
+   if(f.sa>f.sb)H[f.a].Pt+=3;else if(f.sb>f.sa)H[f.b].Pt+=3;else{H[f.a].Pt++;H[f.b].Pt++;}}return H;};
+ const crit=[['h2h',(x,y,H)=>H[y.k].Pt-H[x.k].Pt||H[y.k].GD-H[x.k].GD||H[y.k].F-H[x.k].F],['gd',(x,y)=>(y.F-y.A)-(x.F-x.A)],['gf',(x,y)=>y.F-x.F],['fp',(x,y)=>x.FP-y.FP],['lot',(x,y)=>lot(y.k)-lot(x.k)]];
+ rows.sort((x,y)=>y.Pt-x.Pt);const out=[];
+ for(let i=0;i<rows.length;){let j=i;while(j<rows.length&&rows[j].Pt===rows[i].Pt)j++;const set=rows.slice(i,j);
+  if(set.length>1&&set.some(r=>r.P)){const H=h2h(set);set.sort((x,y)=>{for(const [,c] of crit){const d=c(x,y,H);if(d)return d;}return 0;});
+   for(let m=0;m<set.length-1;m++){const x=set[m],y=set[m+1];x.why=null;for(const [n,c] of crit){if(c(x,y,H)){x.why=n;break;}}}}
+  out.push(...set);i=j;}
+ if(TOUR._lotNew){TOUR._lotNew=false;tSave();}
+ return out;}
+const TBW={h2h:'상대 전적',gd:'골 득실',gf:'다득점',fp:'페어플레이 (경고·퇴장이 더 적음)',lot:'추첨'};
 const tGroupOf=k=>TOUR.groups.find(G=>G.t.includes(k)).g;
 function tThirds(){return TOUR.groups.map(G=>tTable(G)[2]).sort((x,y)=>y.Pt-x.Pt||(y.F-y.A)-(x.F-x.A)||y.F-x.F);}
 function tBuildQF(){const tb=TOUR.groups.map(tTable),W=tb.map(t=>t[0]),Rn=tb.map(t=>t[1]).sort((x,y)=>y.Pt-x.Pt||(y.F-y.A)-(x.F-x.A)||y.F-x.F),Th=tThirds().slice(0,2);
@@ -2502,7 +2520,7 @@ function tSimMany(list){if(!list.length||TBUSY)return;TBUSY=true;let i=0;const g
  $('tprog').textContent='결과 계산 중 · '+(i+1)+'/'+list.length+' · '+tName(list[i].a)+' vs '+tName(list[i].b);tSim(list[i],()=>{i++;renderTour();$('tprog').textContent='결과 계산 중 · '+Math.min(i+1,list.length)+'/'+list.length;setTimeout(go,0);});};
  renderTour();go();}
 function tLock(on){for(const id of ['team0','team1','teamswap'])$(id).disabled=on;$('etopt').disabled=on;const tg=$('tourtag');tg.hidden=!on;$('tourbtn').textContent=on?'◂ 토너먼트':'◂ 메인';}
-function showTour(){tLoad();if(!TOUR){showHome('cfg');return;}$('home').hidden=true;if(TOUR.cur){TOUR.cur=null;tSave();}tLock(false);$('setup').hidden=true;$('app').hidden=true;$('tour').hidden=false;running=false;renderTour();}
+function showTour(){tLoad();if(!TOUR){showHome('cfg');return;}tMigrateTB();$('home').hidden=true;if(TOUR.cur){TOUR.cur=null;tSave();}tLock(false);$('setup').hidden=true;$('app').hidden=true;$('tour').hidden=false;running=false;renderTour();}
 function tWatch(f){TOUR.cur=f.id;tSave();$('tour').hidden=true;applyTeams(f.a,f.b);teamSelects();$('etopt').checked=f.st!=='G';tLock(true);
  $('tourtag').textContent='드림 챔피언스 리그 · '+tLabel(f)+(f.st!=='G'?' · 무승부면 연장·승부차기':'');newMatch();}
 function tourAfter(){if(!TOUR||!TOUR.cur||S._tourRec)return;S._tourRec=true;const f=TOUR.fx.find(x=>x.id===TOUR.cur);
@@ -2514,7 +2532,7 @@ function renderTour(){if(!TOUR)return;const nx=tNext();
  const NOTE={G16:'각 조 1·2위가 8강에 올라가요. 8강은 A1-B2, B1-A2, C1-D2, D1-C2로 붙어요.',G12:'각 조 1·2위와 3위 중 성적이 좋은 두 팀이 8강에 올라가요.',G8:'각 조 1·2위가 4강에 올라가요. A조 1위는 B조 2위와, B조 1위는 A조 2위와 붙어요.',QF:'8팀 단판 녹아웃. 대진은 무작위 추첨이에요.',SF:'4팀 단판 녹아웃. 대진은 무작위 추첨이에요.'}[TOUR.fmt]+' 토너먼트는 단판이고, 비기면 연장전과 승부차기로 가려요.';
  if(!TOUR.groups.length){$('tgroups').innerHTML='<div class="card grp"><h3>참가팀 · '+esc(TFMT[TOUR.fmt].name)+'</h3><ul class="plist">'+TOUR.teams.map(k=>{const out=TOUR.fx.some(f=>f.done&&(f.a===k||f.b===k)&&tWin(f)!==k);return '<li class="'+(out?'out':'')+(TOUR.champ===k?' ch':'')+'">'+tKit(k)+'<span>'+esc(LIB[k].name)+'<small>'+esc(LIB[k].season)+' · '+esc(LIB[k].coach)+'</small></span>'+(TOUR.champ===k?'<b>🏆</b>':out?'<em>탈락</em>':'')+'</li>';}).join('')+'</ul></div><p class="note" style="padding:0 4px">'+NOTE+'</p>';}
  else $('tgroups').innerHTML=TOUR.groups.map(G=>{const tb=tTable(G);return '<div class="card grp"><h3>'+G.g+'조</h3><table><thead><tr><th>#</th><th class="nm">팀</th><th>경기</th><th>승</th><th>무</th><th>패</th><th>득실</th><th>승점</th></tr></thead><tbody>'+
-  tb.map((r,i)=>'<tr class="'+(i<2?'q':th.includes(r.k)?'q3':'')+'"><td>'+(i+1)+'</td><td class="tn">'+tKit(r.k)+esc(tName(r.k))+'</td><td>'+r.P+'</td><td>'+r.W+'</td><td>'+r.D+'</td><td>'+r.L+'</td><td>'+(r.F-r.A>0?'+':'')+(r.F-r.A)+'</td><td class="pts">'+r.Pt+'</td></tr>').join('')+'</tbody></table></div>';}).join('')+
+  tb.map((r,i)=>'<tr class="'+(i<2?'q':th.includes(r.k)?'q3':'')+'"><td>'+(i+1)+'</td><td class="tn">'+tKit(r.k)+esc(tName(r.k))+'</td><td>'+r.P+'</td><td>'+r.W+'</td><td>'+r.D+'</td><td>'+r.L+'</td><td>'+(r.F-r.A>0?'+':'')+(r.F-r.A)+'</td><td class="pts">'+r.Pt+'</td></tr>').join('')+'</tbody></table>'+(()=>{const ws=tb.filter((r,i)=>i<3&&r.why&&r.Pt===tb[i+1].Pt&&(r.why==='fp'||r.why==='lot'||r.why==='h2h'));return ws.length?'<p class="tbn">'+ws.map(r=>esc(tName(r.k))+'가 '+esc(tName(tb[tb.indexOf(r)+1].k))+'보다 위 · '+TBW[r.why]).join('<br>')+'</p>':'';})()+'</div>';}).join('')+
   '<p class="note" style="padding:0 4px">'+NOTE+'</p>';
  // next match card
  let h='';if(TOUR.champ){const fn=TOUR.fx.find(f=>f.st==='F'),L0=LIB[TOUR.champ];h='<div class="champ"><small>드림 챔피언스 리그 우승</small><b>🏆 '+esc(L0.name)+'</b><small>'+esc(L0.season)+' · 감독 '+esc(L0.coach)+' · 결승 '+fn.sa+' - '+fn.sb+(fn.pso?' (승부차기 '+fn.pso[0]+'-'+fn.pso[1]+')':'')+' vs '+esc(tName(tWin(fn)===fn.a?fn.b:fn.a))+'</small></div><div class="t-prog" id="tprog"></div>';}
@@ -2645,6 +2663,10 @@ function hlTick(now){HL.raf=0;if($('tmodal').hidden||!HL.c)return;const dt=HL.la
  if(HL.play){if(HL.t<HL.c.nf-1){HL.t+=dt*15;hlDraw();}else{HL.hold+=dt;if(HL.hold>1.2){if(HL.i+1<HL.f.d.clips.length){hlLoad(HL.i+1);return;}HL.play=false;$('hlpp').textContent='재생';}}}
  HL.raf=requestAnimationFrame(hlTick);}
 function hlStop(){if(HL.raf)cancelAnimationFrame(HL.raf);HL.raf=0;HL.c=null;}
+
+function tMigrateTB(){if(!TOUR||TOUR.tb2||!TOUR.groups.length){if(TOUR&&!TOUR.tb2){TOUR.tb2=true;tSave();}return;}
+ const ko=TOUR.fx.filter(f=>f.st!=='G');if(ko.some(f=>f.done)){TOUR.legacyTB=true;}else if(ko.length){TOUR.fx=TOUR.fx.filter(f=>f.st==='G');tAdvance();}
+ TOUR.tb2=true;tSave();}
 })();
 </script>
 
