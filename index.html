@@ -212,6 +212,8 @@ td.gkrow b{font-family:var(--f-display);font-size:15px;color:var(--fg);margin-ri
 
 
 [hidden]{display:none!important}
+.hscope{max-width:560px}.hfmt:disabled{opacity:.4;cursor:not-allowed}
+.hteams{max-height:260px;overflow:auto}
 .tbn{margin:6px 2px 0;font-size:11.5px;color:var(--muted);line-height:1.5}
 .grp td.tn{max-width:130px}
 
@@ -514,13 +516,14 @@ td.ft{white-space:nowrap;font-size:12px}td.ft .st{color:#E0A526;letter-spacing:-
 <section class="scr" id="home">
  <div class="hwrap">
   <div class="hhero"><svg class="hpitch" viewBox="0 0 600 220" aria-hidden="true" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="2"><rect x="10" y="10" width="580" height="200"/><line x1="300" y1="10" x2="300" y2="210"/><circle cx="300" cy="110" r="38"/><rect x="10" y="55" width="70" height="110"/><rect x="520" y="55" width="70" height="110"/></g></svg>
-   <div class="htxt"><span class="hkick">LEGEND DREAM MATCH</span><h1>레전드 드림매치</h1><p>역대 명팀 16팀을 실제 능력치로 맞붙여 보는 축구 시뮬레이터</p></div></div>
+   <div class="htxt"><span class="hkick">LEGEND DREAM MATCH</span><h1>레전드 드림매치</h1><p>역대 명팀 클럽 16팀 · 국가대표 8팀을 실제 능력치로 맞붙여 보는 축구 시뮬레이터</p></div></div>
   <div id="hmain" class="hmodes">
    <button type="button" class="hmode" id="hsingle"><span class="hic">⚽</span><b>단일 경기</b><small>두 팀을 골라 라인업·전술을 짜고 한 판 붙여요. 문자중계와 리플레이까지.</small><em>경기 만들기 ▸</em></button>
-   <div class="hmode" id="htour" role="button" tabindex="0"><span class="hic">🏆</span><b>토너먼트</b><small>조별리그 + 토너먼트, 8강, 4강 중에서 고르고 팀은 무작위 추첨이나 직접 선택.</small><em>대회 설정 ▸</em><button type="button" id="hcont" class="hcont" hidden></button></div>
+   <div class="hmode" id="htour" role="button" tabindex="0"><span class="hic">🏆</span><b>토너먼트</b><small>클럽 챔피언스 리그, 국가대표 월드컵, 전체 섞기 중에 고르고 조별리그·8강·4강 형식과 팀을 정해요.</small><em>대회 설정 ▸</em><button type="button" id="hcont" class="hcont" hidden></button></div>
   </div>
   <div id="hcfg" class="card hcfg" hidden>
    <div class="hcfg-hd"><button type="button" id="hback">◂ 뒤로</button><h2>토너먼트 설정</h2></div>
+   <div class="hsec"><h3>참가 범위</h3><div class="seg hscope" id="hscope" role="group" aria-label="참가 범위"><button type="button" data-s="club" aria-pressed="true">클럽 · 챔피언스 리그</button><button type="button" data-s="nat" aria-pressed="false">국가대표 · 월드컵</button><button type="button" data-s="all" aria-pressed="false">전체 섞기</button></div></div>
    <div class="hsec"><h3>대회 형식</h3><div id="hfmts" class="hfmts"></div></div>
    <div class="hsec"><div class="hrow"><h3>참가팀</h3><div class="seg" id="hmode" role="group" aria-label="참가팀 정하는 방식"><button type="button" data-m="rand" aria-pressed="true">무작위 추첨</button><button type="button" data-m="pick" aria-pressed="false">직접 선택</button></div>
      <span id="hcount" class="hcount"></span><button type="button" id="hfill">나머지 무작위로 채우기</button><button type="button" id="hclear">선택 초기화</button></div>
@@ -572,7 +575,7 @@ td.ft{white-space:nowrap;font-size:12px}td.ft .st{color:#E0A526;letter-spacing:-
   <aside class="card pnl su-panel" id="sup1"></aside>
 </section>
 <section class="scr" id="tour" hidden>
-  <div class="card t-top"><div class="t-title"><h1>드림 챔피언스 리그</h1><span id="tstage"></span></div>
+  <div class="card t-top"><div class="t-title"><h1 id="ttitle">드림 챔피언스 리그</h1><span id="tstage"></span></div>
    <div class="t-btns"><button type="button" id="tnew">새 토너먼트</button><button type="button" id="tfree">메인으로</button></div></div>
   <div class="t-col" id="tgroups"></div>
   <div class="t-col t-mid"><div class="card t-card" id="tnext"></div><div class="card t-card" id="tfix"></div></div>
@@ -1100,6 +1103,204 @@ const LIB={
  {id:'g_morientes',f:'R',wf:3,dw:'M',n:'모리엔테스',num:19,pos:["ST"],a:A(81,70,76,81,79,86,72,87,36,43,70,79,80,83,86,54)},
  {id:'g_portillo',f:'L',wf:3,dw:'L',n:'포르티요',num:27,pos:["ST"],a:A(82,64,73,73,69,83,67,75,36,44,68,81,75,71,76,55)},
  {id:'g_celades',f:'R',wf:3,dw:'M',n:'셀라데스',num:8,pos:["DM", "MC"],a:A(68,78,76,77,65,39,60,45,72,69,68,78,66,75,76,64)}
+ ]},
+ kor02:{nat:true,name:'히딩크호 한국',short:'한국 2002',season:'2002 월드컵 4강',coach:'거스 히딩크',tac:'hiddink',kit:['#E4002B','#F4F4F4'],gk:'#2E7D32',stadium:'seoulwc',
+  form:{name:'3-4-3',slots:[SL('GK','GK','GK',0.03,0),SL('DC','CB','BPD',0.16,-0.42),SL('DC','CB','CD',0.15,0),SL('DC','CB','CD',0.16,0.42),SL('WBL','FB','WB',0.3,-0.86),SL('MC','CM','DM',0.34,-0.18),SL('MC','CM','BBM',0.36,0.18),SL('WBR','FB','WB',0.3,0.86),SL('AML','WM','IF',0.56,-0.5),SL('ST','ST','PF',0.66,0),SL('AMR','WM','IF',0.56,0.5)]},
+  xi:['k2_lwj','k2_kty','k2_hmb','k2_cjc','k2_lyp','k2_kni','k2_ysc','k2_scg','k2_skh','k2_hsh','k2_pjs'],cap:'k2_hmb',players:[
+ {id:'k2_lwj',f:'R',wf:3,dw:'M',n:'이운재',num:1,pos:["GK"],a:A(41,31,28,29,25,26,21,28,23,35,54,50,64,55,73,27),gk:{ref:78,hnd:68,one:71,aer:71,kck:62}},
+ {id:'k2_kbj',f:'R',wf:3,dw:'M',n:'김병지',num:12,pos:["GK"],a:A(41,28,25,40,20,24,21,31,22,36,59,62,69,43,61,25),gk:{ref:71,hnd:74,one:77,aer:74,kck:62}},
+ {id:'k2_hmb',f:'R',wf:4,dw:'M',n:'홍명보',num:20,pos:["DC", "DM"],a:A(58,69,50,60,57,57,45,72,74,70,67,64,75,68,72,50)},
+ {id:'k2_kty',f:'R',wf:3,dw:'H',n:'김태영',num:7,pos:["DC"],a:A(62,47,36,62,35,35,44,71,77,74,60,68,73,62,64,40)},
+ {id:'k2_cjc',f:'R',wf:3,dw:'H',n:'최진철',num:4,pos:["DC"],a:A(61,64,49,65,52,51,44,76,70,71,66,72,74,61,70,43)},
+ {id:'k2_scg',f:'R',wf:3,dw:'H',n:'송종국',num:22,pos:["WBR", "DR", "MR"],a:A(75,66,62,73,71,63,56,65,71,72,70,79,72,66,69,71)},
+ {id:'k2_lyp',f:'L',wf:4,dw:'H',n:'이영표',num:13,pos:["WBL", "DL", "ML"],a:A(78,71,63,79,75,66,58,66,74,73,70,73,69,70,71,73)},
+ {id:'k2_hym',f:'L',wf:3,dw:'M',n:'현영민',num:2,pos:["DL", "WBL"],a:A(65,63,55,67,64,60,52,64,67,67,67,71,70,65,65,55)},
+ {id:'k2_lms',f:'R',wf:3,dw:'M',n:'이민성',num:3,pos:["DC", "DR"],a:A(52,41,32,65,35,53,42,69,69,67,61,62,57,51,58,29)},
+ {id:'k2_kni',f:'R',wf:3,dw:'H',n:'김남일',num:5,pos:["DM", "MC"],a:A(64,67,57,64,63,57,59,69,78,74,69,80,74,68,70,52)},
+ {id:'k2_ysc',f:'R',wf:4,dw:'H',n:'유상철',num:6,pos:["MC", "DM", "DC"],a:A(74,75,68,80,70,67,59,72,69,72,71,79,76,74,72,68)},
+ {id:'k2_ley',f:'L',wf:3,dw:'M',n:'이을용',num:17,pos:["MC", "ML"],a:A(75,76,72,70,70,64,72,51,58,60,68,75,67,67,68,73)},
+ {id:'k2_pjs',f:'R',wf:4,dw:'H',n:'박지성',num:21,pos:["AMR", "AML", "MC"],a:A(79,71,68,76,77,71,66,65,58,60,67,75,70,68,70,74)},
+ {id:'k2_ajh',f:'R',wf:3,dw:'M',n:'안정환',num:19,pos:["ST", "AMC"],a:A(73,63,71,78,69,73,57,56,34,37,65,69,53,76,73,65)},
+ {id:'k2_skh',f:'R',wf:3,dw:'H',n:'설기현',num:9,pos:["AML", "ST"],a:A(77,63,60,71,72,69,64,68,38,46,69,76,72,76,67,74)},
+ {id:'k2_hsh',f:'R',wf:3,dw:'M',n:'황선홍',num:18,pos:["ST"],est:true,a:A(70,63,68,74,70,76,65,79,28,38,66,66,74,77,74,55)},
+ {id:'k2_lcs',f:'R',wf:3,dw:'M',n:'이천수',num:14,pos:["AMR", "AML", "ST"],a:A(72,61,67,69,66,65,61,45,43,47,64,71,66,65,68,63)},
+ {id:'k2_cdr',f:'R',wf:3,dw:'H',n:'차두리',num:11,pos:["ST", "AMR"],a:A(74,58,60,80,72,65,63,61,56,51,70,69,70,61,64,55)},
+ {id:'k2_ctu',f:'R',wf:3,dw:'M',n:'최태욱',num:8,pos:["AMR", "MR"],a:A(73,66,71,72,70,67,63,49,43,47,66,66,60,66,67,69)},
+ {id:'k2_cys',f:'R',wf:3,dw:'M',n:'최용수',num:10,pos:["ST"],est:true,a:A(69,58,60,68,64,75,70,77,28,36,68,64,78,74,68,50)},
+ {id:'k2_yjh',f:'R',wf:3,dw:'L',n:'윤정환',num:16,pos:["AMC", "MC"],a:A(60,71,78,71,65,67,65,43,32,41,62,59,44,67,67,65)}
+ ]},
+ kor18:{nat:true,name:'신태용호 한국',short:'한국 2018',season:'2018 월드컵',coach:'신태용',tac:'shin18',kit:['#E4002B','#F4F4F4'],gk:'#F2C94C',stadium:'kazan',
+  form:{name:'4-4-2',slots:[SL('GK','GK','GK',0.03,0),SL('DL','FB','FB',0.2,-0.8),SL('DC','CB','CD',0.17,-0.28),SL('DC','CB','CD',0.17,0.28),SL('DR','FB','FB',0.2,0.8),SL('ML','WM','W',0.42,-0.78),SL('MC','CM','DLP',0.35,-0.2),SL('MC','CM','DM',0.34,0.2),SL('MR','WM','W',0.42,0.78),SL('ST','ST','CF',0.64,-0.14),SL('ST','ST','PF',0.66,0.14)]},
+  xi:['k8_jhw','k8_hc','k8_kyg','k8_jhs','k8_ly','k8_ljs','k8_ksy','k8_jwy','k8_msm','k8_son','k8_hhc'],cap:'k8_ksy',players:[
+ {id:'k8_jhw',f:'R',wf:3,dw:'M',n:'조현우',num:23,pos:["GK"],a:A(50,26,65,18,15,18,15,26,17,30,46,29,33,15,63,15),gk:{ref:76,hnd:71,one:74,aer:73,kck:59}},
+ {id:'k8_ksg',f:'R',wf:3,dw:'M',n:'김승규',num:1,pos:["GK"],a:A(36,28,37,20,18,15,19,25,15,28,46,20,61,16,56,15),gk:{ref:68,hnd:67,one:68,aer:68,kck:66}},
+ {id:'k8_kyg',f:'L',wf:3,dw:'M',n:'김영권',num:19,pos:["DC", "DL"],a:A(72,70,64,62,65,57,58,70,68,69,77,80,74,52,72,65)},
+ {id:'k8_jhs',f:'R',wf:3,dw:'M',n:'장현수',num:20,pos:["DC", "DM"],a:A(68,45,56,65,57,23,21,72,69,66,71,66,82,22,65,26)},
+ {id:'k8_yys',f:'R',wf:3,dw:'M',n:'윤영선',num:5,pos:["DC"],a:A(75,61,63,49,45,22,55,65,72,73,82,84,86,31,59,48)},
+ {id:'k8_ly',f:'R',wf:3,dw:'H',n:'이용',num:2,pos:["DR"],a:A(74,63,63,60,64,54,58,55,69,68,71,71,60,59,60,75)},
+ {id:'k8_hc',f:'L',wf:3,dw:'H',n:'홍철',num:14,pos:["DL", "ML"],a:A(82,67,64,68,71,24,67,64,70,68,73,81,76,73,60,74)},
+ {id:'k8_kmw',f:'L',wf:3,dw:'H',n:'김민우',num:12,pos:["DL", "ML"],a:A(74,71,76,73,72,66,70,55,64,66,74,65,67,72,60,67)},
+ {id:'k8_pjh',f:'L',wf:3,dw:'M',n:'박주호',num:3,pos:["DL", "DM"],a:A(70,73,70,73,73,31,52,56,76,74,66,67,66,53,74,70)},
+ {id:'k8_gyh',f:'R',wf:3,dw:'H',n:'고요한',num:22,pos:["DR", "MC"],a:A(84,72,73,67,71,62,63,66,62,66,74,89,63,68,65,65)},
+ {id:'k8_ksy',f:'R',wf:4,dw:'M',n:'기성용',num:16,pos:["MC", "DM"],a:A(64,82,79,80,73,69,71,71,66,58,73,71,72,72,81,73)},
+ {id:'k8_jwy',f:'R',wf:3,dw:'H',n:'정우영',num:15,pos:["DM", "MC"],a:A(60,69,67,67,61,51,52,64,63,66,63,73,67,67,60,55)},
+ {id:'k8_kjc',f:'R',wf:3,dw:'H',n:'구자철',num:13,pos:["AMC", "MC", "ST"],a:A(74,74,71,78,79,74,78,68,55,58,66,73,64,74,69,72)},
+ {id:'k8_ljs',f:'R',wf:4,dw:'H',n:'이재성',num:17,pos:["ML", "AMC", "MR"],a:A(68,77,80,74,74,69,73,64,55,65,84,91,69,70,79,65)},
+ {id:'k8_jsj',f:'R',wf:3,dw:'M',n:'주세종',num:8,pos:["MC", "DM"],a:A(66,76,78,65,66,51,73,48,58,61,72,81,69,52,60,68)},
+ {id:'k8_msm',f:'R',wf:3,dw:'H',n:'문선민',num:18,pos:["MR", "AMR", "ML"],a:A(79,62,62,64,76,66,57,48,22,30,62,70,51,68,52,61)},
+ {id:'k8_lsw',f:'R',wf:4,dw:'M',n:'이승우',num:10,pos:["AML", "AMR", "ST"],a:A(66,62,52,76,71,65,68,64,15,28,57,57,50,70,50,62)},
+ {id:'k8_son',f:'R',wf:5,dw:'H',n:'손흥민',num:7,pos:["ST", "AML"],a:A(88,74,79,85,86,85,87,65,32,44,79,85,64,85,80,78)},
+ {id:'k8_hhc',f:'R',wf:3,dw:'H',n:'황희찬',num:11,pos:["ST", "AMR"],a:A(88,62,63,74,74,70,59,62,22,32,69,69,71,67,64,58)},
+ {id:'k8_ksw',f:'R',wf:3,dw:'M',n:'김신욱',num:9,pos:["ST"],a:A(52,65,68,69,56,67,68,77,45,51,67,65,90,63,67,52)},
+ {id:'k8_obs',f:'R',wf:3,dw:'M',n:'오반석',num:4,pos:["DC"],a:A(42,41,39,58,51,21,16,71,72,70,69,68,84,22,64,26)}
+ ]},
+ kor22:{nat:true,name:'벤투호 한국',short:'한국 2022',season:'2022 월드컵 16강',coach:'파울루 벤투',tac:'bento',kit:['#E4002B','#1D1D1B'],gk:'#F2C94C',stadium:'lusail',
+  form:{name:'4-2-3-1',slots:[SL('GK','GK','GK',0.03,0),SL('DL','FB','WB',0.21,-0.8),SL('DC','CB','BPD',0.17,-0.28),SL('DC','CB','CD',0.17,0.28),SL('DR','FB','FB',0.21,0.8),SL('MC','CM','DLP',0.33,-0.22),SL('MC','CM','DM',0.32,0.22),SL('AML','WM','IF',0.53,-0.74),SL('AMC','AM','AP',0.54,0),SL('AMR','WM','IW',0.53,0.74),SL('ST','ST','CF',0.66,0)]},
+  xi:['k22_ksg','k22_kjs','k22_kmj','k22_kyg','k22_kmh','k22_hib','k22_jwy','k22_son','k22_ljs','k22_lki','k22_cgs'],cap:'k22_son',players:[
+ {id:'k22_ksg',f:'R',wf:3,dw:'M',n:'김승규',num:1,pos:["GK"],a:A(36,38,62,25,19,15,20,25,16,32,50,35,47,16,60,15),gk:{ref:77,hnd:65,one:74,aer:68,kck:72}},
+ {id:'k22_jhw',f:'R',wf:3,dw:'M',n:'조현우',num:21,pos:["GK"],a:A(51,26,61,18,17,18,15,26,21,37,46,29,33,15,63,15),gk:{ref:77,hnd:70,one:72,aer:70,kck:62}},
+ {id:'k22_kmj',f:'R',wf:3,dw:'H',n:'김민재',num:4,pos:["DC"],a:A(80,72,57,66,59,23,37,78,81,80,76,77,88,48,72,35)},
+ {id:'k22_kyg',f:'L',wf:3,dw:'M',n:'김영권',num:19,pos:["DC"],a:A(68,74,52,67,55,39,43,70,71,73,76,72,84,63,72,50)},
+ {id:'k22_kjs',f:'L',wf:3,dw:'H',n:'김진수',num:3,pos:["DL"],a:A(83,64,57,62,72,29,52,60,66,66,69,76,62,68,63,70)},
+ {id:'k22_kmh',f:'R',wf:3,dw:'H',n:'김문환',num:15,pos:["DR", "MR"],a:A(86,65,55,70,73,52,57,52,65,65,80,88,60,65,62,63)},
+ {id:'k22_yjg',f:'R',wf:3,dw:'M',n:'윤종규',num:2,pos:["DR"],a:A(79,56,62,60,63,40,41,54,62,62,71,65,57,59,47,61)},
+ {id:'k22_kkw',f:'L',wf:3,dw:'M',n:'권경원',num:20,pos:["DC", "DM"],a:A(64,66,64,61,60,34,30,71,74,70,72,74,85,51,58,55)},
+ {id:'k22_jwy',f:'R',wf:3,dw:'H',n:'정우영',num:5,pos:["DM", "MC"],est:true,a:A(61,78,71,75,64,50,66,70,73,74,78,82,72,55,78,60)},
+ {id:'k22_hib',f:'R',wf:4,dw:'H',n:'황인범',num:6,pos:["MC", "DM", "AMC"],est:true,a:A(73,82,81,81,78,66,75,52,61,65,76,88,64,70,77,70)},
+ {id:'k22_sjh',f:'R',wf:3,dw:'H',n:'손준호',num:13,pos:["DM", "MC"],a:A(70,76,72,70,72,56,72,60,67,67,74,92,72,65,60,51)},
+ {id:'k22_ljs',f:'R',wf:4,dw:'H',n:'이재성',num:10,pos:["AMC", "ML", "MC"],a:A(68,78,80,80,82,64,72,72,57,60,75,87,48,77,78,68)},
+ {id:'k22_psh',f:'R',wf:3,dw:'M',n:'백승호',num:8,pos:["MC", "DM"],a:A(69,73,73,74,73,61,70,54,63,62,75,89,73,63,72,56)},
+ {id:'k22_lki',f:'L',wf:3,dw:'M',n:'이강인',num:18,pos:["AMR", "AMC"],a:A(76,78,78,80,80,73,69,57,25,37,60,59,59,75,72,73)},
+ {id:'k22_nsh',f:'R',wf:3,dw:'H',n:'나상호',num:17,pos:["AMR", "AML"],a:A(90,61,58,67,76,71,63,66,30,41,75,86,72,74,59,66)},
+ {id:'k22_kch',f:'L',wf:3,dw:'M',n:'권창훈',num:22,pos:["AML", "AMC"],a:A(64,62,64,69,68,55,64,54,45,47,68,59,47,67,68,61)},
+ {id:'k22_son',f:'R',wf:5,dw:'H',n:'손흥민',num:7,pos:["AML", "ST"],a:A(86,79,81,82,85,91,89,66,38,56,75,88,64,91,89,83)},
+ {id:'k22_hhc',f:'R',wf:3,dw:'H',n:'황희찬',num:11,pos:["AMR", "ST"],a:A(82,70,76,73,82,76,73,66,35,48,73,74,70,78,76,68)},
+ {id:'k22_cgs',f:'R',wf:3,dw:'H',n:'조규성',num:9,pos:["ST"],a:A(81,54,53,65,68,74,62,74,22,39,74,79,82,70,58,42)},
+ {id:'k22_huj',f:'R',wf:4,dw:'M',n:'황의조',num:16,pos:["ST"],a:A(80,64,64,79,76,76,81,74,38,46,73,80,77,83,73,63)},
+ {id:'k22_smk',f:'R',wf:3,dw:'H',n:'송민규',num:14,pos:["AML", "AMR"],a:A(81,59,58,66,73,69,59,74,25,31,73,75,76,73,60,59)}
+ ]},
+ esp10:{nat:true,name:'델 보스케 스페인',short:'스페인 2010',season:'2010 월드컵 우승',coach:'비센테 델 보스케',tac:'delbosque',kit:['#C60B1E','#1C2D5C'],gk:'#2F80ED',stadium:'soccercity',
+  form:{name:'4-3-3',slots:[SL('GK','GK','GK',0.03,0),SL('DL','FB','WB',0.21,-0.8),SL('DC','CB','CD',0.17,-0.28),SL('DC','CB','BPD',0.17,0.28),SL('DR','FB','WB',0.21,0.8),SL('DM','CM','DM',0.3,0),SL('MC','CM','DLP',0.4,0.3),SL('MC','CM','MEZ',0.42,-0.3),SL('AML','WM','IW',0.57,-0.72),SL('ST','ST','CF',0.66,0),SL('AMR','WM','IF',0.57,0.72)]},
+  xi:['s_casillas','s_capdevila','s_puyol','s_pique','s_ramos','s_busquets','s_xabi','s_xavi','s_iniesta','s_villa','s_pedro'],cap:'s_casillas',players:[
+ {id:'s_casillas',f:'R',wf:3,dw:'M',n:'카시야스',num:1,pos:["GK"],a:A(66,21,51,26,25,15,15,27,15,35,52,47,62,16,84,15),gk:{ref:94,hnd:87,one:91,aer:86,kck:71}},
+ {id:'s_reina',f:'R',wf:3,dw:'M',n:'레이나',num:23,pos:["GK"],a:A(56,20,53,23,20,15,15,26,15,32,60,44,64,18,78,15),gk:{ref:87,hnd:81,one:84,aer:82,kck:91}},
+ {id:'s_ramos',f:'R',wf:3,dw:'M',n:'라모스',num:15,pos:["DR", "DC"],a:A(84,75,70,83,79,59,55,90,87,84,80,83,84,66,75,79)},
+ {id:'s_pique',f:'R',wf:3,dw:'M',n:'피케',num:3,pos:["DC"],a:A(72,85,77,76,63,53,42,84,91,88,76,78,85,50,80,50)},
+ {id:'s_puyol',f:'R',wf:3,dw:'H',n:'푸욜',num:5,pos:["DC"],a:A(68,74,73,63,57,37,40,87,91,90,79,71,90,49,82,62)},
+ {id:'s_capdevila',f:'L',wf:3,dw:'M',n:'카프데빌라',num:11,pos:["DL"],a:A(82,80,77,77,72,60,85,80,80,81,74,85,77,75,77,79)},
+ {id:'s_arbeloa',f:'R',wf:3,dw:'M',n:'아르벨로아',num:17,pos:["DR", "DL"],a:A(76,73,70,74,68,58,48,69,87,86,81,85,77,64,78,77)},
+ {id:'s_albiol',f:'R',wf:3,dw:'M',n:'알비올',num:2,pos:["DC"],a:A(72,75,74,76,65,37,64,82,85,85,75,75,84,35,79,50)},
+ {id:'s_marchena',f:'R',wf:3,dw:'M',n:'마르체나',num:4,pos:["DC", "DM"],a:A(67,80,74,70,62,22,72,80,82,81,76,72,85,65,70,57)},
+ {id:'s_busquets',f:'R',wf:3,dw:'H',n:'부스케츠',num:16,pos:["DM"],a:A(70,82,84,84,74,60,54,71,80,81,80,82,76,77,80,75)},
+ {id:'s_xabi',f:'R',wf:4,dw:'M',n:'사비 알론소',num:14,pos:["DM", "MC"],a:A(68,93,91,87,68,63,85,72,78,80,73,81,78,86,78,79)},
+ {id:'s_xavi',f:'R',wf:4,dw:'M',n:'사비',num:8,pos:["MC", "AMC"],a:A(72,95,96,95,87,74,82,58,65,72,70,83,64,91,89,91)},
+ {id:'s_iniesta',f:'R',wf:5,dw:'M',n:'이니에스타',num:6,pos:["AML", "MC", "AMC"],a:A(84,93,93,95,92,72,79,54,57,67,70,74,61,88,86,86)},
+ {id:'s_cesc',f:'R',wf:4,dw:'M',n:'파브레가스',num:10,pos:["MC", "AMC"],a:A(76,93,93,91,83,83,85,64,69,69,76,84,73,89,84,83)},
+ {id:'s_silva',f:'L',wf:3,dw:'M',n:'다비드 실바',num:21,pos:["AML", "AMC", "AMR"],a:A(85,84,90,91,88,79,85,58,28,43,69,70,59,83,81,84)},
+ {id:'s_navas',f:'R',wf:3,dw:'H',n:'나바스',num:22,pos:["AMR", "MR"],a:A(90,78,81,83,90,68,77,57,23,42,72,75,59,83,79,87)},
+ {id:'s_pedro',f:'R',wf:5,dw:'H',n:'페드로',num:18,pos:["AMR", "AML"],a:A(84,77,77,86,84,83,82,64,31,49,77,73,60,88,83,80)},
+ {id:'s_villa',f:'R',wf:5,dw:'M',n:'비야',num:7,pos:["ST", "AML"],a:A(86,75,86,87,86,94,88,77,28,42,75,80,72,89,88,79)},
+ {id:'s_torres',f:'R',wf:4,dw:'L',n:'토레스',num:9,pos:["ST"],a:A(88,72,81,85,84,90,83,81,21,42,69,75,75,85,88,73)},
+ {id:'s_llorente',f:'R',wf:3,dw:'M',n:'요렌테',num:19,pos:["ST"],a:A(74,58,66,80,72,87,68,90,24,39,73,72,93,85,80,51)},
+ {id:'s_mata',f:'L',wf:3,dw:'M',n:'마타',num:13,pos:["AMC", "AMR"],a:A(82,76,84,86,86,82,72,67,19,38,67,79,58,80,78,85)}
+ ]},
+ ger14:{nat:true,name:'뢰브 독일',short:'독일 2014',season:'2014 월드컵 우승',coach:'요아힘 뢰브',tac:'low14',kit:['#F4F4F4','#B4161E'],gk:'#27AE60',stadium:'maracana',
+  form:{name:'4-3-3',slots:[SL('GK','GK','GK',0.03,0),SL('DL','FB','FB',0.2,-0.8),SL('DC','CB','BPD',0.17,-0.28),SL('DC','CB','CD',0.17,0.28),SL('DR','FB','WB',0.21,0.8),SL('DM','CM','DM',0.3,0),SL('MC','CM','DLP',0.4,-0.3),SL('MC','CM','BBM',0.42,0.3),SL('AML','WM','IW',0.56,-0.72),SL('ST','ST','CF',0.66,0),SL('AMR','WM','IF',0.57,0.7)]},
+  xi:['w_neuer','w_howedes','w_hummels','w_boateng','w_lahm','w_schweini','w_kroos','w_khedira','w_ozil','w_klose','w_muller'],cap:'w_lahm',players:[
+ {id:'w_neuer',f:'R',wf:4,dw:'M',n:'노이어',num:1,pos:["GK"],a:A(52,42,20,31,28,25,25,38,25,40,49,35,78,25,82,25),gk:{ref:86,hnd:82,one:86,aer:85,kck:92}},
+ {id:'w_weiden',f:'L',wf:3,dw:'M',n:'바이덴펠러',num:22,pos:["GK"],a:A(40,30,25,25,28,25,25,37,25,40,52,32,75,25,80,25),gk:{ref:85,hnd:84,one:84,aer:85,kck:60}},
+ {id:'w_lahm',f:'R',wf:3,dw:'H',n:'람',num:16,pos:["DR", "DM", "DL"],a:A(80,87,85,86,81,44,65,66,89,89,79,88,59,65,87,88)},
+ {id:'w_boateng',f:'R',wf:3,dw:'M',n:'보아텡',num:20,pos:["DC", "DR"],a:A(74,75,48,75,66,34,58,80,84,82,72,68,88,43,77,68)},
+ {id:'w_hummels',f:'R',wf:4,dw:'M',n:'훔멜스',num:5,pos:["DC"],a:A(65,80,76,76,66,57,49,85,86,85,73,68,90,51,81,59)},
+ {id:'w_merte',f:'R',wf:3,dw:'M',n:'메르테자커',num:17,pos:["DC"],a:A(34,66,58,65,36,36,25,76,86,86,64,64,89,43,81,38)},
+ {id:'w_howedes',f:'R',wf:3,dw:'H',n:'회베데스',num:4,pos:["DL", "DC"],a:A(66,70,56,72,60,53,31,82,83,82,71,69,81,49,77,65)},
+ {id:'w_mustafi',f:'R',wf:3,dw:'M',n:'무스타피',num:21,pos:["DC", "DR"],a:A(66,60,40,58,44,38,40,78,78,78,72,69,75,48,72,39)},
+ {id:'w_durm',f:'R',wf:3,dw:'M',n:'두름',num:15,pos:["DL"],a:A(83,65,47,74,76,48,47,61,70,68,73,79,64,57,66,72)},
+ {id:'w_schweini',f:'R',wf:4,dw:'H',n:'슈바인슈타이거',num:7,pos:["DM", "MC"],a:A(62,88,86,86,80,74,86,77,75,78,84,86,76,82,86,81)},
+ {id:'w_kroos',f:'R',wf:5,dw:'M',n:'크로스',num:18,pos:["MC", "AMC"],a:A(58,88,86,87,82,76,90,50,51,56,66,74,68,75,82,86)},
+ {id:'w_khedira',f:'R',wf:3,dw:'H',n:'케디라',num:6,pos:["MC", "DM"],a:A(58,82,79,77,58,62,74,76,82,80,81,88,89,66,79,55)},
+ {id:'w_kramer',f:'R',wf:3,dw:'H',n:'크라머',num:23,pos:["DM", "MC"],a:A(68,75,67,76,70,43,39,55,73,74,84,93,68,52,70,58)},
+ {id:'w_ozil',f:'L',wf:3,dw:'L',n:'외질',num:8,pos:["AML", "AMC", "AMR"],a:A(75,85,92,91,86,73,75,54,24,38,59,64,56,84,81,83)},
+ {id:'w_gotze',f:'R',wf:4,dw:'M',n:'괴체',num:19,pos:["AMC", "AML", "ST"],a:A(82,83,86,90,90,76,65,59,27,48,63,71,65,84,84,74)},
+ {id:'w_muller',f:'R',wf:4,dw:'H',n:'뮐러',num:13,pos:["AMR", "ST", "AMC"],a:A(82,81,85,83,79,87,80,77,33,46,79,88,68,90,83,83)},
+ {id:'w_schurrle',f:'R',wf:4,dw:'M',n:'쉬얼레',num:9,pos:["AML", "AMR"],a:A(88,75,75,78,86,81,88,68,33,43,68,76,64,80,79,77)},
+ {id:'w_draxler',f:'R',wf:4,dw:'M',n:'드락슬러',num:14,pos:["AML", "AMC"],a:A(78,79,75,84,86,75,85,60,30,42,64,69,62,76,76,78)},
+ {id:'w_podolski',f:'L',wf:2,dw:'M',n:'포돌스키',num:10,pos:["AML", "ST"],a:A(74,73,78,80,76,87,85,65,36,45,62,70,75,80,76,78)},
+ {id:'w_klose',f:'R',wf:4,dw:'M',n:'클로제',num:11,pos:["ST"],a:A(72,62,64,80,71,87,53,90,26,38,60,55,74,87,75,65)},
+ {id:'w_ginter',f:'R',wf:3,dw:'M',n:'긴터',num:3,pos:["DC", "DM"],a:A(60,71,65,71,62,55,62,74,79,77,70,74,81,59,72,50)}
+ ]},
+ arg22:{nat:true,name:'스칼로니 아르헨티나',short:'아르헨티나 2022',season:'2022 월드컵 우승',coach:'리오넬 스칼로니',tac:'scaloni',kit:['#75AADB','#2B1B5C'],gk:'#1D1D1B',stadium:'lusail',
+  form:{name:'4-3-3',slots:[SL('GK','GK','GK',0.03,0),SL('DL','FB','FB',0.2,-0.8),SL('DC','CB','CD',0.17,-0.28),SL('DC','CB','CD',0.17,0.28),SL('DR','FB','WB',0.21,0.8),SL('DM','CM','DLP',0.31,0),SL('MC','CM','BBM',0.4,0.32),SL('MC','CM','MEZ',0.42,-0.32),SL('AML','WM','W',0.56,-0.76),SL('ST','ST','PF',0.66,0),SL('AMR','WM','IF',0.57,0.6)]},
+  xi:['r2_dibu','r2_taglia','r2_otamendi','r2_romero','r2_molina','r2_enzo','r2_depaul','r2_macca','r2_fideo','r2_julian','r2_messi'],cap:'r2_messi',players:[
+ {id:'r2_dibu',f:'R',wf:3,dw:'M',n:'에밀리아노 마르티네스',num:23,pos:["GK"],a:A(58,58,66,38,25,16,16,34,17,29,53,40,70,15,62,22),gk:{ref:85,hnd:83,one:84,aer:86,kck:82}},
+ {id:'r2_armani',f:'R',wf:3,dw:'M',n:'아르마니',num:1,pos:["GK"],a:A(43,33,54,37,21,15,17,30,15,32,54,35,81,17,53,18),gk:{ref:85,hnd:74,one:79,aer:77,kck:69}},
+ {id:'r2_molina',f:'R',wf:3,dw:'H',n:'몰리나',num:26,pos:["DR", "WBR"],a:A(85,75,75,78,77,67,67,65,75,77,82,86,61,77,72,79)},
+ {id:'r2_montiel',f:'R',wf:3,dw:'M',n:'몬티엘',num:4,pos:["DR"],a:A(84,70,70,73,76,58,61,73,76,76,82,93,72,77,75,73)},
+ {id:'r2_romero',f:'R',wf:3,dw:'H',n:'로메로',num:13,pos:["DC"],a:A(72,70,50,68,62,48,36,84,86,84,80,72,82,43,82,42)},
+ {id:'r2_otamendi',f:'R',wf:3,dw:'H',n:'오타멘디',num:19,pos:["DC"],a:A(64,73,62,66,53,54,56,82,83,83,82,83,82,48,79,52)},
+ {id:'r2_licha',f:'L',wf:3,dw:'H',n:'리산드로 마르티네스',num:25,pos:["DC", "DL"],a:A(74,82,76,79,76,52,64,79,85,85,82,81,81,62,87,75)},
+ {id:'r2_pezzella',f:'R',wf:3,dw:'M',n:'페첼라',num:6,pos:["DC"],a:A(54,66,22,65,48,48,50,80,78,76,70,59,78,47,72,40)},
+ {id:'r2_taglia',f:'L',wf:3,dw:'H',n:'탈리아피코',num:3,pos:["DL"],a:A(79,76,69,76,74,57,46,84,80,80,82,86,75,69,76,75)},
+ {id:'r2_acuna',f:'L',wf:3,dw:'H',n:'아쿠냐',num:8,pos:["DL", "ML"],a:A(76,82,82,86,86,66,81,62,84,82,86,91,82,80,87,86)},
+ {id:'r2_depaul',f:'R',wf:3,dw:'H',n:'데 파울',num:7,pos:["MC", "MR"],a:A(78,85,86,85,81,76,78,60,77,76,81,91,79,78,81,78)},
+ {id:'r2_enzo',f:'R',wf:4,dw:'H',n:'엔소 페르난데스',num:24,pos:["MC", "DM"],a:A(74,85,86,81,78,64,78,67,75,76,84,85,79,79,80,66)},
+ {id:'r2_macca',f:'R',wf:3,dw:'H',n:'맥 알리스터',num:20,pos:["MC", "AMC"],a:A(70,82,81,82,78,78,81,62,71,72,70,82,69,78,81,79)},
+ {id:'r2_paredes',f:'R',wf:3,dw:'M',n:'파레데스',num:5,pos:["DM", "MC"],a:A(65,85,86,85,78,52,72,58,74,71,74,75,75,62,82,77)},
+ {id:'r2_guido',f:'R',wf:3,dw:'H',n:'기도 로드리게스',num:18,pos:["DM"],a:A(54,80,72,75,64,43,69,64,85,82,79,76,80,68,70,59)},
+ {id:'r2_palacios',f:'R',wf:3,dw:'H',n:'팔라시오스',num:14,pos:["MC"],a:A(61,83,79,81,79,71,76,66,78,78,80,83,65,72,80,67)},
+ {id:'r2_messi',f:'L',wf:4,dw:'L',n:'메시',num:10,pos:["AMR", "ST", "AMC"],a:A(82,91,94,93,94,93,91,70,28,43,54,70,68,93,96,84)},
+ {id:'r2_fideo',f:'L',wf:2,dw:'M',n:'디 마리아',num:11,pos:["AML", "AMR"],a:A(80,85,89,91,90,74,86,57,50,52,74,74,61,82,89,85)},
+ {id:'r2_julian',f:'R',wf:4,dw:'H',n:'알바레스',num:9,pos:["ST"],a:A(79,75,78,84,83,82,80,68,54,61,83,79,70,82,82,75)},
+ {id:'r2_lautaro',f:'R',wf:4,dw:'H',n:'라우타로',num:22,pos:["ST"],a:A(83,74,78,86,84,87,76,85,41,60,80,80,84,87,86,58)},
+ {id:'r2_dybala',f:'L',wf:3,dw:'M',n:'디발라',num:21,pos:["AMR", "ST", "AMC"],a:A(80,84,91,93,90,83,89,62,38,46,61,73,60,82,79,82)}
+ ]},
+ fra18:{nat:true,name:'데샹 프랑스',short:'프랑스 2018',season:'2018 월드컵 우승',coach:'디디에 데샹',tac:'deschamps',kit:['#1F2A5A','#F4F4F4'],gk:'#F2C94C',stadium:'luzhniki',
+  form:{name:'4-2-3-1',slots:[SL('GK','GK','GK',0.03,0),SL('DL','FB','FB',0.2,-0.8),SL('DC','CB','CD',0.17,-0.28),SL('DC','CB','CD',0.17,0.28),SL('DR','FB','FB',0.2,0.8),SL('MC','CM','DM',0.32,-0.2),SL('MC','CM','BBM',0.34,0.22),SL('AML','WM','DW',0.5,-0.74),SL('AMC','AM','SS',0.55,0),SL('AMR','WM','IF',0.54,0.74),SL('ST','ST','CF',0.66,0)]},
+  xi:['f_lloris','f_lucas','f_umtiti','f_varane','f_pavard','f_kante','f_pogba','f_matuidi','f_griezmann','f_mbappe','f_giroud'],cap:'f_lloris',players:[
+ {id:'f_lloris',f:'L',wf:3,dw:'M',n:'요리스',num:1,pos:["GK"],a:A(64,50,30,34,21,15,15,26,15,34,52,41,43,15,61,15),gk:{ref:90,hnd:84,one:86,aer:84,kck:68}},
+ {id:'f_mandanda',f:'R',wf:3,dw:'M',n:'망당다',num:16,pos:["GK"],a:A(48,34,55,17,24,15,15,28,15,30,51,31,61,15,63,15),gk:{ref:83,hnd:80,one:82,aer:78,kck:70}},
+ {id:'f_pavard',f:'R',wf:3,dw:'M',n:'파바르',num:2,pos:["DR", "DC"],a:A(71,76,62,74,67,37,36,74,78,78,68,68,66,54,78,67)},
+ {id:'f_varane',f:'R',wf:3,dw:'M',n:'바란',num:4,pos:["DC"],a:A(82,75,56,77,57,40,53,82,85,83,75,68,85,44,82,36)},
+ {id:'f_umtiti',f:'L',wf:3,dw:'M',n:'움티티',num:5,pos:["DC"],a:A(74,78,58,76,69,51,74,77,85,82,79,79,80,58,75,69)},
+ {id:'f_lucas',f:'L',wf:3,dw:'H',n:'뤼카 에르난데스',num:21,pos:["DL", "DC"],a:A(78,68,37,71,59,36,47,81,79,77,76,68,74,31,66,68)},
+ {id:'f_kimpembe',f:'L',wf:3,dw:'M',n:'킴펨베',num:3,pos:["DC"],a:A(74,78,60,76,66,31,33,77,81,78,73,80,85,34,74,50)},
+ {id:'f_sidibe',f:'R',wf:3,dw:'H',n:'시디베',num:19,pos:["DR"],a:A(78,75,69,75,73,70,68,72,77,75,84,90,75,75,75,78)},
+ {id:'f_mendy',f:'L',wf:3,dw:'M',n:'멘디',num:22,pos:["DL", "WBL"],a:A(82,74,64,77,75,33,63,65,77,76,77,82,81,70,74,84)},
+ {id:'f_kante',f:'R',wf:3,dw:'H',n:'캉테',num:13,pos:["DM", "MC"],a:A(81,84,79,79,80,65,69,60,84,82,85,95,77,71,85,68)},
+ {id:'f_pogba',f:'R',wf:4,dw:'M',n:'포그바',num:6,pos:["MC", "DM"],a:A(76,87,88,89,84,73,82,78,68,70,74,91,91,83,87,80)},
+ {id:'f_matuidi',f:'L',wf:3,dw:'H',n:'마투이디',num:14,pos:["ML", "MC"],a:A(79,82,75,79,79,64,70,72,83,82,88,94,78,72,82,75)},
+ {id:'f_tolisso',f:'R',wf:4,dw:'H',n:'톨리소',num:12,pos:["MC", "DM"],a:A(73,84,79,80,77,75,78,84,75,76,79,86,77,79,74,67)},
+ {id:'f_nzonzi',f:'R',wf:3,dw:'M',n:'은종지',num:15,pos:["DM"],a:A(56,81,77,82,65,64,66,78,80,79,77,86,91,70,85,59)},
+ {id:'f_griezmann',f:'L',wf:3,dw:'H',n:'그리즈만',num:7,pos:["AMC", "ST"],a:A(86,79,77,86,88,88,82,86,30,47,79,78,64,91,86,82)},
+ {id:'f_mbappe',f:'R',wf:4,dw:'L',n:'음바페',num:10,pos:["AMR", "ST"],a:A(92,75,77,87,88,85,69,75,42,53,74,83,75,83,80,72)},
+ {id:'f_giroud',f:'L',wf:4,dw:'M',n:'지루',num:9,pos:["ST"],a:A(53,70,75,82,69,83,74,88,30,44,72,74,90,83,78,64)},
+ {id:'f_dembele',f:'L',wf:5,dw:'L',n:'뎀벨레',num:11,pos:["AMR", "AML"],a:A(91,72,84,85,92,77,65,47,30,44,64,74,47,78,73,77)},
+ {id:'f_lemar',f:'L',wf:3,dw:'M',n:'르마',num:8,pos:["AML", "ML"],a:A(85,81,85,86,85,76,76,58,61,68,73,79,69,77,80,80)},
+ {id:'f_thauvin',f:'L',wf:3,dw:'M',n:'토뱅',num:20,pos:["AMR"],a:A(84,80,79,84,84,78,82,72,29,46,70,75,66,82,82,82)},
+ {id:'f_fekir',f:'L',wf:3,dw:'M',n:'페키르',num:18,pos:["AMC", "ST"],a:A(80,80,80,89,89,81,79,54,31,37,72,80,82,82,89,83)}
+ ]},
+ bra02:{nat:true,name:'스콜라리 브라질',short:'브라질 2002',season:'2002 월드컵 우승',coach:'루이스 펠리페 스콜라리',tac:'scolari02',kit:['#FFDC02','#1E4FA0'],gk:'#1D1D1B',stadium:'yokohama',
+  form:{name:'3-4-2-1',slots:[SL('GK','GK','GK',0.03,0),SL('DC','CB','BPD',0.16,-0.42),SL('DC','CB','CD',0.15,0),SL('DC','CB','CD',0.16,0.42),SL('WBL','FB','WB',0.3,-0.86),SL('MC','CM','DM',0.34,-0.18),SL('MC','CM','BBM',0.36,0.18),SL('WBR','FB','WB',0.3,0.86),SL('AMC','AM','SS',0.54,-0.26),SL('ST','ST','CF',0.66,0),SL('AMC','AM','AP',0.54,0.26)]},
+  xi:['b2_marcos','b2_lucio','b2_edmilson','b2_roque','b2_rc','b2_gilberto','b2_kleberson','b2_cafu','b2_dinho','b2_ronaldo','b2_rivaldo'],cap:'b2_cafu',players:[
+ {id:'b2_marcos',f:'R',wf:3,dw:'M',n:'마르쿠스',num:1,pos:["GK"],a:A(32,33,42,27,31,21,23,29,20,35,58,55,74,52,67,22),gk:{ref:89,hnd:89,one:85,aer:92,kck:62}},
+ {id:'b2_dida',f:'R',wf:3,dw:'M',n:'지다',num:22,pos:["GK"],a:A(55,30,30,33,28,19,23,26,23,34,65,64,78,53,75,22),gk:{ref:90,hnd:89,one:84,aer:89,kck:62}},
+ {id:'b2_cafu',f:'R',wf:4,dw:'M',n:'카푸',num:2,pos:["WBR", "DR"],a:A(82,77,72,84,80,62,64,75,84,81,78,90,77,83,86,85)},
+ {id:'b2_lucio',f:'R',wf:3,dw:'H',n:'루시우',num:3,pos:["DC"],a:A(79,64,63,77,63,66,52,86,88,83,79,83,85,73,85,51)},
+ {id:'b2_roque',f:'R',wf:3,dw:'M',n:'호키 주니오르',num:4,pos:["DC"],a:A(68,68,59,74,50,49,47,79,77,76,69,71,73,60,68,52)},
+ {id:'b2_edmilson',f:'R',wf:3,dw:'M',n:'에지우송',num:5,pos:["DC", "DM"],a:A(69,66,62,69,56,44,48,78,82,77,72,74,83,66,69,54)},
+ {id:'b2_rc',f:'L',wf:3,dw:'M',n:'호베르투 카를루스',num:6,pos:["WBL", "DL"],a:A(87,79,77,84,82,71,62,65,83,78,78,88,79,80,83,81)},
+ {id:'b2_gilberto',f:'R',wf:3,dw:'H',n:'지우베르투',num:8,pos:["DM"],a:A(76,82,79,83,82,72,67,74,84,82,79,86,87,76,80,76)},
+ {id:'b2_kleberson',f:'R',wf:3,dw:'H',n:'클레베르송',num:15,pos:["MC", "DM"],a:A(71,77,73,79,80,70,69,71,76,72,76,79,81,77,72,65)},
+ {id:'b2_juninho',f:'R',wf:4,dw:'M',n:'주니뉴 파울리스타',num:19,pos:["AMC", "MC"],a:A(74,76,84,75,81,71,70,54,54,55,65,78,57,78,75,72)},
+ {id:'b2_dinho',f:'R',wf:5,dw:'L',n:'호나우지뉴',num:11,pos:["AMC", "AML"],a:A(83,86,88,89,86,83,79,62,51,54,71,82,75,80,85,80)},
+ {id:'b2_rivaldo',f:'L',wf:3,dw:'L',n:'히바우두',num:10,pos:["AMC", "AML", "ST"],a:A(67,79,85,84,83,76,73,70,48,52,66,72,71,78,75,79)},
+ {id:'b2_ronaldo',f:'R',wf:4,dw:'L',n:'호나우두',num:9,pos:["ST"],a:A(85,63,72,85,85,86,73,60,29,43,69,75,82,89,87,63)},
+ {id:'b2_denilson',f:'L',wf:3,dw:'M',n:'데닐송',num:17,pos:["AML", "ML"],a:A(85,79,83,84,86,78,74,58,49,54,70,84,68,81,82,80)},
+ {id:'b2_edilson',f:'R',wf:3,dw:'M',n:'에질송',num:7,pos:["ST", "AMR"],a:A(76,64,74,80,79,78,66,62,30,40,68,67,60,76,55,66)},
+ {id:'b2_luizao',f:'R',wf:3,dw:'M',n:'루이장',num:21,pos:["ST"],a:A(68,68,66,76,74,81,67,77,31,41,67,74,70,76,75,61)},
+ {id:'b2_kaka',f:'R',wf:4,dw:'M',n:'카카',num:23,pos:["AMC"],a:A(83,83,89,88,86,87,78,67,53,55,72,79,74,82,77,84)},
+ {id:'b2_polga',f:'R',wf:3,dw:'M',n:'폴가',num:14,pos:["DC"],a:A(59,56,42,49,42,37,41,64,66,67,68,71,72,55,55,42)},
+ {id:'b2_belletti',f:'R',wf:3,dw:'M',n:'벨레티',num:13,pos:["DR", "WBR"],a:A(79,76,67,76,72,56,61,70,81,77,75,83,77,73,63,76)}
  ]}};
 // Formation presets the user can switch to in the line-up screen (back four, back three, back five)
 const PRESETS={
@@ -1124,7 +1325,8 @@ const RIVAL={'mu08|liv20':['노스웨스트 더비',1],'liv20|mu26':['노스웨�
  'bar10|int10':['2010 챔스 4강 리매치',0.6],'bar10|mu08':['2009·2011 챔스 결승 리매치',0.6],'liv20|rma17':['2018 키예프 결승 리매치',0.6],'mu08|mu26':['맨유 세대 대결',0.3],'mu08|rma17':['호날두 더비',0.4],
  'mci23|mu08':['맨체스터 더비',1],'mci23|mu26':['맨체스터 더비',1],'liv20|mci23':['프리미어리그 우승 경쟁',0.7],'bay13|int10':['2010 챔스 결승 리매치',0.6],'bay13|bar15':['2015 챔스 4강 리매치',0.5],'bay13|mu08':['1999 캄 노우 결승 리매치',0.5],'bay13|rma17':['유럽 최고의 클래식',0.6],'bay13|mci23':['펩의 친정 대결',0.5],'bar10|mci23':['펩 vs 펩',0.3],
  'che10|tot17':['런던 더비',1],'lei16|tot17':['2016 우승 경쟁',0.6],'che10|lei16':['2016 스탬퍼드 브리지의 밤',0.4],'che10|mu08':['2008 모스크바 결승 리매치',0.8],'che10|liv20':['챔스 단골 라이벌',0.6],'bar10|che10':['2009 챔스 4강 리매치',0.8],'che10|int10':['2010 챔스 16강 · 무리뉴의 귀환',0.7],'bay13|che10':['2012 챔스 결승 리매치',0.7],'liv20|tot17':['2019 챔스 결승 리매치',0.7],'mci23|tot17':['2019 챔스 8강 리매치',0.5],'lei16|mci23':['마레즈 친정 대결',0.3],
- 'ars04|tot17':['북런던 더비',1],'ars04|che10':['런던 더비',1],'ars04|mu08':['아스널 vs 맨유 라이벌',0.9],'ars04|mu26':['아스널 vs 맨유 라이벌',0.7],'int10|mil07':['밀라노 더비',1],'liv20|mil07':['이스탄불·아테네 리매치',0.6],'mil07|mu08':['2007 챔스 4강 리매치',0.7],'bay13|bvb13':['데어 클라시커 · 2013 결승 리매치',1],'bvb13|liv20':['클롭 vs 클롭',0.3],'bvb13|rma17':['레알 vs 도르트문트',0.4],'bar10|rma05':['엘 클라시코',1],'bar15|rma05':['엘 클라시코',1],'rma05|rma17':['레알 세대 대결',0.3],'mu08|rma05':['2003 챔스 8강 리매치',0.5],'ars04|bar10':['2006 파리 결승 리매치',0.5],'ars04|int10':['2003 하이버리 참사 리매치',0.4]};
+ 'ars04|tot17':['북런던 더비',1],'ars04|che10':['런던 더비',1],'ars04|mu08':['아스널 vs 맨유 라이벌',0.9],'ars04|mu26':['아스널 vs 맨유 라이벌',0.7],'int10|mil07':['밀라노 더비',1],'liv20|mil07':['이스탄불·아테네 리매치',0.6],'mil07|mu08':['2007 챔스 4강 리매치',0.7],'bay13|bvb13':['데어 클라시커 · 2013 결승 리매치',1],'bvb13|liv20':['클롭 vs 클롭',0.3],'bvb13|rma17':['레알 vs 도르트문트',0.4],'bar10|rma05':['엘 클라시코',1],'bar15|rma05':['엘 클라시코',1],'rma05|rma17':['레알 세대 대결',0.3],'mu08|rma05':['2003 챔스 8강 리매치',0.5],'ars04|bar10':['2006 파리 결승 리매치',0.5],'ars04|int10':['2003 하이버리 참사 리매치',0.4],
+ 'esp10|kor02':['2002 8강 리매치 · 광주의 승부차기',0.9],'ger14|kor18':['카잔의 기적 리매치',1],'ger14|kor02':['2002 4강 리매치',0.7],'arg22|fra18':['2022 결승 리매치',1],'arg22|ger14':['2014 결승 리매치',0.9],'bra02|ger14':['2002 결승 · 미네이랑 리매치',1],'esp10|ger14':['2010 4강 리매치',0.6],'kor02|kor18':['한국 세대 대결',0.3],'kor02|kor22':['한국 세대 대결',0.3],'kor18|kor22':['한국 세대 대결',0.3],'arg22|kor22':['2010 조별리그 리매치',0.3],'bra02|kor22':['2022 16강 리매치',0.5],'fra18|ger14':['2014 8강 리매치',0.5],'arg22|bra02':['남미 슈퍼클라시코',1]};
 function rivalry(a,b){const k=[a,b].sort().join('|');const r=RIVAL[k];return r?{name:r[0],k:r[1]}:null;}
 const BYID={};for(const k in LIB)for(const d of LIB[k].players){d.team=k;BYID[d.id]=d;}
 // The two sides of the current match. loadTeams() swaps squads, shapes, names in place.
@@ -1172,6 +1374,14 @@ const TACTICS={
  ancelotti07:{freeWing:0,era:2007,name:'안첼로티 크리스마스 트리',tags:['피를로 레지스타','카카 돌파','좁은 2선'],line:0.55,press:0.58,width:0.85,tempo:0.75,direct:0.45,cross:0.5,counter:0.75,cpress:0.55,fbL:0.8,fbR:0.75,invert:0.5,gkShort:0.55,shoot:0.7,fwdDef:0.5},
  klopp13:{freeWing:0,era:2013,name:'클롭식 게겐프레싱',tags:['게겐프레싱','빠른 전환','레반도프스키 포스트'],line:0.7,press:0.92,width:1.0,tempo:0.92,direct:0.62,cross:0.5,counter:0.95,cpress:1,fbL:0.8,fbR:0.9,invert:0.55,gkShort:0.5,shoot:0.7,fwdDef:0.8},
  galacticos:{freeWing:1,era:2004,name:'갈락티코 공격 축구',tags:['지단·피구 창의성','호나우두 마무리','수비 가담 적음'],line:0.55,press:0.45,width:1.05,tempo:0.8,direct:0.5,cross:0.65,counter:0.7,cpress:0.4,fbL:1,fbR:0.75,invert:0.5,gkShort:0.55,shoot:0.85,fwdDef:0.25},
+ hiddink:{freeWing:0,era:2002,name:'히딩크식 압박',tags:['강철 체력','전방 압박','윙백 활용'],line:0.55,press:0.88,width:1.05,tempo:0.85,direct:0.6,cross:0.6,counter:0.85,cpress:0.85,fbL:0.9,fbR:0.9,invert:0.3,gkShort:0.3,shoot:0.72,fwdDef:0.95},
+ shin18:{freeWing:0,era:2018,name:'신태용식 선수비 역습',tags:['두 줄 수비','손흥민 역습','투지'],line:0.38,press:0.55,width:1.0,tempo:0.82,direct:0.75,cross:0.55,counter:0.95,cpress:0.45,fbL:0.6,fbR:0.5,invert:0.4,gkShort:0.3,shoot:0.7,fwdDef:0.9},
+ bento:{freeWing:0,era:2022,name:'벤투식 빌드업',tags:['후방 빌드업','점유율','손흥민 마무리'],line:0.6,press:0.65,width:1.0,tempo:0.72,direct:0.4,cross:0.55,counter:0.7,cpress:0.7,fbL:0.8,fbR:0.8,invert:0.5,gkShort:0.85,shoot:0.6,fwdDef:0.7},
+ delbosque:{freeWing:0,era:2010,name:'델 보스케 티키타카',tags:['점유율','사비·이니에스타','인내심'],line:0.7,press:0.8,width:1.0,tempo:0.72,direct:0.3,cross:0.3,counter:0.5,cpress:0.95,fbL:0.7,fbR:0.85,invert:0.7,gkShort:0.8,shoot:0.45,fwdDef:0.7},
+ low14:{freeWing:0,era:2014,name:'뢰브식 전차 군단',tags:['스위퍼 키퍼','뮐러 공간 침투','크로스 조율'],line:0.65,press:0.75,width:1.0,tempo:0.8,direct:0.5,cross:0.55,counter:0.8,cpress:0.8,fbL:0.4,fbR:0.85,invert:0.6,gkShort:0.75,shoot:0.65,fwdDef:0.7},
+ scaloni:{freeWing:0,era:2022,name:'스칼로니식 메시 중심',tags:['메시 자유롭게','중원 투지','빠른 전환'],line:0.5,press:0.65,width:1.0,tempo:0.78,direct:0.5,cross:0.5,counter:0.85,cpress:0.65,fbL:0.6,fbR:0.7,invert:0.55,gkShort:0.55,shoot:0.7,fwdDef:0.5},
+ deschamps:{freeWing:0,era:2018,name:'데샹식 실리 축구',tags:['단단한 수비','음바페 역습','지루 포스트'],line:0.45,press:0.55,width:1.0,tempo:0.8,direct:0.65,cross:0.55,counter:0.95,cpress:0.5,fbL:0.65,fbR:0.5,invert:0.45,gkShort:0.4,shoot:0.7,fwdDef:0.85},
+ scolari02:{freeWing:0,era:2002,name:'스콜라리 3R',tags:['호나우두·히바우두·호나우지뉴','윙백 공격','개인기'],line:0.5,press:0.55,width:1.05,tempo:0.8,direct:0.55,cross:0.55,counter:0.9,cpress:0.5,fbL:1,fbR:1,invert:0.45,gkShort:0.4,shoot:0.8,fwdDef:0.45},
  mourinho:{freeWing:0,era:2010,name:'무리뉴식 역습',tags:['두 줄 블록','빠른 역습','에투의 수비 가담'],line:0.3,press:0.45,width:0.95,tempo:0.8,direct:0.7,cross:0.5,counter:1,cpress:0.3,fbL:0.3,fbR:0.8,invert:0.4,gkShort:0.3,shoot:0.7,fwdDef:1.0},
  possession:{name:'점유율 축구',tags:['짧은 패스','높은 라인','인내심'],line:0.72,press:0.7,width:1.1,tempo:0.3,direct:0.12,cross:0.25,counter:0.2,cpress:0.9,fbL:0.7,fbR:0.7,invert:0.6,gkShort:1,shoot:0.25,fwdDef:0.6},
  gegen:{name:'게겐프레싱',tags:['전방 압박','즉시 탈환','수직 공격'],line:0.75,press:0.88,width:0.95,tempo:0.92,direct:0.6,cross:0.5,counter:0.85,cpress:1,fbL:0.6,fbR:0.6,invert:0.6,gkShort:0.5,shoot:0.6,fwdDef:0.7},
@@ -2025,6 +2235,13 @@ const STADIUM={old:{tun:{x:590,side:1},name:'올드 트래퍼드',top:'Sir Alex 
  highbury:{tun:{x:340,side:1},name:'하이버리',top:'West Stand',bot:'East Stand · Marble Halls',l:['North','Bank'],r:['Clock','End'],bowl:'#3A0A0A',stand:'#C8102E',line:'#8F0B1C'},
  westfalen:{tun:{x:340,side:1},name:'베스트팔렌슈타디온',top:'Osttribüne',bot:'Westtribüne',l:['Nord','tribüne'],r:['Südtribüne','Gelbe Wand'],bowl:'#1D1D1B',stand:'#E8C800',line:'#9A8500'},
  sansiro_m:{tun:{x:90,side:-1},name:'산 시로',top:'Tribuna Rossa · Giuseppe Meazza',bot:'Tribuna Arancio',l:['Curva','Nord'],r:['Curva','Sud'],bowl:'#1A0B0B',stand:'#A3121F',line:'#6E0C15'},
+ seoulwc:{tun:{x:340,side:1},name:'서울월드컵경기장',top:'E석 · 붉은 악마',bot:'W석 · 본부석',l:['N석',''],r:['S석',''],bowl:'#2A0A0E',stand:'#C8102E',line:'#7A0F1C'},
+ kazan:{tun:{x:340,side:1},name:'카잔 아레나',top:'East Stand',bot:'West Stand',l:['North',''],r:['South',''],bowl:'#0E1F33',stand:'#2E5C8A',line:'#1D3E5E'},
+ lusail:{tun:{x:340,side:1},name:'루사일 스타디움',top:'East Stand · FIFA World Cup Qatar 2022',bot:'West Stand',l:['North',''],r:['South',''],bowl:'#2B1B12',stand:'#B8863B',line:'#7A5A24'},
+ soccercity:{tun:{x:340,side:1},name:'사커 시티',top:'East Stand · Calabash',bot:'West Stand',l:['North',''],r:['South',''],bowl:'#2A1A10',stand:'#A0522D',line:'#6E3A1E'},
+ maracana:{tun:{x:340,side:1},name:'마라카낭',top:'Setor Leste',bot:'Setor Oeste',l:['Setor','Norte'],r:['Setor','Sul'],bowl:'#0A2A16',stand:'#2E8B57',line:'#1C5E3A'},
+ luzhniki:{tun:{x:340,side:1},name:'루즈니키 스타디움',top:'East Stand',bot:'West Stand',l:['North',''],r:['South',''],bowl:'#1A1A2E',stand:'#B22234',line:'#7A1724'},
+ yokohama:{tun:{x:340,side:1},name:'요코하마 국제종합경기장',top:'Back Stand · 2002 FIFA World Cup Final',bot:'Main Stand',l:['North',''],r:['South',''],bowl:'#0E1A33',stand:'#3B5BA9',line:'#24396E'},
  anfield:{tun:{x:340,side:-1},name:'안필드',top:'Main Stand · This Is Anfield',bot:'Sir Kenny Dalglish Stand',l:['Anfield','Road'],r:['The','Kop'],bowl:'#3D0A0E',stand:'#B3121F',line:'#7F0D16'}};
 const KIT=['',''],GKC=['',''],COACH=['',''],DEF_TAC=['',''],TNAME=['',''],SHORT=['',''],kitOf=(ti,i)=>i===0?GKC[ti]:KIT[ti],numCol=(ti,i)=>{const [r,g,b]=hexRGB(kitOf(ti,i));return 0.299*r+0.587*g+0.114*b>170?'#1D1A19':'#FFFFFF';},caps=['',''];
 const formSel=['def','def'];const tacSel=['',''],xi=[[],[]],autoSel=[true,true];let pick=['mu08','mu26'],DEF_SLOTS=[],DEF_NAME=[],STAD=STADIUM.old;
@@ -2043,7 +2260,8 @@ function applyTeams(a,b){pick=[a,b];loadTeams(a,b);formSel[0]=formSel[1]="def";c
  document.querySelectorAll('.pitch svg[role="img"]').forEach(e=>e.setAttribute('aria-label',st.name+' 경기장에서 선수와 공이 움직이는 경기 화면'));
  renderSquad();[0,1].forEach(t=>{delete $('tt'+t).dataset.built;renderTac(t);});}
 function derbyNote(){const d=rivalry(pick[0],pick[1]),el=$('derby');if(!el)return;el.hidden=!d;if(d)el.innerHTML='<b>'+esc(d.name)+'</b> · '+(d.k>=1?'더비 보정: 파울·카드·신경전 증가, 압박 강도와 체력 소모 상승, 부상 위험 증가':'리매치 보정: 경기 강도 소폭 상승');}
-function teamSelects(){derbyNote();for(const t of [0,1]){const sel=$('team'+t);sel.innerHTML=Object.entries(LIB).map(([k,v])=>'<option value="'+k+'"'+(pick[t]===k?' selected':'')+(pick[1-t]===k?' disabled':'')+'>'+v.short+' · '+v.coach+'</option>').join('');}}
+function teamSelects(){derbyNote();for(const t of [0,1]){const sel=$('team'+t);const opt=([k,v])=>'<option value="'+k+'"'+(pick[t]===k?' selected':'')+(pick[1-t]===k?' disabled':'')+'>'+v.short+' · '+v.coach+'</option>',E=Object.entries(LIB);
+  sel.innerHTML='<optgroup label="클럽">'+E.filter(e=>!e[1].nat).map(opt).join('')+'</optgroup><optgroup label="국가대표">'+E.filter(e=>e[1].nat).map(opt).join('')+'</optgroup>';}}
 [0,1].forEach(t=>$('team'+t).addEventListener('change',e=>{const p=pick.slice();p[t]=e.target.value;applyTeams(p[0],p[1]);teamSelects();cond=rollConditions();suSel=null;renderSetup();}));
 $('teamswap').addEventListener('click',()=>{applyTeams(pick[1],pick[0]);teamSelects();suSel=null;renderSetup();});
 let cond=rollConditions(),PORT=false;
@@ -2466,12 +2684,14 @@ const tName=k=>LIB[k]?LIB[k].short:k,tKit=k=>'<i class="tk" style="background:'+
 function tMk(st,g,r,a,b){return{id:st+(g||'')+r+'_'+a+'_'+b,st,g,r,a,b,sa:null,sb:null,pso:null,et:false,done:false,sc:[]};}
 // formats: G12 = three groups of four then quarter-finals; G8 = two groups then semi-finals; QF = 8-team knockout; SF = 4-team knockout
 const TFMT={G16:{n:16,name:'조별리그 + 토너먼트',sub:'16팀 · 4개 조 → 8강'},G12:{n:12,name:'조별리그 + 토너먼트',sub:'12팀 · 3개 조 → 8강'},G8:{n:8,name:'조별리그 + 토너먼트',sub:'8팀 · 2개 조 → 4강'},QF:{n:8,name:'8강 토너먼트',sub:'8팀 · 단판 녹아웃'},SF:{n:4,name:'4강 토너먼트',sub:'4팀 · 단판 녹아웃'}};
-function tNew(fmt,teams){fmt=TFMT[fmt]?fmt:'G12';const n=TFMT[fmt].n,k=tShuf((teams&&teams.length===n?teams:tShuf(Object.keys(LIB)).slice(0,n)).slice()),fx=[];let groups=[];
+const SCOPE={club:{name:'클럽',title:'드림 챔피언스 리그',f:v=>!v.nat},nat:{name:'국가대표',title:'드림 월드컵',f:v=>!!v.nat},all:{name:'전체',title:'드림 올스타 컵',f:()=>true}};
+const tPool=sc=>Object.keys(LIB).filter(k=>SCOPE[sc||'club'].f(LIB[k]));
+function tNew(fmt,teams,scope){scope=SCOPE[scope]?scope:'club';fmt=TFMT[fmt]?fmt:'G12';const n=TFMT[fmt].n,k=tShuf((teams&&teams.length===n?teams:tShuf(tPool(scope)).slice(0,n)).slice()),fx=[];let groups=[];
  if(fmt==='G16'||fmt==='G12'||fmt==='G8'){groups=['A','B','C','D'].slice(0,n/4).map((g,i)=>({g,t:k.slice(i*4,i*4+4)}));
   [[0,1,3,2],[0,2,1,3],[0,3,2,1]].forEach((r,ri)=>groups.forEach(G=>{fx.push(tMk('G',G.g,ri+1,G.t[r[0]],G.t[r[1]]));fx.push(tMk('G',G.g,ri+1,G.t[r[2]],G.t[r[3]]));}));}
  else if(fmt==='QF'){for(let i=0;i<4;i++)fx.push(tMk('QF',null,i+1,k[2*i],k[2*i+1]));}
  else{fx.push(tMk('SF',null,1,k[0],k[1]));fx.push(tMk('SF',null,2,k[2],k[3]));}
- TOUR={v:2,fmt,teams:k,groups,fx,champ:null,cur:null,tb2:true};tSave();}
+ TOUR={v:2,fmt,scope,teams:k,groups,fx,champ:null,cur:null,tb2:true};tSave();}
 const tWin=f=>f.sa>f.sb?f.a:f.sb>f.sa?f.b:f.pso?(f.pso[0]>f.pso[1]?f.a:f.b):null;
 function tTable(G){const R={};for(const k of G.t)R[k]={k,P:0,W:0,D:0,L:0,F:0,A:0,Pt:0};
  for(const f of TOUR.fx){if(f.st!=='G'||f.g!==G.g||!f.done)continue;const a=R[f.a],b=R[f.b];a.P++;b.P++;a.F+=f.sa;a.A+=f.sb;b.F+=f.sb;b.A+=f.sa;
@@ -2522,10 +2742,10 @@ function tSimMany(list){if(!list.length||TBUSY)return;TBUSY=true;let i=0;const g
 function tLock(on){for(const id of ['team0','team1','teamswap'])$(id).disabled=on;$('etopt').disabled=on;const tg=$('tourtag');tg.hidden=!on;$('tourbtn').textContent=on?'◂ 토너먼트':'◂ 메인';}
 function showTour(){tLoad();if(!TOUR){showHome('cfg');return;}tMigrateTB();$('home').hidden=true;if(TOUR.cur){TOUR.cur=null;tSave();}tLock(false);$('setup').hidden=true;$('app').hidden=true;$('tour').hidden=false;running=false;renderTour();}
 function tWatch(f){TOUR.cur=f.id;tSave();$('tour').hidden=true;applyTeams(f.a,f.b);teamSelects();$('etopt').checked=f.st!=='G';tLock(true);
- $('tourtag').textContent='드림 챔피언스 리그 · '+tLabel(f)+(f.st!=='G'?' · 무승부면 연장·승부차기':'');newMatch();}
+ $('tourtag').textContent=SCOPE[TOUR.scope||'club'].title+' · '+tLabel(f)+(f.st!=='G'?' · 무승부면 연장·승부차기':'');newMatch();}
 function tourAfter(){if(!TOUR||!TOUR.cur||S._tourRec)return;S._tourRec=true;const f=TOUR.fx.find(x=>x.id===TOUR.cur);
  if(f&&!f.done&&SIDE[0]===f.a&&SIDE[1]===f.b)tRecord(f);}
-function renderTour(){if(!TOUR)return;const nx=tNext();
+function renderTour(){if(!TOUR)return;const nx=tNext();$('ttitle').textContent=SCOPE[TOUR.scope||'club'].title;
  $('tstage').textContent=TOUR.champ?'대회 종료':nx?(nx.st==='G'?'조별리그 · ':'토너먼트 · ')+tLabel(nx):'';
  // groups
  const th=TOUR.fmt==='G12'&&TOUR.fx.some(f=>f.st==='QF')?tThirds().slice(0,2).map(r=>r.k):[];
@@ -2535,7 +2755,7 @@ function renderTour(){if(!TOUR)return;const nx=tNext();
   tb.map((r,i)=>'<tr class="'+(i<2?'q':th.includes(r.k)?'q3':'')+'"><td>'+(i+1)+'</td><td class="tn">'+tKit(r.k)+esc(tName(r.k))+'</td><td>'+r.P+'</td><td>'+r.W+'</td><td>'+r.D+'</td><td>'+r.L+'</td><td>'+(r.F-r.A>0?'+':'')+(r.F-r.A)+'</td><td class="pts">'+r.Pt+'</td></tr>').join('')+'</tbody></table>'+(()=>{const ws=tb.filter((r,i)=>i<3&&r.why&&r.Pt===tb[i+1].Pt&&(r.why==='fp'||r.why==='lot'||r.why==='h2h'));return ws.length?'<p class="tbn">'+ws.map(r=>esc(tName(r.k))+'가 '+esc(tName(tb[tb.indexOf(r)+1].k))+'보다 위 · '+TBW[r.why]).join('<br>')+'</p>':'';})()+'</div>';}).join('')+
   '<p class="note" style="padding:0 4px">'+NOTE+'</p>';
  // next match card
- let h='';if(TOUR.champ){const fn=TOUR.fx.find(f=>f.st==='F'),L0=LIB[TOUR.champ];h='<div class="champ"><small>드림 챔피언스 리그 우승</small><b>🏆 '+esc(L0.name)+'</b><small>'+esc(L0.season)+' · 감독 '+esc(L0.coach)+' · 결승 '+fn.sa+' - '+fn.sb+(fn.pso?' (승부차기 '+fn.pso[0]+'-'+fn.pso[1]+')':'')+' vs '+esc(tName(tWin(fn)===fn.a?fn.b:fn.a))+'</small></div><div class="t-prog" id="tprog"></div>';}
+ let h='';if(TOUR.champ){const fn=TOUR.fx.find(f=>f.st==='F'),L0=LIB[TOUR.champ];h='<div class="champ"><small>'+SCOPE[TOUR.scope||'club'].title+' 우승</small><b>🏆 '+esc(L0.name)+'</b><small>'+esc(L0.season)+' · 감독 '+esc(L0.coach)+' · 결승 '+fn.sa+' - '+fn.sb+(fn.pso?' (승부차기 '+fn.pso[0]+'-'+fn.pso[1]+')':'')+' vs '+esc(tName(tWin(fn)===fn.a?fn.b:fn.a))+'</small></div><div class="t-prog" id="tprog"></div>';}
  else if(nx){const A=LIB[nx.a],B=LIB[nx.b],rest=TOUR.fx.filter(f=>!f.done&&f.st===nx.st&&(nx.st!=='G'||f.r===nx.r));
   h='<h3>다음 경기 · '+tLabel(nx)+'</h3><div class="nextm"><div class="tm">'+tKit(nx.a)+'<div>'+esc(A.short)+'<small>'+esc(A.coach)+'</small></div></div><div class="vs">vs</div><div class="tm r"><div>'+esc(B.short)+'<small>'+esc(B.coach)+'</small></div>'+tKit(nx.b)+'</div></div>'+
    '<div class="t-acts"><button type="button" class="btn-primary" id="twatch"'+(TBUSY?' disabled':'')+'>경기 보기</button><button type="button" id="tsim"'+(TBUSY?' disabled':'')+'>결과만 보기</button>'+
@@ -2566,17 +2786,19 @@ $('tfree').addEventListener('click',()=>{if(TBUSY)return;if(TOUR){TOUR.cur=null;
 $('tnew').addEventListener('click',()=>{if(TBUSY)return;showHome('cfg');});
 
 // ===================== Home: single match or tournament (format + random / hand-picked teams) =====================
-const HC={fmt:'G16',mode:'rand',sel:[]};
+const HC={scope:'club',fmt:'G16',mode:'rand',sel:[]};
 function showHome(view){running=false;if(TOUR&&TOUR.cur){TOUR.cur=null;tSave();}tLock(false);for(const id of ['setup','app','tour'])$(id).hidden=true;$('home').hidden=false;tLoad();
  $('hmain').hidden=view==='cfg';$('hcfg').hidden=view!=='cfg';renderHome();}
 function renderHome(){const T0=TOUR&&!TOUR.champ?TOUR:null,nx=T0?tNext():null;
- $('hcont').hidden=!T0;if(T0)$('hcont').textContent='▸ 이어하기 · '+TFMT[T0.fmt].name.replace('조별리그 + 토너먼트','조별리그 '+TFMT[T0.fmt].n+'팀')+' · '+(nx?tLabel(nx):'');
- $('hfmts').innerHTML=Object.entries(TFMT).map(([k,v])=>'<button type="button" class="hfmt'+(HC.fmt===k?' on':'')+'" data-f="'+k+'" aria-pressed="'+(HC.fmt===k)+'"><b>'+v.name+'</b><small>'+v.sub+'</small></button>').join('');
- const n=TFMT[HC.fmt].n;HC.sel=HC.sel.filter(k=>LIB[k]).slice(0,n);
+ $('hcont').hidden=!T0;if(T0)$('hcont').textContent='▸ 이어하기 · '+SCOPE[T0.scope||'club'].title+' · '+TFMT[T0.fmt].name.replace('조별리그 + 토너먼트','조별리그 '+TFMT[T0.fmt].n+'팀')+' · '+(nx?tLabel(nx):'');
+ const pool=tPool(HC.scope);if(TFMT[HC.fmt].n>pool.length)HC.fmt=Object.keys(TFMT).find(k=>TFMT[k].n<=pool.length);
+ for(const b of document.querySelectorAll('#hscope button'))b.setAttribute('aria-pressed',String(b.dataset.s===HC.scope));
+ $('hfmts').innerHTML=Object.entries(TFMT).map(([k,v])=>{const no=v.n>pool.length;return '<button type="button" class="hfmt'+(HC.fmt===k?' on':'')+'" data-f="'+k+'" aria-pressed="'+(HC.fmt===k)+'"'+(no?' disabled title="팀이 '+pool.length+'개라 이 형식은 못 해요"':'')+'><b>'+v.name+'</b><small>'+v.sub+'</small></button>';}).join('');
+ const n=TFMT[HC.fmt].n;HC.sel=HC.sel.filter(k=>pool.includes(k)).slice(0,n);
  for(const b of document.querySelectorAll('#hmode button'))b.setAttribute('aria-pressed',String(b.dataset.m===HC.mode));
  const pickMode=HC.mode==='pick';$('hteams').classList.toggle('dim',!pickMode);
- $('hteams').innerHTML=Object.entries(LIB).map(([k,v])=>{const on=pickMode&&HC.sel.includes(k);return '<button type="button" class="hteam'+(on?' on':'')+'" data-k="'+k+'"'+(pickMode?'':' disabled')+' aria-pressed="'+on+'"><i class="tk" style="background:'+v.kit[0]+'"></i><span>'+esc(v.short)+'<small>'+esc(v.coach)+'</small></span></button>';}).join('');
- const ok=!pickMode||HC.sel.length===n;$('hcount').textContent=pickMode?'선택 '+HC.sel.length+' / '+n+'팀':n===Object.keys(LIB).length?n+'팀 전부 참가 · 조 편성은 무작위':'무작위로 '+n+'팀 추첨';
+ $('hteams').innerHTML=Object.entries(LIB).filter(([k])=>pool.includes(k)).map(([k,v])=>{const on=pickMode&&HC.sel.includes(k);return '<button type="button" class="hteam'+(on?' on':'')+'" data-k="'+k+'"'+(pickMode?'':' disabled')+' aria-pressed="'+on+'"><i class="tk" style="background:'+v.kit[0]+'"></i><span>'+esc(v.short)+'<small>'+esc(v.coach)+'</small></span></button>';}).join('');
+ const ok=!pickMode||HC.sel.length===n;$('hcount').textContent=pickMode?'선택 '+HC.sel.length+' / '+n+'팀':n===pool.length?n+'팀 전부 참가 · 조 편성은 무작위':'무작위로 '+n+'팀 추첨';
  $('hfill').hidden=!pickMode;$('hclear').hidden=!pickMode;$('hgo').disabled=!ok;
  $('hwarn').hidden=!T0;}
 $('hsingle').addEventListener('click',()=>{$('home').hidden=true;applyTeams(pick[0],pick[1]);teamSelects();newMatch();});
@@ -2588,9 +2810,10 @@ $('hfmts').addEventListener('click',e=>{const b=e.target.closest('.hfmt');if(!b)
 $('hmode').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;HC.mode=b.dataset.m;renderHome();});
 $('hteams').addEventListener('click',e=>{const b=e.target.closest('.hteam');if(!b||HC.mode!=='pick')return;const k=b.dataset.k,n=TFMT[HC.fmt].n;
  if(HC.sel.includes(k))HC.sel=HC.sel.filter(x=>x!==k);else if(HC.sel.length<n)HC.sel.push(k);renderHome();});
-$('hfill').addEventListener('click',()=>{const n=TFMT[HC.fmt].n;HC.sel=HC.sel.concat(tShuf(Object.keys(LIB).filter(k=>!HC.sel.includes(k)))).slice(0,n);renderHome();});
+$('hfill').addEventListener('click',()=>{const n=TFMT[HC.fmt].n;HC.sel=HC.sel.concat(tShuf(tPool(HC.scope).filter(k=>!HC.sel.includes(k)))).slice(0,n);renderHome();});
+$('hscope').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;HC.scope=b.dataset.s;renderHome();});
 $('hclear').addEventListener('click',()=>{HC.sel=[];renderHome();});
-$('hgo').addEventListener('click',()=>{tNew(HC.fmt,HC.mode==='pick'?HC.sel:null);$('home').hidden=true;showTour();});
+$('hgo').addEventListener('click',()=>{tNew(HC.fmt,HC.mode==='pick'?HC.sel:null,HC.scope);$('home').hidden=true;showTour();});
 $('homebtn').addEventListener('click',()=>showHome());
 showHome();
 
