@@ -314,6 +314,26 @@ td.gkrow b{font-family:var(--f-display);font-size:15px;color:var(--fg);margin-ri
 .grp td.tn{text-align:left;max-width:150px;overflow:hidden;text-overflow:ellipsis}
 .grp tr.q td{background:color-mix(in srgb,var(--hi) 10%,transparent)}
 .grp tr.q3 td{background:color-mix(in srgb,var(--gold) 12%,transparent)}
+.gwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -4px;padding:0 4px}
+.gwrap table{min-width:440px}
+.gwrap th:nth-child(2),.gwrap td.tn{position:sticky;left:0;background:var(--panel);z-index:1}
+.grp td.fpc{color:var(--muted)}
+.stabs{display:flex;gap:4px;overflow-x:auto;padding-bottom:6px;margin-bottom:4px;-webkit-overflow-scrolling:touch}
+.stab{flex:none;font-size:12px;padding:4px 9px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted)}
+.stab.on{background:var(--hi);color:var(--bg);border-color:var(--hi);font-weight:700}
+.scl li .sv{font-size:12.5px;white-space:nowrap}
+.scl:has(.sv) li{grid-template-columns:22px minmax(0,1fr) auto}
+.smore{margin-top:6px;width:100%;font-size:12px;padding:6px;border-radius:6px;border:1px solid var(--line);background:transparent;color:var(--muted)}
+.awards{margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+.awards h3{font-family:var(--f-display);font-weight:600;font-size:14px;letter-spacing:.12em;color:var(--muted);margin:0 0 8px}
+.aw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.aw{border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:grid;gap:2px}
+.aw.top{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 9%,transparent)}
+.aw .aw-t{font-size:11px;letter-spacing:.08em;color:var(--gold);font-weight:700}
+.aw b{font-size:15px}.aw small{color:var(--muted);font-size:11px}.aw em{font-style:normal;font-size:11.5px;color:var(--muted)}
+.b11{display:grid;gap:6px}.b11r{display:flex;justify-content:center;gap:6px;flex-wrap:wrap}
+.b11r span{font-size:12.5px;font-weight:600;text-align:center;padding:5px 8px;border-radius:6px;background:color-mix(in srgb,var(--hi) 10%,transparent);min-width:84px}
+.b11r small{display:block;font-weight:400;color:var(--muted);font-size:10.5px}
 .grp td.pts{font-family:var(--f-display);font-weight:700;font-size:15px}
 .tk{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px;box-shadow:0 0 0 1px rgba(0,0,0,.35)}
 .t-card{padding:12px 14px}
@@ -897,7 +917,7 @@ const LIB={
  {id:'y_tymo',f:'R',wf:3,dw:'H',n:'티모슈크',num:44,pos:["DM", "MC", "DC"],a:A(58,73,66,70,60,38,74,74,80,80,76,77,74,57,76,65)}
  ]},
  mci23:{name:'펩 맨시티',short:'맨시티 22-23',season:'2022-23',coach:'펩 과르디올라',tac:'pep23',kit:['#6CABDD','#1C2C5B'],gk:'#F2C94C',stadium:'etihad',
-  form:{name:'3-2-4-1',slots:[SL('GK','GK','GK',0.03,0),SL('DL','FB','FB',0.19,-0.74),SL('DC','CB','BPD',0.17,-0.26),SL('DC','CB','CD',0.17,0.26),SL('DR','FB','IFB',0.2,0.76),
+  form:{name:'3-2-4-1',slots:[SL('GK','GK','GK',0.03,0),SL('DL','FB','IFB',0.19,-0.7),SL('DC','CB','BPD',0.17,-0.26),SL('DC','CB','CD',0.17,0.26),SL('DR','FB','HYB',0.2,0.74),
    SL('DM','CM','DM',0.3,0),SL('MC','CM','MEZ',0.44,-0.3),SL('MC','CM','MEZ',0.44,0.3),SL('AML','WM','W',0.58,-0.8),SL('ST','ST','CF',0.66,0),SL('AMR','WM','IW',0.58,0.78)]},
   xi:['c_ederson','c_ake','c_akanji','c_dias','c_stones','c_rodri','c_gundo','c_kdb','c_grealish','c_haaland','c_bernardo'],cap:'c_gundo',players:[
  {id:'c_ederson',f:'L',wf:3,dw:'M',n:'에데르송',num:31,pos:["GK"],a:A(64,62,70,40,32,15,18,27,18,43,54,41,78,20,70,20),gk:{ref:86,hnd:82,one:86,aer:84,kck:91}},
@@ -1105,7 +1125,7 @@ const LIB={
  {id:'g_celades',f:'R',wf:3,dw:'M',n:'셀라데스',num:8,pos:["DM", "MC"],a:A(68,78,76,77,65,39,60,45,72,69,68,78,66,75,76,64)}
  ]},
  kor02:{nat:true,name:'히딩크호 한국',short:'한국 2002',season:'2002 월드컵 4강',coach:'거스 히딩크',tac:'hiddink',kit:['#E4002B','#F4F4F4'],gk:'#2E7D32',stadium:'seoulwc',
-  form:{name:'3-4-3',slots:[SL('GK','GK','GK',0.03,0),SL('DC','CB','BPD',0.16,-0.42),SL('DC','CB','CD',0.15,0),SL('DC','CB','CD',0.16,0.42),SL('WBL','FB','WB',0.3,-0.86),SL('MC','CM','DM',0.34,-0.18),SL('MC','CM','BBM',0.36,0.18),SL('WBR','FB','WB',0.3,0.86),SL('AML','WM','IF',0.56,-0.5),SL('ST','ST','PF',0.66,0),SL('AMR','WM','IF',0.56,0.5)]},
+  form:{name:'3-4-3',slots:[SL('GK','GK','GK',0.03,0),SL('DC','CB','CD',0.16,-0.4),SL('DC','CB','LIB',0.13,0),SL('DC','CB','CD',0.16,0.4),SL('WBL','FB','WB',0.3,-0.86),SL('MC','CM','DM',0.34,-0.18),SL('MC','CM','BBM',0.36,0.18),SL('WBR','FB','WB',0.3,0.86),SL('AML','WM','IF',0.56,-0.5),SL('ST','ST','PF',0.66,0),SL('AMR','WM','IF',0.56,0.5)]},
   xi:['k2_lwj','k2_kty','k2_hmb','k2_cjc','k2_lyp','k2_kni','k2_ysc','k2_scg','k2_skh','k2_hsh','k2_pjs'],cap:'k2_hmb',players:[
  {id:'k2_lwj',f:'R',wf:3,dw:'M',n:'이운재',num:1,pos:["GK"],a:A(41,31,28,29,25,26,21,28,23,35,54,50,64,55,73,27),gk:{ref:78,hnd:68,one:71,aer:71,kck:62}},
  {id:'k2_kbj',f:'R',wf:3,dw:'M',n:'김병지',num:12,pos:["GK"],a:A(41,28,25,40,20,24,21,31,22,36,59,62,69,43,61,25),gk:{ref:71,hnd:74,one:77,aer:74,kck:62}},
@@ -1280,7 +1300,7 @@ const LIB={
  {id:'f_fekir',f:'L',wf:3,dw:'M',n:'페키르',num:18,pos:["AMC", "ST"],a:A(80,80,80,89,89,81,79,54,31,37,72,80,82,82,89,83)}
  ]},
  bra02:{nat:true,name:'스콜라리 브라질',short:'브라질 2002',season:'2002 월드컵 우승',coach:'루이스 펠리페 스콜라리',tac:'scolari02',kit:['#FFDC02','#1E4FA0'],gk:'#1D1D1B',stadium:'yokohama',
-  form:{name:'3-4-2-1',slots:[SL('GK','GK','GK',0.03,0),SL('DC','CB','BPD',0.16,-0.42),SL('DC','CB','CD',0.15,0),SL('DC','CB','CD',0.16,0.42),SL('WBL','FB','WB',0.3,-0.86),SL('MC','CM','DM',0.34,-0.18),SL('MC','CM','BBM',0.36,0.18),SL('WBR','FB','WB',0.3,0.86),SL('AMC','AM','SS',0.54,-0.26),SL('ST','ST','CF',0.66,0),SL('AMC','AM','AP',0.54,0.26)]},
+  form:{name:'3-4-2-1',slots:[SL('GK','GK','GK',0.03,0),SL('DC','CB','CD',0.16,-0.4),SL('DC','CB','LIB',0.14,0),SL('DC','CB','CD',0.16,0.4),SL('WBL','FB','WB',0.3,-0.86),SL('MC','CM','DM',0.34,-0.18),SL('MC','CM','BBM',0.36,0.18),SL('WBR','FB','WB',0.3,0.86),SL('AMC','AM','SS',0.54,-0.26),SL('ST','ST','CF',0.66,0),SL('AMC','AM','AP',0.54,0.26)]},
   xi:['b2_marcos','b2_lucio','b2_edmilson','b2_roque','b2_rc','b2_gilberto','b2_kleberson','b2_cafu','b2_dinho','b2_ronaldo','b2_rivaldo'],cap:'b2_cafu',players:[
  {id:'b2_marcos',f:'R',wf:3,dw:'M',n:'마르쿠스',num:1,pos:["GK"],a:A(32,33,42,27,31,21,23,29,20,35,58,55,74,52,67,22),gk:{ref:89,hnd:89,one:85,aer:92,kck:62}},
  {id:'b2_dida',f:'R',wf:3,dw:'M',n:'지다',num:22,pos:["GK"],a:A(55,30,30,33,28,19,23,26,23,34,65,64,78,53,75,22),gk:{ref:90,hnd:89,one:84,aer:89,kck:62}},
@@ -1336,7 +1356,7 @@ function loadTeams(a,b){[a,b].forEach((k,ti)=>{const t=LIB[k];SIDE[ti]=k;DB[ti]=
 loadTeams('mu08','mu26');
 
 // ---- FM-style roles ----
-const ROLE={GK:{k:'골키퍼'},FB:{k:'풀백'},WB:{k:'윙백'},IFB:{k:'인버티드 풀백'},CD:{k:'센터백'},BPD:{k:'볼 플레잉 디펜더',vis:6},
+const ROLE={GK:{k:'골키퍼'},FB:{k:'풀백'},WB:{k:'윙백'},IFB:{k:'인버티드 풀백'},HYB:{k:'하이브리드 수비수',vis:5},LIB:{k:'리베로',vis:6},CD:{k:'센터백'},BPD:{k:'볼 플레잉 디펜더',vis:6},
  DM:{k:'앵커',dep:-0.05},DLP:{k:'딥라잉 플레이메이커',dep:-0.03,vis:6},BBM:{k:'박스 투 박스',run:0.14,dep:0.04},
  AP:{k:'공격형 플레이메이커',run:0.2,shot:1.1,roam:0.3,vis:6},DW:{k:'수비형 윙어',run:0.22,press:1.3,track:0.06},W:{k:'윙어',run:0.3,cross:1.4},
  IF:{k:'인사이드 포워드',run:0.65,shot:1.6,cross:0.55,lat:0.55,dep:0.06},IW:{k:'인버티드 윙어',run:0.32,shot:1.15,cross:0.85,lat:0.78},
@@ -1837,6 +1857,8 @@ const MOVE={
  FB:{att:[[.3,.9],[.45,.92],[.55,.85]],def:'line',ov:0.45},      // classic full-back: overlaps when the winger comes inside
  WB:{att:[[.33,.94],[.5,.96],[.68,.95]],def:'line',ov:1},       // attacking full-back: gives the width, gets to the byline
  IFB:{att:[[.16,.5],[.3,.46],[.42,.42]],def:'line',ov:0},        // inverts into a back three in possession
+ HYB:{att:[[.22,.2],[.37,.13],[.5,.12]],def:'line',ov:0},          // hybrid: full-back without the ball, steps into midfield beside the pivot with it (Stones 22-23)
+ LIB:{att:[[.13,.0],[.39,.04],[.52,.05]],def:'lib'},               // libero: sweeps behind the stoppers, steps out into midfield to start attacks
  DM:{att:[[.22,.05],[.37,.08],[.5,.1]],def:'screen'},
  DLP:{att:[[.28,.24],[.43,.22],[.6,.2]],def:'mid',late:0.5},     // drops to receive, then arrives late at the edge of the box
  BBM:{att:[[.33,.28],[.5,.26],[.7,.22]],def:'mid',late:0.6},
@@ -1867,13 +1889,14 @@ function teamCtx(tm){const b=S.b,bf=fOf(tm,b.x),bd=(bf+264)/528,bl=(b.y-CY)*tm.d
  // a full-back caught upfield: the centre-back on that side slides across and the holding midfielder drops into the back line
  c.caught={};for(const sd of [-1,1]){const fb=c.flank[sd].fb;c.caught[sd]=!!(fb&&tm.lineF!=null&&fOf(tm,fb.x)>tm.lineF+45);}
  c.nCB=tm.P.filter(p=>p.role==='CB').length;c.cbm=cbMarks(tm,c);
+ const hy=tm.P.find(p=>mv(p)===MOVE.HYB);c.hybSide=hy?side(hy):0;
  // rest defence: without a holding midfielder, the deepest central midfielder stays behind the ball as the pivot
  const cms=tm.P.filter(p=>p.role==='CM');c.pivot=cms.some(p=>mv(p)===MOVE.DM)?null:cms.sort((a,z)=>(mv(a).att[2][0]+(mv(a).late||0)*0.1)-(mv(z).att[2][0]+(mv(z).late||0)*0.1))[0]||null;
  return c;}
 // Centre-backs and the centre-forward: the striker(s) playing on our line are picked up by a centre-back who stays
 // goal-side and touch-tight; the partner drops off a few yards on the inside as cover. With a back three the middle
 // one takes a lone striker and the outside two squeeze in.
-function cbMarks(tm,c){const Lf=tm.lineF;if(Lf==null||S.possT===tm.ti||S.sp)return null;const cbs=tm.P.filter(p=>p.role==='CB').sort((a,z)=>a.l-z.l);if(!cbs.length)return null;
+function cbMarks(tm,c){const Lf=tm.lineF;if(Lf==null||S.possT===tm.ti||S.sp)return null;const cbs=tm.P.filter(p=>p.role==='CB'&&mv(p)!==MOVE.LIB).sort((a,z)=>a.l-z.l);if(!cbs.length)return null;
  const op=T[1-tm.ti],own=S.b.owner;const lat=o=>(o.y-CY)*tm.dir/155;
  const th=op.P.filter(o=>o.role!=='GK'&&o!==own&&Math.abs(lat(o))<0.42&&fOf(tm,o.x)<Lf+48&&fOf(tm,o.x)>Lf-60).sort((a,z)=>fOf(tm,a.x)-fOf(tm,z.x)).slice(0,Math.min(2,cbs.length)).sort((a,z)=>lat(a)-lat(z));
  if(!th.length)return null;const m=new Map();let pick;
@@ -1890,31 +1913,37 @@ const settled=tm=>{const b=S.b;if(!b.owner&&!(b.kind==='pass'&&b.last===tm.ti&&b
 function attackSpot(p,tm,c){const m=mv(p),tac=tm.tac,sd=side(p),fl=c.flank[sd]||{};let [dep,w]=lerp3(m.att,c.ph);
  const sec=c.counter?0.5:settled(tm),d0=m.att[0][0];
  // full-backs and midfielders only commit forward once the team has settled on the ball (rest defence)
- if(p.role==='FB'){dep=d0+(dep-d0)*(0.4+0.6*sec);if(sec<0.8)dep=Math.min(dep,Math.max(d0-0.08,c.bd+0.02+0.3*sec));dep=Math.max(dep,Math.min(c.bd-0.3,d0+(dep-d0)*1.2));}else if(p.role==='CM')dep=d0+(dep-d0)*(0.6+0.4*sec);if(p===c.pivot&&!(p.run>0))dep=Math.min(dep,Math.max(c.bd-0.07,m.att[0][0]+0.08));
+ const hyb=m===MOVE.HYB;if(hyb){dep=d0+(dep-d0)*(0.5+0.5*sec);}
+ else if(p.role==='FB'){dep=d0+(dep-d0)*(0.4+0.6*sec);if(sec<0.8)dep=Math.min(dep,Math.max(d0-0.08,c.bd+0.02+0.3*sec));dep=Math.max(dep,Math.min(c.bd-0.3,d0+(dep-d0)*1.2));}else if(p.role==='CM')dep=d0+(dep-d0)*(0.6+0.4*sec);if(p===c.pivot&&!(p.run>0))dep=Math.min(dep,Math.max(c.bd-0.07,m.att[0][0]+0.08));
  else if((p.role==='WM'||p.role==='AM')&&!c.counter)dep=d0+(dep-d0)*(0.55+0.45*sec);
  const wide=m===MOVE.FB||m===MOVE.WB||p.role==='WM';
- if(p.role==='FB'){const o=(fl.over||0)*sec*cl((c.ph-0.2)/0.8,0,1);dep+=o*(0.16+0.1*(c.ph/2));w=Math.max(w,0.9*o+w*(1-o));
+ if(p.role==='FB'&&!hyb){const o=(fl.over||0)*sec*cl((c.ph-0.2)/0.8,0,1);dep+=o*(0.16+0.1*(c.ph/2));w=Math.max(w,0.9*o+w*(1-o));
   // the other full-back stays back for balance when this side is committed
   dep=Math.min(dep,c.bd+0.05+0.25*o);// a full-back only goes beyond the ball when he is overlapping
   const other=c.flank[-sd];// the full-back who is already up stays up; the other one holds (no both-up, no flip-flopping)
   if(other&&other.fb&&other.over>0.4&&fOf(tm,other.fb.x)>fOf(tm,p.x)+25){dep=Math.min(dep,0.42);w*=0.72;}}
  if(p.role==='WM'&&fl.fb){const o=(fl.over||0)*sec*cl((c.ph-0.2)/0.8,0,1);const inside=m===MOVE.IF||m===MOVE.IW;if(o>0.5)w=Math.min(w,0.55);else if(mv(fl.fb)===MOVE.IFB||o<0.2)w=inside?(m===MOVE.IF?w:Math.max(w,0.6)):Math.max(w,0.86);}// inside forwards keep cutting in; someone else must give the width
- if(c.gkBall){if(p.role==='CB'){w=0.62;dep=0.07;}if(p.role==='FB'&&m!==MOVE.IFB){dep=Math.max(dep,0.3);w=0.95;}if(m===MOVE.DM)dep=0.17;}
+ if(c.hybSide&&p.role==='CB'&&m!==MOVE.LIB){w=sd===c.hybSide?0.42*(0.4+0.6*sec)+w*0.6*(1-sec):w*(1-sec)*0.6;}// back three: the CB on the hybrid's side goes wide, the other one takes the middle
+ if(c.gkBall){if(p.role==='CB'&&m!==MOVE.LIB){w=0.62;dep=0.07;}if(p.role==='FB'&&m!==MOVE.IFB){dep=Math.max(dep,0.3);w=0.95;}if(m===MOVE.DM)dep=0.17;}
  if(m.roam)w=w*(1-m.roam)+Math.abs(c.bl)*m.roam*0.5;
  dep+=(tac.line-0.5)*(p.role==='CB'?0.1:0.05);if(wide)w*=0.92+tac.width*0.08;else w*=0.85+tac.width*0.15;
  let lat=sd?sd*w:0;lat+=c.bl*(wide?0.08:0.2);if(m.roam)lat+=c.bl*m.roam*0.4;
  if(c.counter&&(p.role==='WM'||p.role==='ST'||p.role==='AM')){dep=Math.max(dep+0.08,c.bd+0.14);if(p.role==='WM')w=Math.min(w,0.62);}// break: run beyond the ball, wide men attack the channels
  // full-backs bomb on at full speed to join a settled attack
- const fbGo=p.role==='FB'&&m!==MOVE.IFB&&sec>0.5&&c.ph>0.8&&dep*528-264-fOf(tm,p.x)>55&&p.en>40;
+ const fbGo=p.role==='FB'&&m!==MOVE.IFB&&!hyb&&sec>0.5&&c.ph>0.8&&dep*528-264-fOf(tm,p.x)>55&&p.en>40;
  return{f:dep*528-264,lat:cl(lat,-0.97,0.97),sprint:(c.counter&&dep>c.bd)||fbGo};}
 function defendSpot(p,tm,c){const m=mv(p),tac=tm.tac,sd=side(p),Lf=tm.lineF,bf=c.bf,bl=c.bl;let band=m.def,f,lat;
  if(band==='free'&&!tac.freeWing)band='mid';
  const anchor=(tm.P.find(q=>mv(q)===MOVE.DM)||c.pivot);
- if(p.role==='CB'){const mk=c.cbm&&c.cbm.get(p);
+ if(m===MOVE.LIB){f=Lf-(bf<-60?6:14);lat=bl*0.24;if(c.cbm){let n=0,sl=0;for(const [,q] of c.cbm){n++;sl+=q.lat;}if(n)lat=lat*0.5+sl/n*0.5;}}
+ else if(p.role==='CB'){const mk=c.cbm&&c.cbm.get(p);
   if(c.caught[sd]&&sd){f=Lf;lat=sd*0.5+bl*0.3;}
   else if(mk){f=mk.f;lat=mk.lat;}
   else{f=Lf;lat=(c.nCB>=3?sd*0.36:sd*0.21)+bl*(c.nCB>=3?0.3:0.32);}}
  else if(p===anchor&&(c.caught[-1]||c.caught[1])&&bf<60){f=Lf+6;const s2=c.caught[1]&&!c.caught[-1]?1:c.caught[-1]&&!c.caught[1]?-1:0;lat=s2*0.2+bl*0.2;}
+ else if(p.role==='FB'&&c.nCB>=3){const near=bl*sd>0.1;const up=cl((bf+40)/150,0,1)*(1-(tm.block||0));// ball far up the pitch: wing-backs join the midfield line (3-4-3); ball near our box: back five
+  f=Lf+up*(near?52:44)+(near?0:8)*(1-up);lat=sd*(near?0.82:0.7)+bl*0.22;if(lat*sd>0.95)lat=sd*0.95;
+  if(up<0.35){let w=null,wd=1e9;for(const o of T[1-tm.ti].P){if(o.role==='GK')continue;const ol=(o.y-CY)*tm.dir/155;if(ol*sd<0.45)continue;const of=fOf(tm,o.x);if(of<Lf-30||of>Lf+110)continue;const d=Math.abs(of-Lf);if(d<wd){wd=d;w=o;}}if(w)lat=lat*0.5+((w.y-CY)*tm.dir/155)*0.5;}}
  else if(p.role==='FB'){f=Lf;const near=bl*sd>0.1;lat=(c.nCB>=3?sd*(near?0.84:0.72)+bl*0.25:sd*(near?0.62:0.56)+bl*0.36)*(1-(tm.block||0)*0.12);if(lat*sd>0.95)lat=sd*0.95;// the back four slides across as one unit
   // pick up the winger on this flank
   let w=null,wd=1e9;for(const o of T[1-tm.ti].P){if(o.role==='GK')continue;const ol=(o.y-CY)*tm.dir/155;if(ol*sd<0.4)continue;const of=fOf(tm,o.x);if(of<Lf-30||of>Lf+110)continue;const d=Math.abs(of-Lf);if(d<wd){wd=d;w=o;}}
@@ -2123,13 +2152,14 @@ function ballStep(dt){const b=S.b;
 // ---- Match ratings (FM-style 1-10) ----
 // Optional args rate one half: its stats, minutes, score and full length (45)
 function rating(p,s0,m0,sc0,full){const s=s0||p.st,mins=m0!=null?m0:((p.off==null?S.t:p.off)-p.on)/MATCH_S*90,sc=sc0||S.sc,FL=full||90;if(mins<(FL<90?5:8))return null;const k=Math.min(1,mins/FL)*0.6+0.4;
- let r=6.4+s.g*0.72+s.ast*0.45+s.kp*0.13+s.sot*0.06+s.tk*0.13+s.int*0.09+s.drb*0.08+s.xg*0.15-Math.max(0,s.sh-s.sot-1)*0.05;
+ let r=6.4+s.g*1.15+s.ast*0.6+s.kp*0.13+s.sot*0.06+s.tk*0.13+s.int*0.09+s.drb*0.08+s.xg*0.15-Math.max(0,s.sh-s.sot-1)*0.05;
  if(s.pas>=5)r+=(s.pasOk/s.pas-0.78)*2.5*Math.min(1,s.pas/25);
  r+=(s.fd||0)*0.05-(s.fc||0)*0.1-(s.yc||0)*0.45-(s.rc||0)*1.6;
  if(p.role==='GK')r+=s.sav*0.35-s.conc*0.35;else if(p.role==='CB'||p.role==='FB')r-=s.conc*0;
  const d=sc[p.ti]-sc[1-p.ti];r+=d>0?0.3:d<0?-0.25:0;if(p.role==='GK'||p.role==='CB'||p.role==='FB')r-=sc[1-p.ti]*0.12;
  return cl(6.4+(r-6.4)*k*0.72,3,10);}
-function mom(){let best=null,bv=-1;for(const tm of T)for(const p of tm.all){const r=rating(p);if(r!=null&&r>bv){bv=r;best=p;}}return best;}
+function mom(){const w=S.sc[0]!==S.sc[1]?(S.sc[0]>S.sc[1]?0:1):S.pso&&S.pso.sc[0]!==S.pso.sc[1]?(S.pso.sc[0]>S.pso.sc[1]?0:1):-1;
+ let best=null,bv=-1;for(const tm of T){if(w>=0&&tm.ti!==w)continue;for(const p of tm.all){const r=rating(p);if(r!=null&&r>bv){bv=r;best=p;}}}return best;}// the winners' best player; on a draw, the best on the pitch
 
 let FWDK=0.0003,ASSK=2.2;const setASSK=v=>{ASSK=v};const setFWDK=v=>{FWDK=v};const SPD={},CC={};const DIAG={ftk:0,dt:0,ds:0,fdr:0,tk:0,fpx:0};
 const FRAME_LEN=54;
@@ -2172,7 +2202,9 @@ function psoStep(dt){if(S.leaving.length)S.leaving.length=0;for(const tm of T)fo
  gk.tx=gx-3;if(P.ph!=='flight')gk.ty=CY;
  if(P.ph==='walk'){b.x+=(spot.x-b.x)*Math.min(1,dt*3);b.y+=(spot.y-b.y)*Math.min(1,dt*3);tk.tx=spot.x-4;tk.ty=spot.y;tk.sprint=hyp(tk.x-tk.tx,tk.y-tk.ty)>70;
   if(P.t>9){tk.x=tk.tx;tk.y=tk.ty;}// never wait forever for a taker
-  if(hyp(tk.x-tk.tx,tk.y-tk.ty)<3&&P.t>1.4){P.ph='flight';P.t=0;const g=gk.gk||{ref:60,one:60},sudden=P.n[0]>=5&&P.n[1]>=5;
+  if(P.t>5){gk.x=gk.tx;gk.y=CY;}
+  const gd=hyp(gk.x-gk.tx,gk.y-CY);gk.sprint=gd>12;const gkSet=gd<4;if(!gkSet)P.setT=P.t;
+  if(hyp(tk.x-tk.tx,tk.y-tk.ty)<3&&P.t>1.4&&gkSet&&P.t-(P.setT||0)>0.6){P.ph='flight';P.t=0;const g=gk.gk||{ref:60,one:60},sudden=P.n[0]>=5&&P.n[1]>=5;
    const pg=cl(0.76+(tk.base.fin+tk.base.cmp-150)/420-((g.ref+g.one)/2-75)/280-(sudden?0.04:0)-(100-tk.en)/1000,0.5,0.92),r=R(),side=R()<0.5?-1:1;
    P.out=r<pg?'goal':r<pg+0.07?'miss':'save';const ty=P.out==='miss'?CY+side*(22+R()*8):CY+side*(8+R()*7);
    const v=360,dx=gx+4-b.x,dy=ty-b.y,L0=hyp(dx,dy);b.vx=dx/L0*v;b.vy=dy/L0*v;P.dive=P.out==='save'?ty:CY-side*(10+R()*6);tk.st.sh++;}}
@@ -2718,15 +2750,23 @@ function tTable(G){const R={};for(const k of G.t)R[k]={k,P:0,W:0,D:0,L:0,F:0,A:0
  const h2h=set=>{const H={};for(const r of set)H[r.k]={Pt:0,GD:0,F:0};const ks=new Set(set.map(r=>r.k));
   for(const f of TOUR.fx){if(f.st!=='G'||f.g!==G.g||!f.done||!ks.has(f.a)||!ks.has(f.b))continue;H[f.a].F+=f.sa;H[f.b].F+=f.sb;H[f.a].GD+=f.sa-f.sb;H[f.b].GD+=f.sb-f.sa;
    if(f.sa>f.sb)H[f.a].Pt+=3;else if(f.sb>f.sa)H[f.b].Pt+=3;else{H[f.a].Pt++;H[f.b].Pt++;}}return H;};
- const crit=[['h2h',(x,y,H)=>H[y.k].Pt-H[x.k].Pt||H[y.k].GD-H[x.k].GD||H[y.k].F-H[x.k].F],['gd',(x,y)=>(y.F-y.A)-(x.F-x.A)],['gf',(x,y)=>y.F-x.F],['fp',(x,y)=>x.FP-y.FP],['lot',(x,y)=>lot(y.k)-lot(x.k)]];
- rows.sort((x,y)=>y.Pt-x.Pt);const out=[];
+ // h2h among the tied teams (points, goal difference, goals); if that splits off some teams, the ones still level
+ // are compared again among themselves only; once h2h cannot separate them: overall GD, goals, fair play, lots
+ const hk=(H,r)=>[H[r.k].Pt,H[r.k].GD,H[r.k].F];const same=(a,b)=>a.every((v,i)=>v===b[i]);
+ const rest=[['gd',(x,y)=>(y.F-y.A)-(x.F-x.A)],['gf',(x,y)=>y.F-x.F],['fp',(x,y)=>x.FP-y.FP],['lot',(x,y)=>lot(y.k)-lot(x.k)]];
+ const settle=set=>{if(set.length<2)return set;const H=h2h(set);
+  set=set.slice().sort((x,y)=>{const a=hk(H,x),b=hk(H,y);for(let i=0;i<3;i++)if(a[i]!==b[i])return b[i]-a[i];return 0;});
+  const out=[];for(let i=0;i<set.length;){let j=i;while(j<set.length&&same(hk(H,set[j]),hk(H,set[i])))j++;let sub=set.slice(i,j);
+   if(sub.length>1)sub=sub.length<set.length?settle(sub):sub.slice().sort((x,y)=>{for(const[,c]of rest){const d=c(x,y);if(d)return d;}return 0;});
+   if(j<set.length)sub[sub.length-1].why='h2h';for(let m=0;m<sub.length-1;m++)if(!sub[m].why){const x=sub[m],y=sub[m+1];if(!same(hk(H,x),hk(H,y)))x.why='h2h';else for(const[n,c]of rest){if(c(x,y)){x.why=n;break;}}}
+   out.push(...sub);i=j;}return out;};
+ rows.sort((x,y)=>y.Pt-x.Pt);for(const r of rows)r.why=null;const out=[];
  for(let i=0;i<rows.length;){let j=i;while(j<rows.length&&rows[j].Pt===rows[i].Pt)j++;const set=rows.slice(i,j);
-  if(set.length>1&&set.some(r=>r.P)){const H=h2h(set);set.sort((x,y)=>{for(const [,c] of crit){const d=c(x,y,H);if(d)return d;}return 0;});
-   for(let m=0;m<set.length-1;m++){const x=set[m],y=set[m+1];x.why=null;for(const [n,c] of crit){if(c(x,y,H)){x.why=n;break;}}}}
-  out.push(...set);i=j;}
+  out.push(...(set.length>1&&set.some(r=>r.P)?settle(set):set));if(set.length>1)set.forEach(r=>{if(r===out[j-1])r.why=null;});i=j;}
+ for(let i=0;i<out.length;i++)if(i===out.length-1||out[i].Pt!==out[i+1].Pt)out[i].why=null;
  if(TOUR._lotNew){TOUR._lotNew=false;tSave();}
  return out;}
-const TBW={h2h:'상대 전적',gd:'골 득실',gf:'다득점',fp:'페어플레이 (경고·퇴장이 더 적음)',lot:'추첨'};
+const TBW={h2h:'승자승(맞대결 승점·득실·득점)',gd:'골 득실',gf:'다득점',fp:'페어플레이 (경고·퇴장이 더 적음)',lot:'추첨'};
 const tGroupOf=k=>TOUR.groups.find(G=>G.t.includes(k)).g;
 function tThirds(){return TOUR.groups.map(G=>tTable(G)[2]).sort((x,y)=>y.Pt-x.Pt||(y.F-y.A)-(x.F-x.A)||y.F-x.F);}
 function tBuildQF(){const tb=TOUR.groups.map(tTable),W=tb.map(t=>t[0]),Rn=tb.map(t=>t[1]).sort((x,y)=>y.Pt-x.Pt||(y.F-y.A)-(x.F-x.A)||y.F-x.F),Th=tThirds().slice(0,2);
@@ -2757,7 +2797,10 @@ function tBuildKO(){const P=TOUR.plan,tb=TOUR.groups.map(G=>tTable(G).map(r=>Obj
  const pairs=top.map((r,i)=>[r.k,bot[i].k]);brOrder(h).forEach((i,j)=>TOUR.fx.push(tMk(P.first,null,j+1,pairs[i][0],pairs[i][1])));}
 const tLabel=f=>f.st==='G'?f.g+'조 '+f.r+'라운드':STG[f.st]+(f.st==='F'?'':' '+f.r+'경기');
 function tRecord(f){f.sa=S.sc[0];f.sb=S.sc[1];f.pso=S.pso?S.pso.sc.slice():null;f.et=!!S.etStage;f.done=true;f.sc=[];try{f.d=tDetail();}catch(e){f.d=null;}
- for(const ti of [0,1])for(const p of T[ti].all)if(p.st.g)f.sc.push({id:p.id,n:p.n,k:SIDE[ti],g:p.st.g});tAdvance();tSave();}
+ for(const ti of [0,1])for(const p of T[ti].all)if(p.st.g)f.sc.push({id:p.id,n:p.n,k:SIDE[ti],g:p.st.g});
+ try{const mm=mom();f.mom=mm?mm.id:null;f.ps=[];for(const ti of [0,1])for(const p of T[ti].all){const r=rating(p);if(r==null)continue;const s=p.st,mins=Math.round(((p.off==null?S.t:p.off)-p.on)/MATCH_S*90);
+  f.ps.push([p.id,p.n,SIDE[ti],p.role,s.g||0,s.ast||0,+r.toFixed(2),mins,s.sav||0,p.role==='GK'&&mins>=60&&S.sc[1-ti]===0?1:0,s.tk||0,s.int||0,s.kp||0,s.sh||0,s.sot||0]);}}catch(e){f.ps=null;}
+ tAdvance();tSave();}
 // a result without watching: the full engine, unrendered, a slice per frame so the page stays responsive
 function tSim(f,done){loadTeams(f.a,f.b);init({et:f.st!=='G',noRec:true,cere:false,auto:[true,true]});
  const run=()=>{const t0=performance.now();while(!S.end&&performance.now()-t0<40)step(1/60);if(!S.end){setTimeout(run,0);return;}tRecord(f);done();};run();}
@@ -2776,11 +2819,11 @@ function renderTour(){if(!TOUR)return;const nx=tNext();$('ttitle').textContent=S
  const th=TOUR.fmt==='G12'&&TOUR.fx.some(f=>f.st==='QF')?tThirds().slice(0,2).map(r=>r.k):[];
  const PL=TOUR.plan,NOTE={ALL:PL?euroSub(PL.N)+'. 각 조 1'+(PL.seconds===PL.G?'·2위':'위'+(PL.seconds?'와 2위 중 상위 '+PL.seconds+'팀':''))+(PL.thirds?', 3위 중 상위 '+PL.thirds+'팀':'')+'이 '+STG[PL.first]+'에 올라가요. 조가 다른 팀끼리는 승점·득실을 경기당 평균으로 비교하고, 첫 토너먼트에서는 같은 조끼리 안 만나요.':'',G16:'각 조 1·2위가 8강에 올라가요. 8강은 A1-B2, B1-A2, C1-D2, D1-C2로 붙어요.',G12:'각 조 1·2위와 3위 중 성적이 좋은 두 팀이 8강에 올라가요.',G8:'각 조 1·2위가 4강에 올라가요. A조 1위는 B조 2위와, B조 1위는 A조 2위와 붙어요.',QF:'8팀 단판 녹아웃. 대진은 무작위 추첨이에요.',SF:'4팀 단판 녹아웃. 대진은 무작위 추첨이에요.'}[TOUR.fmt]+' 토너먼트는 단판이고, 비기면 연장전과 승부차기로 가려요.';
  if(!TOUR.groups.length){$('tgroups').innerHTML='<div class="card grp"><h3>참가팀 · '+esc(TFMT[TOUR.fmt].name)+'</h3><ul class="plist">'+TOUR.teams.map(k=>{const out=TOUR.fx.some(f=>f.done&&(f.a===k||f.b===k)&&tWin(f)!==k);return '<li class="'+(out?'out':'')+(TOUR.champ===k?' ch':'')+'">'+tKit(k)+'<span>'+esc(LIB[k].name)+'<small>'+esc(LIB[k].season)+' · '+esc(LIB[k].coach)+'</small></span>'+(TOUR.champ===k?'<b>🏆</b>':out?'<em>탈락</em>':'')+'</li>';}).join('')+'</ul></div><p class="note" style="padding:0 4px">'+NOTE+'</p>';}
- else $('tgroups').innerHTML=TOUR.groups.map(G=>{const tb=tTable(G);return '<div class="card grp"><h3>'+G.g+'조</h3><table><thead><tr><th>#</th><th class="nm">팀</th><th>경기</th><th>승</th><th>무</th><th>패</th><th>득실</th><th>승점</th></tr></thead><tbody>'+
-  tb.map((r,i)=>'<tr class="'+(TOUR.qual?(TOUR.qual.includes(r.k)?(i<2?'q':'q3'):''):(i<2?'q':th.includes(r.k)?'q3':''))+'"><td>'+(i+1)+'</td><td class="tn">'+tKit(r.k)+esc(tName(r.k))+'</td><td>'+r.P+'</td><td>'+r.W+'</td><td>'+r.D+'</td><td>'+r.L+'</td><td>'+(r.F-r.A>0?'+':'')+(r.F-r.A)+'</td><td class="pts">'+r.Pt+'</td></tr>').join('')+'</tbody></table>'+(()=>{const ws=tb.filter((r,i)=>i<3&&r.why&&r.Pt===tb[i+1].Pt&&(r.why==='fp'||r.why==='lot'||r.why==='h2h'));return ws.length?'<p class="tbn">'+ws.map(r=>esc(tName(r.k))+'가 '+esc(tName(tb[tb.indexOf(r)+1].k))+'보다 위 · '+TBW[r.why]).join('<br>')+'</p>':'';})()+'</div>';}).join('')+
-  '<p class="note" style="padding:0 4px">'+NOTE+'</p>';
+ else $('tgroups').innerHTML=TOUR.groups.map(G=>{const tb=tTable(G);return '<div class="card grp"><h3>'+G.g+'조</h3><div class="gwrap"><table><thead><tr><th>#</th><th class="nm">팀</th><th class="pts">승점</th><th>경기</th><th>승</th><th>무</th><th>패</th><th>득점</th><th>실점</th><th>득실</th><th>경고</th></tr></thead><tbody>'+
+  tb.map((r,i)=>'<tr class="'+(TOUR.qual?(TOUR.qual.includes(r.k)?(i<2?'q':'q3'):''):(i<2?'q':th.includes(r.k)?'q3':''))+'"><td>'+(i+1)+'</td><td class="tn">'+tKit(r.k)+esc(tName(r.k))+'</td><td class="pts">'+r.Pt+'</td><td>'+r.P+'</td><td>'+r.W+'</td><td>'+r.D+'</td><td>'+r.L+'</td><td>'+r.F+'</td><td>'+r.A+'</td><td>'+(r.F-r.A>0?'+':'')+(r.F-r.A)+'</td><td class="fpc">'+(r.FP||0)+'</td></tr>').join('')+'</tbody></table></div>'+(()=>{const ws=tb.filter((r,i)=>i<3&&r.why&&r.Pt===tb[i+1].Pt&&(r.why==='fp'||r.why==='lot'||r.why==='h2h'));return ws.length?'<p class="tbn">'+ws.map(r=>esc(tName(r.k))+'가 '+esc(tName(tb[tb.indexOf(r)+1].k))+'보다 위 · '+TBW[r.why]).join('<br>')+'</p>':'';})()+'</div>';}).join('')+
+  '<p class="note" style="padding:0 4px">'+NOTE+'</p><p class="note" style="padding:0 4px">표는 옆으로 밀면 득점·실점·경고까지 보여요. 승점이 같으면 ① 맞대결 승점 ② 맞대결 득실 ③ 맞대결 득점 (셋 이상 동률이면 남은 팀끼리 다시 ①~③) ④ 전체 득실 ⑤ 전체 득점 ⑥ 페어플레이(경고 1·퇴장 3점, 적을수록 위) ⑦ 추첨 순서로 가려요.</p>';
  // next match card
- let h='';if(TOUR.champ){const fn=TOUR.fx.find(f=>f.st==='F'),L0=LIB[TOUR.champ];h='<div class="champ"><small>'+SCOPE[TOUR.scope||'club'].title+' 우승</small><b>🏆 '+esc(L0.name)+'</b><small>'+esc(L0.season)+' · 감독 '+esc(L0.coach)+' · 결승 '+fn.sa+' - '+fn.sb+(fn.pso?' (승부차기 '+fn.pso[0]+'-'+fn.pso[1]+')':'')+' vs '+esc(tName(tWin(fn)===fn.a?fn.b:fn.a))+'</small></div><div class="t-prog" id="tprog"></div>';}
+ let h='';if(TOUR.champ){const fn=TOUR.fx.find(f=>f.st==='F'),L0=LIB[TOUR.champ];h='<div class="champ"><small>'+SCOPE[TOUR.scope||'club'].title+' 우승</small><b>🏆 '+esc(L0.name)+'</b><small>'+esc(L0.season)+' · 감독 '+esc(L0.coach)+' · 결승 '+fn.sa+' - '+fn.sb+(fn.pso?' (승부차기 '+fn.pso[0]+'-'+fn.pso[1]+')':'')+' vs '+esc(tName(tWin(fn)===fn.a?fn.b:fn.a))+'</small></div>'+tAwardsHTML()+'<div class="t-prog" id="tprog"></div>';}
  else if(nx){const A=LIB[nx.a],B=LIB[nx.b],rest=TOUR.fx.filter(f=>!f.done&&f.st===nx.st&&(nx.st!=='G'||f.r===nx.r));
   h='<h3>다음 경기 · '+tLabel(nx)+'</h3><div class="nextm"><div class="tm">'+tKit(nx.a)+'<div>'+esc(A.short)+'<small>'+esc(A.coach)+'</small></div></div><div class="vs">vs</div><div class="tm r"><div>'+esc(B.short)+'<small>'+esc(B.coach)+'</small></div>'+tKit(nx.b)+'</div></div>'+
    '<div class="t-acts"><button type="button" class="btn-primary" id="twatch"'+(TBUSY?' disabled':'')+'>경기 보기</button><button type="button" id="tsim"'+(TBUSY?' disabled':'')+'>결과만 보기</button>'+
@@ -2801,11 +2844,11 @@ function renderTour(){if(!TOUR)return;const nx=tNext();$('ttitle').textContent=S
  else if(!TOUR.groups.length)fx+='<h3>토너먼트</h3>';
  const gs=TOUR.fx.filter(f=>f.st==='G');if(gs.length)fx+='<h3 style="margin-top:'+(ko.length?14:0)+'px">조별리그 일정</h3><ul class="fxl">'+[...new Set(gs.map(f=>f.r))].sort((a,b)=>a-b).map(r=>'<li><span class="rd">'+r+'라운드</span></li>'+gs.filter(f=>f.r===r).map(row).join('')).join('')+'</ul>';
  $('tfix').innerHTML=fx;
- // scorers
- const G={};let goals=0,played=0;for(const f of TOUR.fx){if(!f.done)continue;played++;goals+=f.sa+f.sb;for(const x of f.sc){const e=G[x.id]||(G[x.id]={n:x.n,k:x.k,g:0});e.g+=x.g;}}
- const top=Object.values(G).sort((a,b)=>b.g-a.g).slice(0,12);
- $('tside').innerHTML='<h3>득점 순위</h3>'+(top.length?'<ol class="scl">'+top.map((e,i)=>'<li><span class="rk">'+(i+1)+'</span><span>'+esc(e.n)+'<small>'+tKit(e.k)+esc(tName(e.k))+'</small></span><span class="g">'+e.g+'</span></li>').join('')+'</ol>':'<p class="note">아직 골이 없어요</p>')+
-  '<h3 style="margin-top:14px">대회 기록</h3><p class="note">'+played+' / '+TOUR.fx.length+(TOUR.champ?'':'+')+' 경기 · '+goals+'골'+(played?' · 경기당 '+(goals/played).toFixed(2)+'골':'')+'</p>';}
+ // player stats (tabs) + tournament totals
+ let goals=0,played=0;for(const f of TOUR.fx){if(!f.done)continue;played++;goals+=f.sa+f.sb;}
+ const drawSide=()=>{$('tside').innerHTML='<h3>개인 기록</h3>'+tStatsHTML()+'<h3 style="margin-top:14px">대회 기록</h3><p class="note">'+played+' / '+TOUR.fx.length+(TOUR.champ?'':'+')+' 경기 · '+goals+'골'+(played?' · 경기당 '+(goals/played).toFixed(2)+'골':'')+'</p>';
+  $('tside').querySelectorAll('.stab').forEach(b=>b.onclick=()=>{STAB=b.dataset.t;SMORE=false;drawSide();});const sm=$('smore');if(sm)sm.onclick=()=>{SMORE=!SMORE;drawSide();};};
+ drawSide();}
 $('tourbtn').addEventListener('click',()=>{if(TOUR&&TOUR.cur)showTour();else showHome();});$('tourback').addEventListener('click',showTour);
 $('tfree').addEventListener('click',()=>{if(TBUSY)return;if(TOUR){TOUR.cur=null;tSave();}showHome();});
 $('tnew').addEventListener('click',()=>{if(TBUSY)return;showHome('cfg');});
@@ -2915,7 +2958,45 @@ function hlStop(){if(HL.raf)cancelAnimationFrame(HL.raf);HL.raf=0;HL.c=null;}
 function tMigrateTB(){if(!TOUR||TOUR.tb2||!TOUR.groups.length){if(TOUR&&!TOUR.tb2){TOUR.tb2=true;tSave();}return;}
  const ko=TOUR.fx.filter(f=>f.st!=='G');if(ko.some(f=>f.done)){TOUR.legacyTB=true;}else if(ko.length){TOUR.fx=TOUR.fx.filter(f=>f.st==='G');tAdvance();}
  TOUR.tb2=true;tSave();}
+
+// ===================== Tournament player stats and awards =====================
+const PSK=['id','n','k','role','g','a','r','min','sav','cs','tk','int','kp','sh','sot'];
+function tStats(){const P={};let has=false;if(!TOUR)return P;
+ for(const f of TOUR.fx){if(!f.done)continue;
+  if(f.ps){has=true;for(const row of f.ps){const o={};PSK.forEach((k,i)=>o[k]=row[i]);const e=P[o.id]||(P[o.id]={id:o.id,n:o.n,k:o.k,role:o.role,apps:0,min:0,g:0,a:0,rs:0,sav:0,cs:0,tk:0,int:0,kp:0,sh:0,sot:0,mom:0});
+    e.apps++;e.min+=o.min;e.g+=o.g;e.a+=o.a;e.rs+=o.r;e.sav+=o.sav;e.cs+=o.cs;e.tk+=o.tk;e.int+=o.int;e.kp+=o.kp;e.sh+=o.sh;e.sot+=o.sot;if(o.role!=='GK')e.role=o.role;}
+   if(f.mom&&P[f.mom])P[f.mom].mom++;}
+  else for(const x of f.sc){const e=P[x.id]||(P[x.id]={id:x.id,n:x.n,k:x.k,role:'',apps:0,min:0,g:0,a:0,rs:0,sav:0,cs:0,tk:0,int:0,kp:0,sh:0,sot:0,mom:0,old:1});e.g+=x.g;}}
+ for(const e of Object.values(P)){e.avg=e.apps?e.rs/e.apps:0;e.pt=e.g+e.a;}P._has=has;return P;}
+function tReach(k){if(TOUR.champ===k)return 3;const st=TOUR.fx.filter(f=>f.done&&(f.a===k||f.b===k)&&f.st!=='G').map(f=>f.st);return st.includes('F')?2:st.includes('SF')?1:0;}
+const STAT_TABS=[['g','득점',e=>e.g,e=>e.g?e.g+'골'+(e.a?' · '+e.a+'도움':''):''],['a','도움',e=>e.a,e=>e.a+'도움'],['pt','공격포인트',e=>e.pt,e=>e.pt+' ('+e.g+'골 '+e.a+'도움)'],
+ ['avg','평점',e=>e.apps>=Math.max(2,Math.ceil(tMaxApps()*0.4))?e.avg:-1,e=>e.avg.toFixed(2)+' · '+e.apps+'경기'],['mom','MOM',e=>e.mom,e=>e.mom+'회'],
+ ['cs','클린시트',e=>e.role==='GK'||e.cs?e.cs:-1,e=>e.cs+'경기 · 선방 '+e.sav],['sav','선방',e=>e.sav,e=>e.sav+'회'],['tk','태클',e=>e.tk,e=>e.tk+'회'],['int','인터셉트',e=>e.int,e=>e.int+'회'],
+ ['kp','키패스',e=>e.kp,e=>e.kp+'회'],['sot','유효슈팅',e=>e.sot,e=>e.sot+' / 슈팅 '+e.sh]];
+function tMaxApps(){let m=0;const S0=tStats();for(const e of Object.values(S0))if(e&&e.apps>m)m=e.apps;return m;}
+let STAB='g',SMORE=false;
+function tStatsHTML(){const S0=tStats(),L0=Object.values(S0).filter(e=>e&&e.id);const tab=STAT_TABS.find(t=>t[0]===STAB)||STAT_TABS[0];
+ const rows=L0.map(e=>({e,v:tab[2](e)})).filter(x=>x.v>0).sort((x,y)=>y.v-x.v||(STAB==='g'?y.e.a-x.e.a||x.e.min-y.e.min:y.e.apps-x.e.apps));
+ let rk=0,prev=null;rows.forEach((x,i)=>{if(x.v!==prev){rk=i+1;prev=x.v;}x.rk=rk;});
+ const shown=SMORE?rows.slice(0,60):rows.slice(0,10);
+ return '<div class="stabs">'+STAT_TABS.map(t=>'<button type="button" class="stab'+(t[0]===STAB?' on':'')+'" data-t="'+t[0]+'">'+t[1]+'</button>').join('')+'</div>'+
+  (shown.length?'<ol class="scl">'+shown.map(x=>'<li><span class="rk">'+x.rk+'</span><span>'+esc(x.e.n)+'<small>'+tKit(x.e.k)+esc(tName(x.e.k))+'</small></span><span class="g sv">'+tab[3](x.e)+'</span></li>').join('')+'</ol>':'<p class="note">'+(S0._has||STAB==='g'?'아직 기록이 없어요':'이 기록은 이번 업데이트 이후 경기부터 쌓여요')+'</p>')+
+  (rows.length>10?'<button type="button" class="smore" id="smore">'+(SMORE?'접기':'전체 보기 ('+Math.min(rows.length,60)+'명)')+'</button>':'');}
+function tAwards(){const S0=tStats();const L0=Object.values(S0).filter(e=>e&&e.id&&e.apps);if(!L0.length)return null;
+ const mvp=L0.filter(e=>e.apps>=2).map(e=>({e,s:(e.rs-6.3*e.apps)+e.g*0.55+e.a*0.3+e.mom*0.4+[0,0.5,1.1,1.8][tReach(e.k)]})).sort((a,b)=>b.s-a.s);
+ const boot=L0.filter(e=>e.g).sort((a,b)=>b.g-a.g||b.a-a.a||a.min-b.min);const ast=L0.filter(e=>e.a).sort((a,b)=>b.a-a.a||b.g-a.g||a.min-b.min);
+ const glove=L0.filter(e=>e.role==='GK'||(!e.role&&false)).filter(e=>e.cs!=null&&S0[e.id]&&e.apps).sort((a,b)=>b.cs-a.cs||[0,1,2,3][tReach(b.k)]-[0,1,2,3][tReach(a.k)]||b.avg-a.avg);
+ const need=Math.max(2,Math.ceil(tMaxApps()*0.4)),pool=L0.filter(e=>e.apps>=need),by=(rs,n)=>pool.filter(e=>rs.includes(e.role)).sort((a,b)=>b.avg+b.g*0.08-(a.avg+a.g*0.08)).slice(0,n);
+ const b11={GK:by(['GK'],1),DF:by(['CB','FB'],4),MF:by(['CM','AM'],3),FW:by(['WM','ST'],3)};
+ return{mvp:mvp.slice(0,3).map(x=>x.e),boot:boot[0],boot2:boot.slice(1,3),ast:ast[0],glove:glove.find(e=>e.role==='GK'),b11};}
+function tAwardsHTML(){const A=tAwards();if(!A)return'';const P=e=>e?'<b>'+esc(e.n)+'</b><small>'+tKit(e.k)+esc(tName(e.k))+'</small>':'<b>-</b>';
+ const ball=['골든볼','실버볼','브론즈볼'];
+ return '<div class="awards"><h3>대회 시상</h3><div class="aw-grid">'+
+  A.mvp.map((e,i)=>'<div class="aw'+(i?'':' top')+'"><span class="aw-t">'+ball[i]+(i?'':' · MVP')+'</span>'+P(e)+'<em>평점 '+e.avg.toFixed(2)+' · '+e.g+'골 '+e.a+'도움 · MOM '+e.mom+'회</em></div>').join('')+
+  (A.boot?'<div class="aw"><span class="aw-t">골든부트 · 득점왕</span>'+P(A.boot)+'<em>'+A.boot.g+'골 '+A.boot.a+'도움 · '+A.boot.min+'분</em></div>':'')+
+  (A.ast?'<div class="aw"><span class="aw-t">도움왕</span>'+P(A.ast)+'<em>'+A.ast.a+'도움 '+A.ast.g+'골</em></div>':'')+
+  (A.glove?'<div class="aw"><span class="aw-t">골든글러브</span>'+P(A.glove)+'<em>클린시트 '+A.glove.cs+' · 선방 '+A.glove.sav+'</em></div>':'')+'</div>'+
+  '<h3 style="margin-top:12px">대회 베스트 11</h3><div class="b11">'+['FW','MF','DF','GK'].map(r=>'<div class="b11r">'+A.b11[r].map(e=>'<span>'+esc(e.n)+'<small>'+esc(tName(e.k))+' · '+e.avg.toFixed(2)+'</small></span>').join('')+'</div>').join('')+'</div></div>';}
 })();
 </script>
-
-</html>
+</body></html>
