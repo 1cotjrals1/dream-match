@@ -316,7 +316,12 @@ td.gkrow b{font-family:var(--f-display);font-size:15px;color:var(--fg);margin-ri
 .grp tr.q3 td{background:color-mix(in srgb,var(--gold) 12%,transparent)}
 .gwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -4px;padding:0 4px}
 .gwrap table{min-width:440px}
-.gwrap th:nth-child(2),.gwrap td.tn{position:sticky;left:0;background:var(--panel);z-index:1}
+.gwrap th:nth-child(1),.gwrap td:nth-child(1){position:sticky;left:0;z-index:2;background:var(--panel);width:22px;min-width:22px}
+.gwrap th:nth-child(2),.gwrap td.tn{position:sticky;left:22px;z-index:2;background:var(--panel);box-shadow:4px 0 6px -4px rgba(0,0,0,.35)}
+.gwrap td.tn{min-width:118px;max-width:150px}
+.gwrap tr.q td:nth-child(1),.gwrap tr.q td.tn{background:linear-gradient(color-mix(in srgb,var(--hi) 10%,transparent),color-mix(in srgb,var(--hi) 10%,transparent)),var(--panel)}
+.gwrap tr.q3 td:nth-child(1),.gwrap tr.q3 td.tn{background:linear-gradient(color-mix(in srgb,var(--gold) 12%,transparent),color-mix(in srgb,var(--gold) 12%,transparent)),var(--panel)}
+.hln{display:inline-block;min-width:18px;padding:0 4px;margin-right:4px;border-radius:4px;background:var(--line);font-family:var(--f-display);font-weight:700;text-align:center}
 .grp td.fpc{color:var(--muted)}
 .stabs{display:flex;gap:4px;overflow-x:auto;padding-bottom:6px;margin-bottom:4px;-webkit-overflow-scrolling:touch}
 .stab{flex:none;font-size:12px;padding:4px 9px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted)}
@@ -2060,7 +2065,7 @@ function goalFor(scorer,b){if(S.spoShot&&S.t-S.spoShot.t<8&&S.spoShot.team===sco
  else nm=og?sh.n+' 자책골':(sh?sh.n:'');
  GKof(T[1-scorer.ti]).st.conc++;S.stopW[S.half?1:0]+=0.5;
  onGoal(scorer.ti,nm.replace(/ \(.*\)$/,''));L('<b>'+mm()+' 골! '+nm+' · '+S.sc[0]+' - '+S.sc[1]+'</b>','goal',scorer.ti);
- (S.clipQ||(S.clipQ=[])).push({ti:scorer.ti,n:nm.replace(/ \(.*\)$/,''),lab:mm(),pre:(S.ring||[]).slice(),post:[],need:CLIP_POST,nums:T.map(t=>t.slot.map(p=>p?p.num:0)),gk:T.map(t=>t.slot.map(p=>p&&p.role==='GK'?1:0))});
+ (S.clipQ||(S.clipQ=[])).push({ti:scorer.ti,n:nm.replace(/ \(.*\)$/,''),lab:mm(),pre:(S.ring||[]).slice(),post:[],need:CLIP_POST,...(()=>{const g=!og&&b.shooter&&b.shooter.ti===scorer.ti?b.shooter:null;return g?{sn:g.num,sj:T[scorer.ti].slot.indexOf(g)}:{};})(),nums:T.map(t=>t.slot.map(p=>p?p.num:0)),gk:T.map(t=>t.slot.map(p=>p&&p.role==='GK'?1:0))});
  const who=!og&&b.shooter&&b.shooter.ti===scorer.ti?b.shooter:null;goalTalk(scorer,who,b,pre,og);restart('kickoff',1-scorer.ti,CX,CY,1.0);startCele(scorer,who);}
 const pickOne=a=>a[Math.floor(R()*a.length)];
 // a line of colour commentary every quarter of an hour: who is on top, what the numbers say
@@ -2174,7 +2179,7 @@ const CLIP_PRE=180,CLIP_POST=96;// 6 s before the goal, 3.2 s after (frames are 
 function packClip(q){const fr=q.pre.concat(q.post).filter((_,i)=>i%2===0),N=48,a=new Int16Array(fr.length*N);
  fr.forEach((f,j)=>{const o=j*N;for(let k=0;k<46;k++)a[o+k]=isNaN(f[k])?-32768:Math.round(f[k]*4);a[o+46]=Math.round((f[53]||0)*1000);a[o+47]=f[46];});
  const u=new Uint8Array(a.buffer);let bin='';for(let i=0;i<u.length;i+=8192)bin+=String.fromCharCode.apply(null,u.subarray(i,i+8192));
- return{lab:q.lab,n:q.n,ti:q.ti,nums:q.nums,gk:q.gk,nf:fr.length,goalAt:Math.floor(q.pre.length/2),d:btoa(bin)};}
+ return{lab:q.lab,n:q.n,ti:q.ti,sn:q.sn,sj:q.sj,nums:q.nums,gk:q.gk,nf:fr.length,goalAt:Math.floor(q.pre.length/2),d:btoa(bin)};}
 // Referee runs a diagonal a little behind play; assistants shadow the second-last defender on each touchline
 function officials(dt){const r=S.ref,b=S.b;let tx=b.x-(b.x-CX)*0.3,ty=b.y+(b.y<CY?1:-1)*(58+Math.abs(b.x-CX)*0.08);tx=cl(tx,W0+30,W1-30);ty=cl(ty,H0+12,H1-12);
  const dx=tx-r.x,dy=ty-r.y,d=hyp(dx,dy),sp=Math.min(72,d*2.2);r.x+=d?dx/d*sp*dt:0;r.y+=d?dy/d*sp*dt:0;
@@ -2927,9 +2932,14 @@ function hlBlock(f,d){if(!d.clips||!d.clips.length)return d.clipsDropped?'<p cla
   '<text id="hlcap" x="64" y="104" fill="#fff" font-size="14" font-weight="600" style="paint-order:stroke;stroke:rgba(0,0,0,.55);stroke-width:3px"></text>'+
   '<text id="hlgoal" x="340" y="190" text-anchor="middle" fill="#fff" font-size="30" font-weight="700" opacity="0" style="paint-order:stroke;stroke:#1d1a19;stroke-width:4px"></text></svg>'+
   '<div class="hlbar"><button type="button" id="hlpp">일시정지</button><button type="button" id="hlre">다시 보기</button><span id="hlpos"></span></div></div>'+
-  '<div class="hll"><h3>골 하이라이트</h3><ul>'+d.clips.map((c,i)=>'<li><button type="button" class="hlb" data-i="'+i+'">'+tKit(c.ti===0?f.a:f.b)+'<b>'+esc(c.lab)+'</b> '+esc(c.n)+'</button></li>').join('')+'</ul><p class="note">끝나면 다음 골로 이어서 재생돼요.</p></div></div>';}
-function hlKits(f){const A=LIB[f.a],B=LIB[f.b],k1=cdist(A.kit[0],B.kit[0])<140?B.kit[1]:B.kit[0],g1=cdist(B.gk,k1)<120||cdist(B.gk,A.gk)<90?'#9B51E0':B.gk;
- const nc=c=>{const [r,g,b]=hexRGB(c);return 0.299*r+0.587*g+0.114*b>170?'#1D1A19':'#FFFFFF';};return{kit:[A.kit[0],k1],gk:[A.gk,g1],nc};}
+  '<div class="hll"><h3>골 하이라이트</h3><ul>'+d.clips.map((c,i)=>'<li><button type="button" class="hlb" data-i="'+i+'">'+tKit(c.ti===0?f.a:f.b)+'<b>'+esc(c.lab)+'</b> '+(c.sn!=null?'<span class="hln">'+c.sn+'</span>':'')+esc(c.n)+'</button></li>').join('')+'</ul><p class="note">끝나면 다음 골로 이어서 재생돼요.</p></div></div>';}
+function hlKits(f){const A=LIB[f.a],B=LIB[f.b];const lum=c=>{const [r,g,b]=hexRGB(c);return 0.299*r+0.587*g+0.114*b;};
+ const diff=(x,y)=>cdist(x,y)+Math.abs(lum(x)-lum(y))*0.8;// colour distance plus a brightness gap so red vs maroon still separate
+ // pick the pair of shirts (home/away for each side) that differ most; the home side keeps its first shirt unless both clash
+ let best=null;for(const a of [0,1])for(const b of [0,1]){const v=diff(A.kit[a],B.kit[b])-(a?60:0)-(b?20:0);if(!best||v>best.v)best={v,a:A.kit[a],b:B.kit[b]};}
+ const used=[best.a,best.b];const gkPick=(g,alt)=>used.every(u=>diff(g,u)>130)?g:alt.find(c=>used.every(u=>diff(c,u)>130))||'#9B51E0';
+ const g0=gkPick(A.gk,['#2E7D32','#F2C94C','#9B51E0','#FF7A00']),g1=gkPick(B.gk,['#9B51E0','#FF7A00','#2E7D32','#F2C94C'].filter(c=>diff(c,g0)>130));
+ const nc=c=>lum(c)>170?'#1D1A19':'#FFFFFF';return{kit:[best.a,best.b],gk:[g0,g1],nc};}
 function hlInit(f){hlStop();HL.f=f;const d=f.d;if(!d||!d.clips||!d.clips.length||!$('hlpl'))return;
  $('hlpp').onclick=()=>{HL.play=!HL.play;$('hlpp').textContent=HL.play?'일시정지':'재생';if(HL.play&&!HL.raf){HL.last=0;HL.raf=requestAnimationFrame(hlTick);}};
  $('hlre').onclick=()=>hlLoad(HL.i);
@@ -2939,9 +2949,10 @@ function hlLoad(i){const c=HL.f.d.clips[i];if(!c)return;HL.i=i;const bin=atob(c.
  HL.data=new Int16Array(u.buffer);HL.c=c;HL.t=0;HL.hold=0;HL.play=true;$('hlpp').textContent='일시정지';
  const K=hlKits(HL.f),g=$('hlpl');g.textContent='';HL.nodes=[];
  for(let ti=0;ti<2;ti++)for(let j=0;j<11;j++){const gk=c.gk&&c.gk[ti][j],col=gk?K.gk[ti]:K.kit[ti],e=document.createElementNS(NSV,'g');
-  e.innerHTML='<circle r="7.2" fill="'+col+'" stroke="'+(K.nc(col)==='#FFFFFF'?'#FFFFFF':'#1D1A19')+'" stroke-width="1.2"/><text text-anchor="middle" dominant-baseline="central" fill="'+K.nc(col)+'" font-size="8" font-weight="700">'+(c.nums?c.nums[ti][j]:'')+'</text>';g.appendChild(e);HL.nodes.push(e);}
+  const isSc=c.sj!=null?(ti===c.ti&&j===c.sj):(c.sn!=null&&ti===c.ti&&c.nums&&c.nums[ti][j]===c.sn);
+  e.innerHTML=(isSc?'<circle r="11.5" fill="none" stroke="#F2C94C" stroke-width="2.2"/>':'')+'<circle r="8.4" fill="'+col+'" stroke="'+(K.nc(col)==='#FFFFFF'?'#FFFFFF':'#1D1A19')+'" stroke-width="1.4"/><text text-anchor="middle" dominant-baseline="central" fill="'+K.nc(col)+'" font-size="9.5" font-weight="800">'+(c.nums?c.nums[ti][j]:'')+'</text>';g.appendChild(e);HL.nodes.push(e);}
  for(const b of document.querySelectorAll('.hlb'))b.classList.toggle('on',+b.dataset.i===i);
- $('hlcap').textContent=c.lab+' '+c.n;$('hlgoal').textContent='골! '+c.n;hlDraw();if(!HL.raf){HL.last=0;HL.raf=requestAnimationFrame(hlTick);}}
+ const sn=c.sn!=null?c.sn:null;$('hlcap').textContent=c.lab+' '+(sn!=null?sn+'번 ':'')+c.n;$('hlgoal').textContent='골! '+(sn!=null?sn+' ':'')+c.n;hlDraw();if(!HL.raf){HL.last=0;HL.raf=requestAnimationFrame(hlTick);}}
 function hlDraw(){const c=HL.c,D=HL.data,N=48,n=c.nf,t=Math.min(HL.t,n-1),i=Math.floor(t),j=Math.min(n-1,i+1),a=t-i;
  const v=(k)=>{const p=D[i*N+k],q=D[j*N+k];if(p===-32768)return NaN;return (q===-32768?p:p+(q-p)*a)/4;};
  for(let m=0;m<22;m++){const x=v(m*2),y=v(m*2+1),e=HL.nodes[m];if(isNaN(x)){e.style.display='none';continue;}e.style.display='';e.setAttribute('transform','translate('+x.toFixed(1)+','+y.toFixed(1)+')');}
