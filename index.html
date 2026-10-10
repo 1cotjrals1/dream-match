@@ -314,6 +314,9 @@ td.gkrow b{font-family:var(--f-display);font-size:15px;color:var(--fg);margin-ri
 .grp td.tn{text-align:left;max-width:150px;overflow:hidden;text-overflow:ellipsis}
 .grp tr.q td{background:color-mix(in srgb,var(--hi) 10%,transparent)}
 .grp tr.q3 td{background:color-mix(in srgb,var(--gold) 12%,transparent)}
+.tie.tie2 .legs{display:flex;gap:6px;margin:3px 0 0;font-size:11px;color:var(--muted)}
+.tie.tie2 .lg{padding:1px 5px;border-radius:4px;border:1px solid var(--line)}
+.tie.tie2 .lg.dn{cursor:pointer}.tie.tie2 .lg.dn:hover{border-color:var(--hi);color:var(--fg)}
 .gwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -4px;padding:0 4px}
 .gwrap table{min-width:440px}
 .gwrap th:nth-child(1),.gwrap td:nth-child(1){position:sticky;left:0;z-index:2;background:var(--panel);width:22px;min-width:22px}
@@ -550,6 +553,7 @@ td.ft{white-space:nowrap;font-size:12px}td.ft .st{color:#E0A526;letter-spacing:-
    <div class="hcfg-hd"><button type="button" id="hback">◂ 뒤로</button><h2>토너먼트 설정</h2></div>
    <div class="hsec"><h3>참가 범위</h3><div class="seg hscope" id="hscope" role="group" aria-label="참가 범위"><button type="button" data-s="club" aria-pressed="true">클럽 · 챔피언스 리그</button><button type="button" data-s="nat" aria-pressed="false">국가대표 · 월드컵</button><button type="button" data-s="all" aria-pressed="false">전체 섞기</button></div></div>
    <div class="hsec"><h3>대회 형식</h3><div id="hfmts" class="hfmts"></div></div>
+   <div class="hsec"><h3>경기 방식</h3><div class="seg hscope" id="hlegs" role="group" aria-label="경기 방식"><button type="button" data-l="1" aria-pressed="true">홈·원정 (챔스 방식)</button><button type="button" data-l="0" aria-pressed="false">단판</button></div><p class="note" id="hlegnote" style="margin:6px 2px 0"></p></div>
    <div class="hsec"><div class="hrow"><h3>참가팀</h3><div class="seg" id="hmode" role="group" aria-label="참가팀 정하는 방식"><button type="button" data-m="rand" aria-pressed="true">무작위 추첨</button><button type="button" data-m="pick" aria-pressed="false">직접 선택</button></div>
      <span id="hcount" class="hcount"></span><button type="button" id="hfill">나머지 무작위로 채우기</button><button type="button" id="hclear">선택 초기화</button></div>
     <div id="hteams" class="hteams"></div></div>
@@ -1439,7 +1443,7 @@ function refresh(p){const cm=CONDS[p.cond].m*(T&&T[p.ti]?T[p.ti].cb||1:1),e=p.en
 
 // opts: {tac:[a,b], xi:[[ids],[ids]], cond:{id:level}, auto:[bool,bool]}
 function init(opts){opts=opts||{};const dv=rivalry(SIDE[0],SIDE[1]);const tac=opts.tac||SIDE.map(k=>LIB[k].tac),xi=opts.xi||DEFAULT_XI,cond=opts.cond||rollConditions();S=null;
- S={derby:dv,et:!!opts.et,etStage:0,pso:null,leaving:[],maxSubs:5,t:0,min:0,sc:[0,0],end:false,half:false,pause:0,sp:null,kid:0,possT:0,safe:0,events:[],stopId:0,htStop:-1,add:[null,null],stopW:[0,0],subQ:[[],[]],frames:[],fstep:0,shots:[],cond,nextHeat:0,nextRef:0,nextAuto:[0,0],
+ S={derby:dv,et:!!opts.et,agg:opts.agg||null,etStage:0,pso:null,leaving:[],maxSubs:5,t:0,min:0,sc:[0,0],end:false,half:false,pause:0,sp:null,kid:0,possT:0,safe:0,events:[],stopId:0,htStop:-1,add:[null,null],stopW:[0,0],subQ:[[],[]],frames:[],fstep:0,shots:[],cond,nextHeat:0,nextRef:0,nextAuto:[0,0],
   ref:{x:CX-40,y:CY+70},ar:[CX+60,CX-60],hist:[[],[]],b:{x:CX,y:CY,vx:0,vy:0,owner:null,kind:'dead',last:0,lastP:null,intended:null,kid:0,noTouch:null,ntu:0,cross:false,offside:false,shooter:null,shotRec:null}};
  T=null;T=[0,1].map(ti=>({ti,dir0:ti?-1:1,cap:(opts.cap||DEFAULT_CAP)[ti],capOn:false,dir:ti?-1:1,poss:0,shots:0,sot:0,passes:0,passOk:0,tk:0,int:0,wonT:-9,lostT:-9,subs:0,windows:0,lastWin:-1,fouls:0,yel:0,red:0,auto:opts.auto?opts.auto[ti]:true,tac:TACTICS[tac[ti]],all:[],used:new Set(),
   P:xi[ti].map((id,i)=>makePlayer(ti,id,i,cond[id]||2))}));
@@ -2192,6 +2196,8 @@ function heat(){const h=S.half?1:0;for(const tm of T)for(const p of tm.P){const 
 // ---- Extra time and penalty shoot-out ----
 function switchEnds(){for(const tm of T){tm.dir=-tm.dir;tm.lineF=null;tm.stepT=0;for(const p of tm.P){p.en=Math.min(100,p.en+4);refresh(p);
  const q=p.role==='GK'?{x:ownGX(tm)+tm.dir*12,y:CY}:slotPos(tm,p,0.5);p.x=q.x;p.y=q.y;p.vx=p.vy=0;p.run=0;p.dribT=null;p.stun=0;}}}
+// two-legged ties: the first leg's goals count toward the total (no away-goals rule, as in the Champions League since 2021)
+function aggTie(){const a=S.agg||[0,0];return S.sc[0]+a[0]===S.sc[1]+a[1];}
 function startET(){S.etStage=1;S.tET=S.t;S.min=90;S.etAdd=[1,1+Math.round(R()*2)];S.maxSubs=6;for(const tm of T){tm.windows=Math.max(0,tm.windows-1);for(const p of tm.P)p.en=Math.min(100,p.en+6);}
  L('<b>'+"90' 정규시간 종료 · "+S.sc[0]+' - '+S.sc[1]+' · 연장전 돌입</b>','half');restart('kickoff',0,CX,CY,2.0,{ht:true});}
 // Shoot-out at one end: everyone else waits in the centre circle, each taker walks up, the keeper guesses a side.
@@ -2238,9 +2244,9 @@ function step(dt){if(S.end)return;if(S.cere){cereStep(dt);return;}S.t+=dt;const 
   restart('kickoff',1,CX,CY,2.0,{ht:true});}
  const live=b.kind!=='shot'&&!(S.sp&&S.sp.type==='pen');
  if(S.etStage===1&&S.min>=105+S.etAdd[0]&&live){switchEnds();L('<b>'+"105' 연장 전반 종료 · "+S.sc[0]+' - '+S.sc[1]+' · 진영 교체</b>','half');restart('kickoff',1,CX,CY,1.6,{ht:true});S.etStage=2;S.tET2=S.t;S.min=105;}
- if(S.etStage===2&&S.min>=120+S.etAdd[1]&&live){if(S.sc[0]===S.sc[1]){startPSO();return;}S.end=true;L('<b>'+mm()+" 연장 종료 · "+TEAMNAME[0]+' '+S.sc[0]+' - '+S.sc[1]+' '+TEAMNAME[1]+'</b>','end');record();return;}
- if(!S.etStage&&S.half&&S.add[1]!=null&&S.min>=90+S.add[1]&&live&&S.et&&S.sc[0]===S.sc[1]){startET();}
- if(!S.etStage&&S.half&&S.add[1]!=null&&S.min>=90+S.add[1]&&b.kind!=='shot'&&!(S.sp&&S.sp.type==='pen')){S.end=true;const m=mom();L('<b>'+mm()+" 경기 종료 · "+TEAMNAME[0]+' '+S.sc[0]+' - '+S.sc[1]+' '+TEAMNAME[1]+'</b>','end');record();return;}
+ if(S.etStage===2&&S.min>=120+S.etAdd[1]&&live){if(aggTie()){startPSO();return;}S.end=true;L('<b>'+mm()+" 연장 종료 · "+TEAMNAME[0]+' '+S.sc[0]+' - '+S.sc[1]+' '+TEAMNAME[1]+'</b>','end');record();return;}
+ if(!S.etStage&&S.half&&S.add[1]!=null&&S.min>=90+S.add[1]&&live&&S.et&&aggTie()){if(S.agg)L('<b>합계 '+(S.sc[0]+S.agg[0])+' - '+(S.sc[1]+S.agg[1])+' 동점 · 연장전으로</b>','half');startET();}
+ if(!S.etStage&&S.half&&S.add[1]!=null&&S.min>=90+S.add[1]&&b.kind!=='shot'&&!(S.sp&&S.sp.type==='pen')){S.end=true;const m=mom();L('<b>'+mm()+" 경기 종료 · "+TEAMNAME[0]+' '+S.sc[0]+' - '+S.sc[1]+' '+TEAMNAME[1]+(S.agg?' · 합계 '+(S.sc[0]+S.agg[0])+' - '+(S.sc[1]+S.agg[1]):'')+'</b>','end');record();return;}
  if(S.sp){const sp=S.sp;sp.w=(sp.w||0)+dt;
   // carry the ball to the restart spot (no teleporting), then wait for the taker and, for dead-ball chances, for everyone to be set
   const dx=sp.x-b.x,dy=sp.y-b.y,dd=hyp(dx,dy);if(dd>0.4){const m=Math.min(dd,(sp.w<0.35?0:240)*dt);b.x+=dx/dd*m;b.y+=dy/dd*m;}
@@ -2288,7 +2294,7 @@ const hexRGB=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)),cdist=(a,b)=>{const 
 function applyTeams(a,b){pick=[a,b];loadTeams(a,b);formSel[0]=formSel[1]="def";const A=LIB[a],B=LIB[b];
  KIT[0]=A.kit[0];KIT[1]=cdist(A.kit[0],B.kit[0])<140?B.kit[1]:B.kit[0];GKC[0]=A.gk;GKC[1]=cdist(B.gk,KIT[0])<120||cdist(B.gk,A.gk)<90?'#9B51E0':B.gk;
  [A,B].forEach((t,ti)=>{COACH[ti]=t.coach;DEF_TAC[ti]=t.tac;tacSel[ti]=t.tac;TNAME[ti]=t.name;SHORT[ti]=t.short;xi[ti]=t.xi.slice();caps[ti]=t.cap;});
- DEF_SLOTS=FORM.map(F=>F.slots.map(s=>Object.assign({},s)));DEF_NAME=FORM.map(F=>F.name);STAD=STADIUM[A.stadium]||STADIUM.old;
+ DEF_SLOTS=FORM.map(F=>F.slots.map(s=>Object.assign({},s)));DEF_NAME=FORM.map(F=>F.name);const cf=tCurFx();STAD=STADIUM[cf&&cf.venue&&cf.a===a&&cf.b===b?cf.venue:A.stadium]||STADIUM.old;
  const acc=c=>{const [r,g,b]=hexRGB(c);return 0.299*r+0.587*g+0.114*b>200?'#9AA0A6':c;};$('kitcss').textContent=':root{--k0:'+acc(KIT[0])+';--k1:'+acc(KIT[1])+'}.k0{background:'+KIT[0]+'}.k1{background:'+KIT[1]+'}.feed .td.t0{background:'+KIT[0]+';box-shadow:0 0 0 1px rgba(0,0,0,.35)}.feed .td.t1{background:'+KIT[1]+';box-shadow:0 0 0 1px rgba(0,0,0,.35)}.mk.t0 i{background:'+KIT[0]+';box-shadow:0 0 0 1px rgba(0,0,0,.35)}.mk.t1 i{background:'+KIT[1]+';box-shadow:0 0 0 1px rgba(0,0,0,.35)}';
  document.querySelectorAll('.tn0').forEach(e=>e.textContent=TNAME[0]);document.querySelectorAll('.tn1').forEach(e=>e.textContent=TNAME[1]);
  document.querySelectorAll('.ts0').forEach(e=>e.textContent=SHORT[0]);document.querySelectorAll('.ts1').forEach(e=>e.textContent=SHORT[1]);
@@ -2703,7 +2709,7 @@ for(const b of [$('orient'),$('orient2')])b.addEventListener('click',()=>setOrie
 window.addEventListener('resize',fit);fit();
 
 onGoal=(t,n)=>flash('골! '+n);
-function reinit(){repPer='all';rp=null;mode='live';running=false;init({tac:tacSel,xi,cond,auto:autoSel,cap:caps,et:$('etopt').checked,cere:true,tun:STAD.tun});if(S.pso===null)S.tPSO=null;nEv=-1;marksEl.textContent='';nMk=0;selP=null;luSel=null;build();
+function reinit(){repPer='all';rp=null;mode='live';running=false;init({tac:tacSel,xi,cond,auto:autoSel,cap:caps,et:$('etopt').checked,agg:(()=>{const cf=tCurFx();return cf&&cf.a===pick[0]&&cf.b===pick[1]?legAgg(cf):null;})(),cere:true,tun:STAD.tun});if(S.pso===null)S.tPSO=null;nEv=-1;marksEl.textContent='';nMk=0;selP=null;luSel=null;build();
  $('back').hidden=true;$('rpbadge').setAttribute('opacity',0);flashT=0;flashEl.setAttribute('opacity',0);renderFeed();renderLineups();repDirty=true;renderReport();render();setBtn();}
 function newMatch(){cond=rollConditions();reinit();showSetup();}
 $('go').addEventListener('click',()=>{if(mode==='replay'){rp.paused=!rp.paused;setBtn();return;}if(S.end){if(TOUR&&TOUR.cur){showTour();return;}newMatch();return;}if(S.t===0&&!$('setup').hidden)return;
@@ -2731,18 +2737,37 @@ function euroSub(N){if(N<4)return '4팀 이상 필요';const P=euroPlan(N);retur
 const TFMT={ALL:{n:0,name:'전체 참가 · 유로 방식',sub:''},G16:{n:16,name:'조별리그 + 토너먼트',sub:'16팀 · 4개 조 → 8강'},G12:{n:12,name:'조별리그 + 토너먼트',sub:'12팀 · 3개 조 → 8강'},G8:{n:8,name:'조별리그 + 토너먼트',sub:'8팀 · 2개 조 → 4강'},QF:{n:8,name:'8강 토너먼트',sub:'8팀 · 단판 녹아웃'},SF:{n:4,name:'4강 토너먼트',sub:'4팀 · 단판 녹아웃'}};
 const SCOPE={club:{name:'클럽',title:'드림 챔피언스 리그',f:v=>!v.nat},nat:{name:'국가대표',title:'드림 월드컵',f:v=>!!v.nat},all:{name:'전체',title:'드림 올스타 컵',f:()=>true}};
 const tPool=sc=>Object.keys(LIB).filter(k=>SCOPE[sc||'club'].f(LIB[k]));
-function tNew(fmt,teams,scope){scope=SCOPE[scope]?scope:'club';fmt=TFMT[fmt]?fmt:'G12';
+function tNew(fmt,teams,scope,legs){scope=SCOPE[scope]?scope:'club';fmt=TFMT[fmt]?fmt:'G12';NEWHL=!!legs;
  if(fmt==='ALL'){const k=tShuf((teams&&teams.length>=4?teams:tPool(scope)).slice()),P=euroPlan(k.length),L='ABCDEFGHIJKLMNOP',groups=[],fx=[];let o=0;
   P.sizes.forEach((n,i)=>{groups.push({g:L[i],t:k.slice(o,o+n)});o+=n;});
   for(const G of groups){const t=G.t;const R=t.length===4?[[[0,1],[3,2]],[[0,2],[1,3]],[[0,3],[2,1]]]:t.length===3?[[[0,1]],[[2,0]],[[1,2]]]:rrSched(t.length);
    R.forEach((ms,ri)=>ms.forEach(([a,b])=>{if(t[a]&&t[b])fx.push(tMk('G',G.g,ri+1,t[a],t[b]));}));}
-  TOUR={v:2,fmt,scope,teams:k,groups,fx,champ:null,cur:null,tb2:true,plan:P};tSave();return;}const n=TFMT[fmt].n,k=tShuf((teams&&teams.length===n?teams:tShuf(tPool(scope)).slice(0,n)).slice()),fx=[];let groups=[];
+  if(NEWHL)dblRound(fx);TOUR={v:2,fmt,scope,teams:k,groups,fx,champ:null,cur:null,tb2:true,plan:P,hl:NEWHL};tSave();return;}const n=TFMT[fmt].n,k=tShuf((teams&&teams.length===n?teams:tShuf(tPool(scope)).slice(0,n)).slice()),fx=[];let groups=[];
  if(fmt==='G16'||fmt==='G12'||fmt==='G8'){groups=['A','B','C','D'].slice(0,n/4).map((g,i)=>({g,t:k.slice(i*4,i*4+4)}));
   [[0,1,3,2],[0,2,1,3],[0,3,2,1]].forEach((r,ri)=>groups.forEach(G=>{fx.push(tMk('G',G.g,ri+1,G.t[r[0]],G.t[r[1]]));fx.push(tMk('G',G.g,ri+1,G.t[r[2]],G.t[r[3]]));}));}
- else if(fmt==='QF'){for(let i=0;i<4;i++)fx.push(tMk('QF',null,i+1,k[2*i],k[2*i+1]));}
- else{fx.push(tMk('SF',null,1,k[0],k[1]));fx.push(tMk('SF',null,2,k[2],k[3]));}
- TOUR={v:2,fmt,scope,teams:k,groups,fx,champ:null,cur:null,tb2:true};tSave();}
+ else if(fmt==='QF')fx.push(...tieFx('QF',[0,1,2,3].map(i=>[k[2*i],k[2*i+1]]),scope));
+ else if(!groups.length)fx.push(...tieFx('SF',[[k[0],k[1]],[k[2],k[3]]],scope));
+ if(NEWHL&&groups.length)dblRound(fx);
+ TOUR={v:2,fmt,scope,teams:k,groups,fx,champ:null,cur:null,tb2:true,hl:NEWHL};tSave();}
 const tWin=f=>f.sa>f.sb?f.a:f.sb>f.sa?f.b:f.pso?(f.pso[0]>f.pso[1]?f.a:f.b):null;
+// ---- home & away: group stage twice (return fixtures with home and away swapped), knockout ties over two legs, one-off final at a neutral ground
+let NEWHL=false;
+function dblRound(fx){const gs=fx.filter(f=>f.st==='G');const mr=Math.max(0,...gs.map(f=>f.r));for(const f of gs)fx.push(tMk('G',f.g,f.r+mr,f.b,f.a));}
+const NEUTRAL={club:['bernabeu','sansiro','allianz','westfalen','camp','luzhniki','yokohama','maracana'],nat:['lusail','maracana','yokohama','luzhniki','soccercity','seoulwc','kazan'],all:['bernabeu','sansiro','lusail','maracana','yokohama','luzhniki','westfalen']};
+function neutralFor(x,y,scope){const hs=[LIB[x].stadium,LIB[y].stadium];const c=(NEUTRAL[scope]||NEUTRAL.club).filter(k=>STADIUM[k]&&!hs.includes(k));return c.length?c[Math.floor(Math.random()*c.length)]:null;}
+// one tie: x is the seeded side (plays the second leg at home)
+function tTieMk(st,r,x,y,scope,hl){if(hl&&st!=='F')return[Object.assign(tMk(st,null,r,y,x),{leg:1}),Object.assign(tMk(st,null,r,x,y),{leg:2})];
+ const f=tMk(st,null,r,x,y);if(st==='F')f.venue=neutralFor(x,y,scope);return[f];}
+function tieFx(st,pairs,scope,hl){hl=hl==null?NEWHL:hl;const L=pairs.map(([x,y],i)=>tTieMk(st,i+1,x,y,scope,hl));return[...L.map(l=>l[0]),...L.filter(l=>l[1]).map(l=>l[1])];}
+const tPush=(st,pairs)=>TOUR.fx.push(...tieFx(st,pairs,TOUR.scope||'club',!!TOUR.hl));
+function tTies(st){const fs=TOUR.fx.filter(f=>f.st===st);const rs=[...new Set(fs.map(f=>f.r))].sort((a,b)=>a-b);
+ return rs.map(r=>{const legs=fs.filter(f=>f.r===r).sort((a,b)=>(a.leg||0)-(b.leg||0));const L2=legs[legs.length-1];return{st,r,legs,x:L2.a,y:L2.b};});}
+function tieAgg(t){if(t.legs.length<2){const f=t.legs[0];return f.done?[f.sa,f.sb]:null;}const[a,b]=t.legs;if(!a.done)return null;return[a.sb+(b.done?b.sa:0),a.sa+(b.done?b.sb:0)];}
+function tieWin(t){if(!t.legs.every(f=>f.done))return null;if(t.legs.length<2)return tWin(t.legs[0]);const g=tieAgg(t),b=t.legs[1];
+ return g[0]>g[1]?t.x:g[1]>g[0]?t.y:b.pso?(b.pso[0]>b.pso[1]?t.x:t.y):null;}
+const tieOf=f=>tTies(f.st).find(t=>t.r===f.r);
+function legAgg(f){if(!f||f.leg!==2)return null;const t=tieOf(f),a=t&&t.legs[0];return a&&a.done?[a.sb,a.sa]:null;}// first-leg goals for (this game's home side, away side)
+function tCurFx(){try{return TOUR&&TOUR.cur?TOUR.fx.find(x=>x.id===TOUR.cur):null;}catch(e){return null;}}
 function tTable(G){const R={};for(const k of G.t)R[k]={k,P:0,W:0,D:0,L:0,F:0,A:0,Pt:0};
  for(const f of TOUR.fx){if(f.st!=='G'||f.g!==G.g||!f.done)continue;const a=R[f.a],b=R[f.b];a.P++;b.P++;a.F+=f.sa;a.A+=f.sb;b.F+=f.sb;b.A+=f.sa;
   if(f.sa>f.sb){a.W++;a.Pt+=3;b.L++;}else if(f.sb>f.sa){b.W++;b.Pt+=3;a.L++;}else{a.D++;b.D++;a.Pt++;b.Pt++;}}
@@ -2778,14 +2803,14 @@ function tBuildQF(){const tb=TOUR.groups.map(tTable),W=tb.map(t=>t[0]),Rn=tb.map
  const seeds=[...W,Rn[0]].map(r=>r.k),uns=[Rn[1],Rn[2],...Th].map(r=>r.k);let best=null;
  const perms=a=>a.length<2?[a]:a.flatMap((x,i)=>perms([...a.slice(0,i),...a.slice(i+1)]).map(p=>[x,...p]));
  for(const p of tShuf(perms(uns))){if(p.every((u,i)=>tGroupOf(u)!==tGroupOf(seeds[i]))){best=p;break;}}best=best||uns;
- seeds.forEach((sd,i)=>TOUR.fx.push(tMk('QF',null,i+1,sd,best[i])));}
+ tPush('QF',seeds.map((sd,i)=>[sd,best[i]]));}
 function tAdvance(){const by=st=>TOUR.fx.filter(f=>f.st===st);
  const gd=by('G').length&&by('G').every(f=>f.done);
  if(TOUR.fmt==='G12'&&gd&&!by('QF').length)tBuildQF();
- if(TOUR.fmt==='G16'&&gd&&!by('QF').length){const [A,B,C,D]=TOUR.groups.map(tTable);[[A,B],[B,A],[C,D],[D,C]].forEach(([x,y],i)=>TOUR.fx.push(tMk('QF',null,i+1,x[0].k,y[1].k)));}
- if(TOUR.fmt==='G8'&&gd&&!by('SF').length){const [A,B]=TOUR.groups.map(tTable);TOUR.fx.push(tMk('SF',null,1,A[0].k,B[1].k));TOUR.fx.push(tMk('SF',null,2,B[0].k,A[1].k));}
+ if(TOUR.fmt==='G16'&&gd&&!by('QF').length){const [A,B,C,D]=TOUR.groups.map(tTable);tPush('QF',[[A,B],[B,A],[C,D],[D,C]].map(([x,y])=>[x[0].k,y[1].k]));}
+ if(TOUR.fmt==='G8'&&gd&&!by('SF').length){const [A,B]=TOUR.groups.map(tTable);tPush('SF',[[A[0].k,B[1].k],[B[0].k,A[1].k]]);}
  if(TOUR.fmt==='ALL'&&gd&&!TOUR.fx.some(f=>f.st!=='G'))tBuildKO();
- for(let i=0;i<KOS.length-1;i++){const cur=by(KOS[i]),nx=KOS[i+1];if(cur.length>1&&cur.every(f=>f.done)&&!by(nx).length)for(let j=0;j<cur.length;j+=2)TOUR.fx.push(tMk(nx,null,j/2+1,tWin(cur[j]),tWin(cur[j+1])));}
+ for(let i=0;i<KOS.length-1;i++){const cur=tTies(KOS[i]),nx=KOS[i+1];if(cur.length>1&&cur.every(t=>tieWin(t))&&!by(nx).length){const pr=[];for(let j=0;j<cur.length;j+=2)pr.push([tieWin(cur[j]),tieWin(cur[j+1])]);tPush(nx,pr);}}
  const fn=by('F');if(fn.length&&fn[0].done)TOUR.champ=tWin(fn[0]);}
 const tNext=()=>TOUR.fx.find(f=>!f.done);
 // rank teams from different groups (groups of three and four alike): per-game points, goal difference, goals, fair play, lots
@@ -2799,23 +2824,24 @@ function tBuildKO(){const P=TOUR.plan,tb=TOUR.groups.map(G=>tTable(G).map(r=>Obj
  const seeds=[...W,...S2,...T3].slice(0,P.K);TOUR.qual=seeds.map(r=>r.k);const h=P.K/2,top=seeds.slice(0,h);let bot=seeds.slice(h).reverse(),ok=false;
  // draw the lower half against the upper half: nobody meets a team from his own group in the first knockout round
  for(let t=0;t<4000&&!ok;t++){ok=bot.every((r,i)=>r.g!==top[i].g);if(!ok)bot=tShuf(bot.slice());}
- const pairs=top.map((r,i)=>[r.k,bot[i].k]);brOrder(h).forEach((i,j)=>TOUR.fx.push(tMk(P.first,null,j+1,pairs[i][0],pairs[i][1])));}
-const tLabel=f=>f.st==='G'?f.g+'조 '+f.r+'라운드':STG[f.st]+(f.st==='F'?'':' '+f.r+'경기');
+ const pairs=top.map((r,i)=>[r.k,bot[i].k]);tPush(P.first,brOrder(h).map(i=>pairs[i]));}
+const tLabel=f=>f.st==='G'?f.g+'조 '+f.r+'라운드':STG[f.st]+(f.st==='F'?'':' '+f.r+'경기')+(f.leg?' '+f.leg+'차전':'');
+let SIMVENUE=null;
 function tRecord(f){f.sa=S.sc[0];f.sb=S.sc[1];f.pso=S.pso?S.pso.sc.slice():null;f.et=!!S.etStage;f.done=true;f.sc=[];try{f.d=tDetail();}catch(e){f.d=null;}
  for(const ti of [0,1])for(const p of T[ti].all)if(p.st.g)f.sc.push({id:p.id,n:p.n,k:SIDE[ti],g:p.st.g});
  try{const mm=mom();f.mom=mm?mm.id:null;f.ps=[];for(const ti of [0,1])for(const p of T[ti].all){const r=rating(p);if(r==null)continue;const s=p.st,mins=Math.round(((p.off==null?S.t:p.off)-p.on)/MATCH_S*90);
   f.ps.push([p.id,p.n,SIDE[ti],p.role,s.g||0,s.ast||0,+r.toFixed(2),mins,s.sav||0,p.role==='GK'&&mins>=60&&S.sc[1-ti]===0?1:0,s.tk||0,s.int||0,s.kp||0,s.sh||0,s.sot||0]);}}catch(e){f.ps=null;}
- tAdvance();tSave();}
+ SIMVENUE=null;tAdvance();tSave();}
 // a result without watching: the full engine, unrendered, a slice per frame so the page stays responsive
-function tSim(f,done){loadTeams(f.a,f.b);init({et:f.st!=='G',noRec:true,cere:false,auto:[true,true]});
+function tSim(f,done){loadTeams(f.a,f.b);SIMVENUE=f.venue||null;init({et:f.st!=='G'&&f.leg!==1,agg:legAgg(f),noRec:true,cere:false,auto:[true,true]});
  const run=()=>{const t0=performance.now();while(!S.end&&performance.now()-t0<40)step(1/60);if(!S.end){setTimeout(run,0);return;}tRecord(f);done();};run();}
 function tSimMany(list){if(!list.length||TBUSY)return;TBUSY=true;let i=0;const go=()=>{if(i>=list.length){TBUSY=false;renderTour();return;}
  $('tprog').textContent='결과 계산 중 · '+(i+1)+'/'+list.length+' · '+tName(list[i].a)+' vs '+tName(list[i].b);tSim(list[i],()=>{i++;renderTour();$('tprog').textContent='결과 계산 중 · '+Math.min(i+1,list.length)+'/'+list.length;setTimeout(go,0);});};
  renderTour();go();}
 function tLock(on){for(const id of ['team0','team1','teamswap'])$(id).disabled=on;$('etopt').disabled=on;const tg=$('tourtag');tg.hidden=!on;$('tourbtn').textContent=on?'◂ 토너먼트':'◂ 메인';}
 function showTour(){tLoad();if(!TOUR){showHome('cfg');return;}tMigrateTB();$('home').hidden=true;if(TOUR.cur){TOUR.cur=null;tSave();}tLock(false);$('setup').hidden=true;$('app').hidden=true;$('tour').hidden=false;running=false;renderTour();}
-function tWatch(f){TOUR.cur=f.id;tSave();$('tour').hidden=true;applyTeams(f.a,f.b);teamSelects();$('etopt').checked=f.st!=='G';tLock(true);
- $('tourtag').textContent=SCOPE[TOUR.scope||'club'].title+' · '+tLabel(f)+(f.st!=='G'?' · 무승부면 연장·승부차기':'');newMatch();}
+function tWatch(f){TOUR.cur=f.id;tSave();$('tour').hidden=true;applyTeams(f.a,f.b);teamSelects();$('etopt').checked=f.st!=='G'&&f.leg!==1;tLock(true);const ag=legAgg(f);
+ $('tourtag').textContent=SCOPE[TOUR.scope||'club'].title+' · '+tLabel(f)+(f.leg===1?' · 홈·원정 합산':ag?' · 1차전 '+tName(f.a)+' '+ag[0]+' - '+ag[1]+' '+tName(f.b)+' · 합계 동점이면 연장·승부차기':f.st==='F'&&f.venue?' · 중립 경기장 '+(STADIUM[f.venue]||{}).name+' · 무승부면 연장·승부차기':f.st!=='G'?' · 무승부면 연장·승부차기':'');newMatch();}
 function tourAfter(){if(!TOUR||!TOUR.cur||S._tourRec)return;S._tourRec=true;const f=TOUR.fx.find(x=>x.id===TOUR.cur);
  if(f&&!f.done&&SIDE[0]===f.a&&SIDE[1]===f.b)tRecord(f);}
 function renderTour(){if(!TOUR)return;const nx=tNext();$('ttitle').textContent=SCOPE[TOUR.scope||'club'].title;
@@ -2823,28 +2849,31 @@ function renderTour(){if(!TOUR)return;const nx=tNext();$('ttitle').textContent=S
  // groups
  const th=TOUR.fmt==='G12'&&TOUR.fx.some(f=>f.st==='QF')?tThirds().slice(0,2).map(r=>r.k):[];
  const PL=TOUR.plan,NOTE={ALL:PL?euroSub(PL.N)+'. 각 조 1'+(PL.seconds===PL.G?'·2위':'위'+(PL.seconds?'와 2위 중 상위 '+PL.seconds+'팀':''))+(PL.thirds?', 3위 중 상위 '+PL.thirds+'팀':'')+'이 '+STG[PL.first]+'에 올라가요. 조가 다른 팀끼리는 승점·득실을 경기당 평균으로 비교하고, 첫 토너먼트에서는 같은 조끼리 안 만나요.':'',G16:'각 조 1·2위가 8강에 올라가요. 8강은 A1-B2, B1-A2, C1-D2, D1-C2로 붙어요.',G12:'각 조 1·2위와 3위 중 성적이 좋은 두 팀이 8강에 올라가요.',G8:'각 조 1·2위가 4강에 올라가요. A조 1위는 B조 2위와, B조 1위는 A조 2위와 붙어요.',QF:'8팀 단판 녹아웃. 대진은 무작위 추첨이에요.',SF:'4팀 단판 녹아웃. 대진은 무작위 추첨이에요.'}[TOUR.fmt]+' 토너먼트는 단판이고, 비기면 연장전과 승부차기로 가려요.';
- if(!TOUR.groups.length){$('tgroups').innerHTML='<div class="card grp"><h3>참가팀 · '+esc(TFMT[TOUR.fmt].name)+'</h3><ul class="plist">'+TOUR.teams.map(k=>{const out=TOUR.fx.some(f=>f.done&&(f.a===k||f.b===k)&&tWin(f)!==k);return '<li class="'+(out?'out':'')+(TOUR.champ===k?' ch':'')+'">'+tKit(k)+'<span>'+esc(LIB[k].name)+'<small>'+esc(LIB[k].season)+' · '+esc(LIB[k].coach)+'</small></span>'+(TOUR.champ===k?'<b>🏆</b>':out?'<em>탈락</em>':'')+'</li>';}).join('')+'</ul></div><p class="note" style="padding:0 4px">'+NOTE+'</p>';}
+ if(!TOUR.groups.length){$('tgroups').innerHTML='<div class="card grp"><h3>참가팀 · '+esc(TFMT[TOUR.fmt].name)+'</h3><ul class="plist">'+TOUR.teams.map(k=>{const out=KOS.some(st=>tTies(st).some(t=>(t.x===k||t.y===k)&&tieWin(t)&&tieWin(t)!==k));return '<li class="'+(out?'out':'')+(TOUR.champ===k?' ch':'')+'">'+tKit(k)+'<span>'+esc(LIB[k].name)+'<small>'+esc(LIB[k].season)+' · '+esc(LIB[k].coach)+'</small></span>'+(TOUR.champ===k?'<b>🏆</b>':out?'<em>탈락</em>':'')+'</li>';}).join('')+'</ul></div><p class="note" style="padding:0 4px">'+NOTE+'</p>';}
  else $('tgroups').innerHTML=TOUR.groups.map(G=>{const tb=tTable(G);return '<div class="card grp"><h3>'+G.g+'조</h3><div class="gwrap"><table><thead><tr><th>#</th><th class="nm">팀</th><th class="pts">승점</th><th>경기</th><th>승</th><th>무</th><th>패</th><th>득점</th><th>실점</th><th>득실</th><th>경고</th></tr></thead><tbody>'+
   tb.map((r,i)=>'<tr class="'+(TOUR.qual?(TOUR.qual.includes(r.k)?(i<2?'q':'q3'):''):(i<2?'q':th.includes(r.k)?'q3':''))+'"><td>'+(i+1)+'</td><td class="tn">'+tKit(r.k)+esc(tName(r.k))+'</td><td class="pts">'+r.Pt+'</td><td>'+r.P+'</td><td>'+r.W+'</td><td>'+r.D+'</td><td>'+r.L+'</td><td>'+r.F+'</td><td>'+r.A+'</td><td>'+(r.F-r.A>0?'+':'')+(r.F-r.A)+'</td><td class="fpc">'+(r.FP||0)+'</td></tr>').join('')+'</tbody></table></div>'+(()=>{const ws=tb.filter((r,i)=>i<3&&r.why&&r.Pt===tb[i+1].Pt&&(r.why==='fp'||r.why==='lot'||r.why==='h2h'));return ws.length?'<p class="tbn">'+ws.map(r=>esc(tName(r.k))+'가 '+esc(tName(tb[tb.indexOf(r)+1].k))+'보다 위 · '+TBW[r.why]).join('<br>')+'</p>':'';})()+'</div>';}).join('')+
   '<p class="note" style="padding:0 4px">'+NOTE+'</p><p class="note" style="padding:0 4px">표는 옆으로 밀면 득점·실점·경고까지 보여요. 승점이 같으면 ① 맞대결 승점 ② 맞대결 득실 ③ 맞대결 득점 (셋 이상 동률이면 남은 팀끼리 다시 ①~③) ④ 전체 득실 ⑤ 전체 득점 ⑥ 페어플레이(경고 1·퇴장 3점, 적을수록 위) ⑦ 추첨 순서로 가려요.</p>';
  // next match card
- let h='';if(TOUR.champ){const fn=TOUR.fx.find(f=>f.st==='F'),L0=LIB[TOUR.champ];h='<div class="champ"><small>'+SCOPE[TOUR.scope||'club'].title+' 우승</small><b>🏆 '+esc(L0.name)+'</b><small>'+esc(L0.season)+' · 감독 '+esc(L0.coach)+' · 결승 '+fn.sa+' - '+fn.sb+(fn.pso?' (승부차기 '+fn.pso[0]+'-'+fn.pso[1]+')':'')+' vs '+esc(tName(tWin(fn)===fn.a?fn.b:fn.a))+'</small></div>'+tAwardsHTML()+'<div class="t-prog" id="tprog"></div>';}
- else if(nx){const A=LIB[nx.a],B=LIB[nx.b],rest=TOUR.fx.filter(f=>!f.done&&f.st===nx.st&&(nx.st!=='G'||f.r===nx.r));
+ let h='';if(TOUR.champ){const fn=TOUR.fx.find(f=>f.st==='F'),L0=LIB[TOUR.champ];h='<div class="champ"><small>'+SCOPE[TOUR.scope||'club'].title+' 우승</small><b>🏆 '+esc(L0.name)+'</b><small>'+esc(L0.season)+' · 감독 '+esc(L0.coach)+' · 결승'+(fn.venue&&STADIUM[fn.venue]?' ('+STADIUM[fn.venue].name+')':'')+' '+fn.sa+' - '+fn.sb+(fn.pso?' (승부차기 '+fn.pso[0]+'-'+fn.pso[1]+')':'')+' vs '+esc(tName(tWin(fn)===fn.a?fn.b:fn.a))+'</small></div>'+tAwardsHTML()+'<div class="t-prog" id="tprog"></div>';}
+ else if(nx){const A=LIB[nx.a],B=LIB[nx.b],rest=TOUR.fx.filter(f=>!f.done&&f.st===nx.st&&(nx.st!=='G'||f.r===nx.r)&&(f.leg||0)===(nx.leg||0));
   h='<h3>다음 경기 · '+tLabel(nx)+'</h3><div class="nextm"><div class="tm">'+tKit(nx.a)+'<div>'+esc(A.short)+'<small>'+esc(A.coach)+'</small></div></div><div class="vs">vs</div><div class="tm r"><div>'+esc(B.short)+'<small>'+esc(B.coach)+'</small></div>'+tKit(nx.b)+'</div></div>'+
    '<div class="t-acts"><button type="button" class="btn-primary" id="twatch"'+(TBUSY?' disabled':'')+'>경기 보기</button><button type="button" id="tsim"'+(TBUSY?' disabled':'')+'>결과만 보기</button>'+
-   (rest.length>1?'<button type="button" id="tround"'+(TBUSY?' disabled':'')+'>'+(nx.st==='G'?'이번 라운드':STG[nx.st])+' 전부 결과만 ('+rest.length+')</button>':'')+
+   (rest.length>1?'<button type="button" id="tround"'+(TBUSY?' disabled':'')+'>'+(nx.st==='G'?'이번 라운드':STG[nx.st]+(nx.leg?' '+nx.leg+'차전':''))+' 전부 결과만 ('+rest.length+')</button>':'')+
    '<button type="button" id="tall"'+(TBUSY?' disabled':'')+'>우승팀까지 자동 진행</button></div><div class="t-prog" id="tprog"></div>';}
  $('tnext').innerHTML=h;
- if(!TOUR.champ&&nx){$('twatch').onclick=()=>tWatch(nx);$('tsim').onclick=()=>tSimMany([nx]);const tr=$('tround');if(tr)tr.onclick=()=>tSimMany(TOUR.fx.filter(f=>!f.done&&f.st===nx.st&&(nx.st!=='G'||f.r===nx.r)));
+ if(!TOUR.champ&&nx){$('twatch').onclick=()=>tWatch(nx);$('tsim').onclick=()=>tSimMany([nx]);const tr=$('tround');if(tr)tr.onclick=()=>tSimMany(TOUR.fx.filter(f=>!f.done&&f.st===nx.st&&(nx.st!=='G'||f.r===nx.r)&&(f.leg||0)===(nx.leg||0)));
   $('tall').onclick=()=>{const all=()=>{const n=tNext();if(!n){TBUSY=false;renderTour();return;}TBUSY=true;$('tprog').textContent='자동 진행 중 · '+tLabel(n)+' · '+tName(n.a)+' vs '+tName(n.b);tSim(n,()=>{renderTour();setTimeout(all,0);});};TBUSY=true;renderTour();all();};}
  // fixtures / bracket
  const sc=f=>f.done?f.sa+' - '+f.sb+(f.pso?'<small>PK '+f.pso[0]+'-'+f.pso[1]+'</small>':f.et?'<small>연장</small>':''):'vs';
  const row=f=>{const w=f.done?tWin(f):null;return '<li class="'+(nx&&f===nx?'cur':'')+(f.done?' dn':'')+'" data-id="'+f.id+'"'+(f.done?' tabindex="0" role="button" aria-label="'+esc(tName(f.a)+' '+f.sa+' 대 '+f.sb+' '+tName(f.b))+' 경기 기록 보기"':'')+'><span class="lb">'+(f.st==='G'?f.g+'조':'')+'</span><span class="a'+(w===f.a?' w':'')+'">'+esc(tName(f.a))+' '+tKit(f.a)+'</span><span class="sc">'+sc(f)+'</span><span class="b'+(w===f.b?' w':'')+'">'+tKit(f.b)+esc(tName(f.b))+'</span></li>';};
  let fx='';const ko=TOUR.fx.filter(f=>f.st!=='G');
- if(ko.length){const tie=(f,lab)=>{if(!f)return '<div class="tie tbd"><div><span>'+lab+'</span></div><div><span>미정</span></div></div>';const w=f.done?tWin(f):null;
+ if(ko.length){const tie=(t,lab)=>{if(!t)return '<div class="tie tbd"><div><span>'+lab+'</span></div><div><span>미정</span></div></div>';
+   if(t.legs.length>1){const g=tieAgg(t),w=tieWin(t),L1=t.legs[0],L2=t.legs[1],pk=L2.pso;const lg=(f,n)=>'<span class="lg'+(f.done?' dn':'')+'" data-id="'+f.id+'"'+(f.done?' tabindex="0" role="button"':'')+'>'+n+'차 '+(f.done?f.sa+'-'+f.sb+(f.pso?' PK':f.et?' 연장':''):'예정')+'</span>';
+    return '<div class="tie tie2'+(w?' dn':'')+'"><div class="'+(w===t.x?'w':'')+'"><span>'+tKit(t.x)+esc(tName(t.x))+'</span><span class="s">'+(g?g[0]+(pk?' ('+pk[0]+')':''):'')+'</span></div><div class="'+(w===t.y?'w':'')+'"><span>'+tKit(t.y)+esc(tName(t.y))+'</span><span class="s">'+(g?g[1]+(pk?' ('+pk[1]+')':''):'')+'</span></div><p class="legs">'+lg(L1,1)+lg(L2,2)+'</p></div>';}
+   const f=t.legs[0],w=f.done?tWin(f):null;
    return '<div class="tie'+(f.done?' dn':'')+'" data-id="'+f.id+'"'+(f.done?' tabindex="0" role="button"':'')+'><div class="'+(w===f.a?'w':'')+'"><span>'+tKit(f.a)+esc(tName(f.a))+'</span><span class="s">'+(f.done?f.sa+(f.pso?' ('+f.pso[0]+')':''):'')+'</span></div><div class="'+(w===f.b?'w':'')+'"><span>'+tKit(f.b)+esc(tName(f.b))+'</span><span class="s">'+(f.done?f.sb+(f.pso?' ('+f.pso[1]+')':''):'')+'</span></div></div>';};
   const q=ko.filter(f=>f.st==='QF'),s2=ko.filter(f=>f.st==='SF'),fn=ko.filter(f=>f.st==='F');
-  const first=TOUR.plan?TOUR.plan.first:TOUR.fmt==='G16'||TOUR.fmt==='G12'||TOUR.fmt==='QF'?'QF':'SF',R=KOS.slice(KOS.indexOf(first)).map(st=>[STG[st],ko.filter(f=>f.st===st),KON[st]]);
+  const first=TOUR.plan?TOUR.plan.first:TOUR.fmt==='G16'||TOUR.fmt==='G12'||TOUR.fmt==='QF'?'QF':'SF',R=KOS.slice(KOS.indexOf(first)).map(st=>[STG[st],tTies(st),KON[st]]);
   fx+='<h3>토너먼트</h3><div class="brk" style="grid-template-columns:repeat('+R.length+',minmax(0,1fr))">'+R.map(([lab,arr,n])=>'<div class="rnd"><h4>'+lab+'</h4>'+[...Array(n).keys()].map(i=>tie(arr[i],lab)).join('')+'</div>').join('')+'</div>';}
  else if(!TOUR.groups.length)fx+='<h3>토너먼트</h3>';
  const gs=TOUR.fx.filter(f=>f.st==='G');if(gs.length)fx+='<h3 style="margin-top:'+(ko.length?14:0)+'px">조별리그 일정</h3><ul class="fxl">'+[...new Set(gs.map(f=>f.r))].sort((a,b)=>a-b).map(r=>'<li><span class="rd">'+r+'라운드</span></li>'+gs.filter(f=>f.r===r).map(row).join('')).join('')+'</ul>';
@@ -2859,12 +2888,13 @@ $('tfree').addEventListener('click',()=>{if(TBUSY)return;if(TOUR){TOUR.cur=null;
 $('tnew').addEventListener('click',()=>{if(TBUSY)return;showHome('cfg');});
 
 // ===================== Home: single match or tournament (format + random / hand-picked teams) =====================
-const HC={scope:'club',fmt:'ALL',mode:'rand',sel:[]};
+const HC={scope:'club',fmt:'ALL',mode:'rand',sel:[],legs:null};const hcLegs=()=>HC.legs!=null?HC.legs:HC.scope!=='nat';
 function showHome(view){running=false;if(TOUR&&TOUR.cur){TOUR.cur=null;tSave();}tLock(false);for(const id of ['setup','app','tour'])$(id).hidden=true;$('home').hidden=false;tLoad();
  $('hmain').hidden=view==='cfg';$('hcfg').hidden=view!=='cfg';renderHome();}
 function renderHome(){const T0=TOUR&&!TOUR.champ?TOUR:null,nx=T0?tNext():null;
  $('hcont').hidden=!T0;if(T0)$('hcont').textContent='▸ 이어하기 · '+SCOPE[T0.scope||'club'].title+' · '+(T0.fmt==='ALL'?T0.teams.length+'팀':TFMT[T0.fmt].name.replace('조별리그 + 토너먼트','조별리그 '+TFMT[T0.fmt].n+'팀'))+' · '+(nx?tLabel(nx):'');
-const pool=tPool(HC.scope);TFMT.ALL.n=pool.length;TFMT.ALL.sub=euroSub(HC.mode==='pick'&&HC.sel.length?HC.sel.filter(k=>pool.includes(k)).length:pool.length);if(TFMT[HC.fmt].n>pool.length)HC.fmt=Object.keys(TFMT).find(k=>TFMT[k].n<=pool.length);
+{const L=hcLegs();document.querySelectorAll('#hlegs button').forEach(b=>b.setAttribute('aria-pressed',String((b.dataset.l==='1')===L)));$('hlegnote').textContent=L?'조별리그도 홈·원정 두 번씩, 토너먼트는 1·2차전 합산 (원정 다득점 없음, 합계 동점이면 2차전 연장·승부차기), 결승은 중립 경기장 단판.':'모든 경기 단판. 결승은 중립 경기장.';}
+ const pool=tPool(HC.scope);TFMT.ALL.n=pool.length;TFMT.ALL.sub=euroSub(HC.mode==='pick'&&HC.sel.length?HC.sel.filter(k=>pool.includes(k)).length:pool.length);if(TFMT[HC.fmt].n>pool.length)HC.fmt=Object.keys(TFMT).find(k=>TFMT[k].n<=pool.length);
  for(const b of document.querySelectorAll('#hscope button'))b.setAttribute('aria-pressed',String(b.dataset.s===HC.scope));
  $('hfmts').innerHTML=Object.entries(TFMT).map(([k,v])=>{const no=v.n>pool.length;return '<button type="button" class="hfmt'+(HC.fmt===k?' on':'')+'" data-f="'+k+'" aria-pressed="'+(HC.fmt===k)+'"'+(no?' disabled title="팀이 '+pool.length+'개라 이 형식은 못 해요"':'')+'><b>'+v.name+'</b><small>'+v.sub+'</small></button>';}).join('');
  const n=TFMT[HC.fmt].n;HC.sel=HC.sel.filter(k=>pool.includes(k)).slice(0,n);
@@ -2885,8 +2915,9 @@ $('hteams').addEventListener('click',e=>{const b=e.target.closest('.hteam');if(!
  if(HC.sel.includes(k))HC.sel=HC.sel.filter(x=>x!==k);else if(HC.sel.length<n)HC.sel.push(k);renderHome();});
 $('hfill').addEventListener('click',()=>{const n=TFMT[HC.fmt].n;HC.sel=HC.sel.concat(tShuf(tPool(HC.scope).filter(k=>!HC.sel.includes(k)))).slice(0,n);renderHome();});
 $('hscope').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;HC.scope=b.dataset.s;renderHome();});
+$('hlegs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;HC.legs=b.dataset.l==='1';renderHome();});
 $('hclear').addEventListener('click',()=>{HC.sel=[];renderHome();});
-$('hgo').addEventListener('click',()=>{if($('hgo').disabled)return;tNew(HC.fmt,HC.mode==='pick'?HC.sel:null,HC.scope);$('home').hidden=true;showTour();});
+$('hgo').addEventListener('click',()=>{if($('hgo').disabled)return;tNew(HC.fmt,HC.mode==='pick'?HC.sel:null,HC.scope,hcLegs());$('home').hidden=true;showTour();});
 $('homebtn').addEventListener('click',()=>showHome());
 showHome();
 
@@ -2900,7 +2931,7 @@ function tDetail(){const P=T.map(t=>t.poss),pt=P[0]+P[1]||1,xg=[0,0];for(const r
  const top=T.map(t=>t.all.map(p=>({n:p.n,pos:p.c||'',r:rating(p),g:p.st.g,a:p.st.ast,gk:p.role==='GK'})).filter(x=>x.r!=null).sort((a,b)=>b.r-a.r).slice(0,4).map(x=>Object.assign(x,{r:+x.r.toFixed(1)})));
  const mm0=mom();if(S.clipQ&&S.clipQ.length){(S.clips||(S.clips=[])).push(...S.clipQ.map(packClip));S.clipQ=[];}
  return{poss:[Math.round(P[0]/pt*100),100-Math.round(P[0]/pt*100)],sh:T.map(t=>t.shots),sot:T.map(t=>t.sot),xg:xg.map(v=>+v.toFixed(2)),pa:T.map(t=>t.passes),pacc:T.map(t=>t.passes?Math.round(t.passOk/t.passes*100):0),
-  crn,fo:T.map(t=>t.fouls||0),yc:T.map(t=>t.yel||0),rc:T.map(t=>t.red||0),tk:T.map(t=>t.tk||0),gl,cd,top,mom:mm0?{n:mm0.n,ti:mm0.ti,r:+rating(mm0).toFixed(1)}:null,stad:(STADIUM[LIB[SIDE[0]].stadium]||STADIUM.old).name,clips:S.clips||[],derby:S.derby?S.derby.name:null};}
+  crn,fo:T.map(t=>t.fouls||0),yc:T.map(t=>t.yel||0),rc:T.map(t=>t.red||0),tk:T.map(t=>t.tk||0),gl,cd,top,mom:mm0?{n:mm0.n,ti:mm0.ti,r:+rating(mm0).toFixed(1)}:null,stad:(STADIUM[SIMVENUE||(tCurFx()&&tCurFx().venue)||LIB[SIDE[0]].stadium]||STADIUM.old).name,clips:S.clips||[],derby:S.derby?S.derby.name:null};}
 function tOpen(id){const f=TOUR&&TOUR.fx.find(x=>x.id===id);if(!f||!f.done)return;const d=f.d,A=LIB[f.a],B=LIB[f.b],w=tWin(f);
  let h='<div class="tm-hd"><small>'+esc(tLabel(f))+(d&&d.stad?' · '+esc(d.stad):'')+(d&&d.derby?' · '+esc(d.derby):'')+'</small>'+
   '<div class="tm-sc"><div class="tm-t'+(w===f.a?' w':'')+'">'+tKit(f.a)+'<span>'+esc(A.name)+'<small>'+esc(A.season)+' · '+esc(A.coach)+'</small></span></div>'+
